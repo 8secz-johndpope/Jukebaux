@@ -1,6 +1,6 @@
 //
 //  SuggestedSongTableViewCell.swift
-//  TroJams
+//  JamSesh
 //
 //  Created by Adam Moffitt on 2/3/17.
 //  Copyright © 2017 Adam's Apps. All rights reserved.

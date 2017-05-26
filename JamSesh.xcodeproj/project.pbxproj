@@ -7,43 +7,62 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		089476B225B3D805651CEFCB /* Pods_TroJams.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB07D1C8CC21105674072EA3 /* Pods_TroJams.framework */; };
+		8288F904AFEF6632C8A42997 /* Pods_JamSesh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A17E754B6505D80BA04A4E6 /* Pods_JamSesh.framework */; };
 		F5099BFD1E46D4D900963034 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5099BFC1E46D4D900963034 /* MediaPlayer.framework */; };
+		F510DC2A1ECCB8180088CE67 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F510DC291ECCB8180088CE67 /* StoreKit.framework */; };
+		F510DC2C1ECCB9C60088CE67 /* PlayMusicHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F510DC2B1ECCB9C60088CE67 /* PlayMusicHandler.swift */; };
+		F51A62DE1E78D66700C03FBD /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51A62DD1E78D66700C03FBD /* LogInViewController.swift */; };
+		F534C6131ED0AFC000242C0D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F534C6121ED0AFC000242C0D /* User.swift */; };
+		F567D3B61E8FA97A00615E91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */; };
 		F57A635C1E37FAB600243461 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57A635B1E37FAB600243461 /* AppDelegate.swift */; };
 		F57A63611E37FAB600243461 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F57A635F1E37FAB600243461 /* Main.storyboard */; };
 		F57A63631E37FAB600243461 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F57A63621E37FAB600243461 /* Assets.xcassets */; };
 		F57A63661E37FAB600243461 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F57A63641E37FAB600243461 /* LaunchScreen.storyboard */; };
 		F57A636E1E37FCE500243461 /* PartiesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */; };
-		F57A63701E37FECA00243461 /* TroJamsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57A636F1E37FECA00243461 /* TroJamsModel.swift */; };
-		F5A8CF3D1E4500ED00FE17D7 /* AddSongViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A8CF3C1E4500ED00FE17D7 /* AddSongViewController.swift */; };
+		F57A63701E37FECA00243461 /* JamSeshModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57A636F1E37FECA00243461 /* JamSeshModel.swift */; };
+		F5A8CF3D1E4500ED00FE17D7 /* AddAppleMusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */; };
 		F5A8CF3F1E45106700FE17D7 /* SuggestedSongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */; };
 		F5C706881E3BCA2F00524F34 /* PartyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C706871E3BCA2F00524F34 /* PartyViewController.swift */; };
 		F5C7068A1E3BCA5800524F34 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */; };
 		F5C7068C1E3BCA6B00524F34 /* PartyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */; };
 		F5C7068E1E3C37CB00524F34 /* CreateAPartyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */; };
+		F5D760D71ED669B400845803 /* AddMusicLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */; };
+		F5D760D91ED6A5BA00845803 /* GradientImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760D81ED6A5BA00845803 /* GradientImageView.swift */; };
+		F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760DA1ED8A5C400845803 /* ChatViewController.swift */; };
 		F5DEB0471E432157001E1480 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0461E432157001E1480 /* Song.swift */; };
 		F5DEB0491E432177001E1480 /* Party.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0481E432177001E1480 /* Party.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02F6E41C34566E5C27FC779E /* Pods-TroJams.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TroJams.release.xcconfig"; path = "Pods/Target Support Files/Pods-TroJams/Pods-TroJams.release.xcconfig"; sourceTree = "<group>"; };
+		1A17E754B6505D80BA04A4E6 /* Pods_JamSesh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JamSesh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C0B6D851F5BE1B7AC280206 /* Pods-JamSesh.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JamSesh.release.xcconfig"; path = "Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh.release.xcconfig"; sourceTree = "<group>"; };
+		9C0D9BD64113574EA9D62D58 /* Pods-JamSesh.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JamSesh.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh.debug.xcconfig"; sourceTree = "<group>"; };
 		BB07D1C8CC21105674072EA3 /* Pods_TroJams.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TroJams.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE82F01C51D93A50A4A318A5 /* Pods-TroJams.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TroJams.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TroJams/Pods-TroJams.debug.xcconfig"; sourceTree = "<group>"; };
 		F5099BFC1E46D4D900963034 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		F57A63581E37FAB600243461 /* TroJams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TroJams.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F510DC291ECCB8180088CE67 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F510DC2B1ECCB9C60088CE67 /* PlayMusicHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayMusicHandler.swift; sourceTree = "<group>"; };
+		F51A62DD1E78D66700C03FBD /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		F534C6121ED0AFC000242C0D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F57A63581E37FAB600243461 /* JamSesh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JamSesh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F57A635B1E37FAB600243461 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F57A63601E37FAB600243461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F57A63621E37FAB600243461 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F57A63651E37FAB600243461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F57A63671E37FAB600243461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartiesTableViewController.swift; sourceTree = "<group>"; };
-		F57A636F1E37FECA00243461 /* TroJamsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TroJamsModel.swift; sourceTree = "<group>"; };
-		F5A8CF3C1E4500ED00FE17D7 /* AddSongViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSongViewController.swift; sourceTree = "<group>"; };
+		F57A636F1E37FECA00243461 /* JamSeshModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JamSeshModel.swift; sourceTree = "<group>"; };
+		F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAppleMusicViewController.swift; sourceTree = "<group>"; };
 		F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedSongTableViewCell.swift; sourceTree = "<group>"; };
 		F5C706871E3BCA2F00524F34 /* PartyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyViewController.swift; sourceTree = "<group>"; };
 		F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableViewCell.swift; sourceTree = "<group>"; };
 		F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyTableViewCell.swift; sourceTree = "<group>"; };
 		F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAPartyViewController.swift; sourceTree = "<group>"; };
+		F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMusicLibraryViewController.swift; sourceTree = "<group>"; };
+		F5D760D81ED6A5BA00845803 /* GradientImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GradientImageView.swift; path = ../../../../../Downloads/GradientView_Swift3/GradientView_Swift3/GradientImageView.swift; sourceTree = "<group>"; };
+		F5D760DA1ED8A5C400845803 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F5DEB0461E432157001E1480 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		F5DEB0481E432177001E1480 /* Party.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Party.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,8 +72,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F510DC2A1ECCB8180088CE67 /* StoreKit.framework in Frameworks */,
 				F5099BFD1E46D4D900963034 /* MediaPlayer.framework in Frameworks */,
-				089476B225B3D805651CEFCB /* Pods_TroJams.framework in Frameworks */,
+				8288F904AFEF6632C8A42997 /* Pods_JamSesh.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,8 +84,10 @@
 		F5483E759D0BFB3969D5E47E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F510DC291ECCB8180088CE67 /* StoreKit.framework */,
 				F5099BFC1E46D4D900963034 /* MediaPlayer.framework */,
 				BB07D1C8CC21105674072EA3 /* Pods_TroJams.framework */,
+				1A17E754B6505D80BA04A4E6 /* Pods_JamSesh.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -75,7 +97,9 @@
 			children = (
 				F5DEB0481E432177001E1480 /* Party.swift */,
 				F5DEB0461E432157001E1480 /* Song.swift */,
-				F57A636F1E37FECA00243461 /* TroJamsModel.swift */,
+				F57A636F1E37FECA00243461 /* JamSeshModel.swift */,
+				F510DC2B1ECCB9C60088CE67 /* PlayMusicHandler.swift */,
+				F534C6121ED0AFC000242C0D /* User.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -84,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				F57A635F1E37FAB600243461 /* Main.storyboard */,
+				F5D760D81ED6A5BA00845803 /* GradientImageView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -91,7 +116,10 @@
 		F55379241E45646D00252B78 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F5A8CF3C1E4500ED00FE17D7 /* AddSongViewController.swift */,
+				F5D760DA1ED8A5C400845803 /* ChatViewController.swift */,
+				F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */,
+				F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */,
+				F51A62DD1E78D66700C03FBD /* LogInViewController.swift */,
 				F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */,
 				F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */,
 				F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */,
@@ -105,7 +133,7 @@
 		F57A634F1E37FAB600243461 = {
 			isa = PBXGroup;
 			children = (
-				F57A635A1E37FAB600243461 /* TroJams */,
+				F57A635A1E37FAB600243461 /* JamSesh */,
 				F57A63591E37FAB600243461 /* Products */,
 				FC83A6AFEDA00CDEF83C6655 /* Pods */,
 				F5483E759D0BFB3969D5E47E /* Frameworks */,
@@ -115,14 +143,15 @@
 		F57A63591E37FAB600243461 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F57A63581E37FAB600243461 /* TroJams.app */,
+				F57A63581E37FAB600243461 /* JamSesh.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F57A635A1E37FAB600243461 /* TroJams */ = {
+		F57A635A1E37FAB600243461 /* JamSesh */ = {
 			isa = PBXGroup;
 			children = (
+				F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */,
 				F57A635B1E37FAB600243461 /* AppDelegate.swift */,
 				F55379231E45645900252B78 /* View */,
 				F55379221E45645100252B78 /* Model */,
@@ -131,6 +160,7 @@
 				F57A63641E37FAB600243461 /* LaunchScreen.storyboard */,
 				F57A63671E37FAB600243461 /* Info.plist */,
 			);
+			name = JamSesh;
 			path = TroJams;
 			sourceTree = "<group>";
 		};
@@ -139,6 +169,8 @@
 			children = (
 				EE82F01C51D93A50A4A318A5 /* Pods-TroJams.debug.xcconfig */,
 				02F6E41C34566E5C27FC779E /* Pods-TroJams.release.xcconfig */,
+				9C0D9BD64113574EA9D62D58 /* Pods-JamSesh.debug.xcconfig */,
+				1C0B6D851F5BE1B7AC280206 /* Pods-JamSesh.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -146,9 +178,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F57A63571E37FAB600243461 /* TroJams */ = {
+		F57A63571E37FAB600243461 /* JamSesh */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "TroJams" */;
+			buildConfigurationList = F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "JamSesh" */;
 			buildPhases = (
 				8E91D8A31EC5E4854A3FD51D /* [CP] Check Pods Manifest.lock */,
 				F57A63541E37FAB600243461 /* Sources */,
@@ -161,9 +193,9 @@
 			);
 			dependencies = (
 			);
-			name = TroJams;
+			name = JamSesh;
 			productName = TroJams;
-			productReference = F57A63581E37FAB600243461 /* TroJams.app */;
+			productReference = F57A63581E37FAB600243461 /* JamSesh.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -183,7 +215,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F57A63531E37FAB600243461 /* Build configuration list for PBXProject "TroJams" */;
+			buildConfigurationList = F57A63531E37FAB600243461 /* Build configuration list for PBXProject "JamSesh" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -196,7 +228,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F57A63571E37FAB600243461 /* TroJams */,
+				F57A63571E37FAB600243461 /* JamSesh */,
 			);
 		};
 /* End PBXProject section */
@@ -207,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F57A63661E37FAB600243461 /* LaunchScreen.storyboard in Resources */,
+				F567D3B61E8FA97A00615E91 /* GoogleService-Info.plist in Resources */,
 				F57A63631E37FAB600243461 /* Assets.xcassets in Resources */,
 				F57A63611E37FAB600243461 /* Main.storyboard in Resources */,
 			);
@@ -227,7 +260,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TroJams/Pods-TroJams-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		845D469DFE1B8575AF9AA719 /* [CP] Copy Pods Resources */ = {
@@ -242,7 +275,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TroJams/Pods-TroJams-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E91D8A31EC5E4854A3FD51D /* [CP] Check Pods Manifest.lock */ = {
@@ -271,12 +304,18 @@
 				F5DEB0491E432177001E1480 /* Party.swift in Sources */,
 				F57A636E1E37FCE500243461 /* PartiesTableViewController.swift in Sources */,
 				F5A8CF3F1E45106700FE17D7 /* SuggestedSongTableViewCell.swift in Sources */,
-				F5A8CF3D1E4500ED00FE17D7 /* AddSongViewController.swift in Sources */,
-				F57A63701E37FECA00243461 /* TroJamsModel.swift in Sources */,
+				F5A8CF3D1E4500ED00FE17D7 /* AddAppleMusicViewController.swift in Sources */,
+				F57A63701E37FECA00243461 /* JamSeshModel.swift in Sources */,
+				F534C6131ED0AFC000242C0D /* User.swift in Sources */,
+				F5D760D71ED669B400845803 /* AddMusicLibraryViewController.swift in Sources */,
 				F5C7068C1E3BCA6B00524F34 /* PartyTableViewCell.swift in Sources */,
 				F5DEB0471E432157001E1480 /* Song.swift in Sources */,
+				F51A62DE1E78D66700C03FBD /* LogInViewController.swift in Sources */,
+				F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */,
 				F57A635C1E37FAB600243461 /* AppDelegate.swift in Sources */,
 				F5C7068E1E3C37CB00524F34 /* CreateAPartyViewController.swift in Sources */,
+				F510DC2C1ECCB9C60088CE67 /* PlayMusicHandler.swift in Sources */,
+				F5D760D91ED6A5BA00845803 /* GradientImageView.swift in Sources */,
 				F5C706881E3BCA2F00524F34 /* PartyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,6 +363,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -373,6 +413,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -396,36 +437,41 @@
 		};
 		F57A636B1E37FAB600243461 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EE82F01C51D93A50A4A318A5 /* Pods-TroJams.debug.xcconfig */;
+			baseConfigurationReference = 9C0D9BD64113574EA9D62D58 /* Pods-JamSesh.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5Q4A25TA8P;
 				INFOPLIST_FILE = TroJams/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AdamsApps.TroJams;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Adam-sApps.JamSesh";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
 		F57A636C1E37FAB600243461 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02F6E41C34566E5C27FC779E /* Pods-TroJams.release.xcconfig */;
+			baseConfigurationReference = 1C0B6D851F5BE1B7AC280206 /* Pods-JamSesh.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 5Q4A25TA8P;
 				INFOPLIST_FILE = TroJams/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.AdamsApps.TroJams;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Adam-sApps.JamSesh";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F57A63531E37FAB600243461 /* Build configuration list for PBXProject "TroJams" */ = {
+		F57A63531E37FAB600243461 /* Build configuration list for PBXProject "JamSesh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F57A63681E37FAB600243461 /* Debug */,
@@ -434,7 +480,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "TroJams" */ = {
+		F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "JamSesh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F57A636B1E37FAB600243461 /* Debug */,

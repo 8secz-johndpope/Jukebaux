@@ -1,12 +1,14 @@
 //
 //  CreateAPartyViewController.swift
-//  TroJams
+//  JamSesh
 //
 //  Created by Adam Moffitt on 1/27/17.
 //  Copyright © 2017 Adam's Apps. All rights reserved.
 //
 
 import UIKit
+import SCLAlertView
+import StoreKit
 
 class CreateAPartyViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 
@@ -19,23 +21,23 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var createPartyButton: UIButton!
     
-    
     let imagePicker = UIImagePickerController()
-    let SharedTrojamsModel = TroJamsModel.shared
+    let SharedJamSeshModel = JamSeshModel.shared
+    let playMusicHandler = PlayMusicHandler.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
+        self.appleMusicCheckIfDeviceCanPlayback()
     }
+
     
     @IBAction func imageButtonTapped(_ sender: AnyObject) {
         print("CHOOSE PICTURE")
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-        
         present(imagePicker, animated: true, completion: nil)
-        
     }
     @IBAction func takePhotoTapped(_ sender: AnyObject) {
         takePicture()
@@ -43,6 +45,7 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     
     //https://makeapppie.com/2016/06/28/how-to-use-uiimagepickercontroller-for-a-camera-and-photo-library-in-swift-3-0/
     func takePicture(){
+        print("1")
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             imagePicker.allowsEditing = false
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
@@ -90,8 +93,17 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     }
 
     @IBAction func createAParty(_ sender: Any) {
-       SharedTrojamsModel.newParty(name: partyNameTextField.text! , partyImage: partyImage.image!, privateParty: privatePartySwitch.isOn, password: passwordTextField.text!)
-        self.dismiss(animated: true) {}
+        if let partyName = partyNameTextField.text,
+            let partyImage = partyImage.image,
+            let password = passwordTextField.text {
+            var password1 = ""
+            if password != nil { password1 = password}
+            print("create party")
+            SharedJamSeshModel.newParty(name: partyName , partyImage: partyImage, privateParty: privatePartySwitch.isOn, password: password1, numberJoined: 1, hostName: SharedJamSeshModel.myUser.username, hostID: SharedJamSeshModel.myUser.userID)
+            self.dismiss(animated: true) {}
+        }
+       
+        
         //let sourceController = self.presentingViewController as! PartiesTableViewController
         //sourceController.tableView.reloadData()
         //print("reloading data")
@@ -113,5 +125,45 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
         }
     }
     
+    @IBAction func dismissKeyboardButtonPressed(_ sender: Any) {
+        
+        partyNameTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+        view.endEditing(true)
+        
+    }
+    
+    // Check if the device is capable of playback
+    func appleMusicCheckIfDeviceCanPlayback() {
+        let serviceController = SKCloudServiceController()
+        serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) -> Void in
+            
+            let serviceController = SKCloudServiceController()
+            serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
+                if capability.contains(SKCloudServiceCapability.musicCatalogPlayback) {
+                    print("The user has an Apple Music subscription and can playback music!")
+                    
+                } else if  capability.contains(SKCloudServiceCapability.addToCloudMusicLibrary) {
+                    print("The user has an Apple Music subscription, can playback music AND can add to the Cloud Music Library")
+                    
+                } else {
+                    print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one?")
+                    self.promptAppleMusicPurchase()
+                }
+            }
+        }
+    }
+    
+    func promptAppleMusicPurchase() {
+        let alert = SCLAlertView()
+        alert.addButton("Purchase Apple Music Subscription") {
+            print("purchase apple music")
+            
+        }
+        alert.addButton("No thanks!") {
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.showInfo("Whoops! To Host a party you need an Apple Music subscription.", subTitle: "Start a free trial today?")
+    }
 
 }

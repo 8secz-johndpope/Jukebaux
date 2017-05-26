@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:TroJams.xcodeproj">
+      location = "group:/Users/adammoffitt/Documents/Business Ideas/TroJams/TroJams-iOS/JamSesh.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

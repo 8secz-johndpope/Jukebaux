@@ -1,6 +1,6 @@
 //
 //  PartyTableViewCell.swift
-//  TroJams
+//  JamSesh
 //
 //  Created by Adam Moffitt on 1/27/17.
 //  Copyright © 2017 Adam's Apps. All rights reserved.
