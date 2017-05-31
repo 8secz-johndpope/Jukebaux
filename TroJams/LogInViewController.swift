@@ -93,18 +93,18 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     func logIn(email: String, password: String) {
         print("logging in")
-        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, err) in
+        Auth.auth().signIn(withEmail: email, password: password, completion: { (user, err) in
             if(err != nil ){
-                print(err)
+                print(err ?? "error")
                 self.dismissKeyboard()
-                let alert = SCLAlertView().showError("Whoops!", subTitle: err!.localizedDescription)
+                SCLAlertView().showError("Whoops!", subTitle: err!.localizedDescription)
             }
             else{
                 self.userDefaults.setValue(email, forKey: "email")
                 self.userDefaults.setValue(password, forKey: "password")
-                let uid = FIRAuth.auth()?.currentUser?.uid
+                let uid = Auth.auth().currentUser?.uid
                 print("a1 \(uid!)")
-                FIRDatabase.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+                Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
                     print("b2 \(snapshot.value!)")
                     if let dict = snapshot.value as? [String: AnyObject] {
                         print(snapshot.value!)
@@ -141,11 +141,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             //if textfields are both not empty, create new user (in firebase and model) and segway to parties
             if(username.text != "" && password.text != "" && email.text != "") {
                     print("should be logging in now")
-                FIRAuth.auth()?.createUser(withEmail: email.text!, password: password.text!) { (user, error) in
+                Auth.auth().createUser(withEmail: email.text!, password: password.text!) { (user, error) in
                     if(error != nil ){
-                        print(error)
+                        print(error ?? "error")
                         self.dismissKeyboard()
-                        let alert = SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
+                        SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
                     }
                     else{
                     print("user created")

@@ -15,7 +15,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     
     let SharedJamSeshModel = JamSeshModel.shared
     var parties : [Party] = []
-    var handle : FIRDatabaseHandle = FIRDatabaseHandle()
+    var handle : DatabaseHandle = DatabaseHandle()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,19 +37,19 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     
     func loadPartiesFromFirebase() {
         print("****************************1")
-        handle = SharedJamSeshModel.ref.child("parties").observe(FIRDataEventType.value, with: { (snapshot) in
+        handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
                 print("snapshot of parties doesnt exist")
                 return
             }
             var i = 0
             var newParties : [Party] = []
-            for child in (snapshot.children.allObjects as? [FIRDataSnapshot])! {
+            for child in (snapshot.children.allObjects as? [DataSnapshot])! {
                 
                 //*************************
-                print("LOADPARTIESFROMFIREBASE: \(i) - \((child.value as? NSDictionary)?["partyName"]!)")
+                print("LOADPARTIESFROMFIREBASE: \(i) - \(String(describing: (child.value as? NSDictionary)?["partyName"]!))")
                 i += 1
-                let party = Party(snapshot: child as! FIRDataSnapshot)
+                let party = Party(snapshot: child)
                 newParties.append(party)
                 //*************************
             }
@@ -61,7 +61,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     }
     
     func loadData() {
-        var activityIndicatorView = NVActivityIndicatorView(frame: self.view.frame, type: .lineScalePulseOut, color: UIColor.purple, padding: CGFloat(0))
+        let activityIndicatorView = NVActivityIndicatorView(frame: self.view.frame, type: .lineScalePulseOut, color: UIColor.purple, padding: CGFloat(0))
         print("****************refresh***************")
         
         activityIndicatorView.startAnimating()
@@ -85,13 +85,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if( SharedJamSeshModel.parties.count == nil) {
-            return 0
-        }
-        else {
             return SharedJamSeshModel.parties.count
-        }
-        
     }
     
     
@@ -121,7 +115,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
                 
                 //ran into some download error
                 if error != nil {
-                    print(error)
+                    print(error ?? "error")
                     return
                 }
                 print("got image yay!")
@@ -189,16 +183,16 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).child("users").child(SharedJamSeshModel.myUser.username).setValue(SharedJamSeshModel.myUser.username)
             
             //increase the number joined in the party in transaction block to avoid concurrency issues
-            SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+            SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
                 if var post = currentData.value as? [String : AnyObject] {
                     //increment the number joined by 1
-                    var numberJoined = post["numberJoined"] as? Int ?? 0
+                    let numberJoined = post["numberJoined"] as? Int ?? 0
                     post["numberJoined"] = numberJoined + 1 as AnyObject?
                     // Set value and report transaction success
                     currentData.value = post
-                    return FIRTransactionResult.success(withValue: currentData)
+                    return TransactionResult.success(withValue: currentData)
                 }
-                return FIRTransactionResult.success(withValue: currentData)
+                return TransactionResult.success(withValue: currentData)
             }) { (error, committed, snapshot) in
                 if let error = error {
                     print(error.localizedDescription)

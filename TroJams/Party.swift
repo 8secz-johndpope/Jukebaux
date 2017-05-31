@@ -27,7 +27,7 @@ class Party {
     var hasStarted : Bool
     var songHistory : [Song]
     var key: String
-    var ref: FIRDatabaseReference?
+    var ref: DatabaseReference?
     
     init() {
         partyID = ""
@@ -49,10 +49,10 @@ class Party {
         songHistory = []
         
         key = ""
-        ref = FIRDatabaseReference()
+        ref = DatabaseReference()
     }
     
-    convenience init(snapshot: FIRDataSnapshot) {
+    convenience init(snapshot: DataSnapshot) {
         self.init()
         print(" party snapshot initializer")
         key = snapshot.key
@@ -81,15 +81,21 @@ class Party {
             //print("A")
             
             if snapshotValue["users"] != nil {
-                let tempUsers = snapshotValue["users"] as? NSDictionary
-                //print(tempUsers)
+                let tempUsersDict = snapshotValue["users"] as? NSDictionary
+                var tempUsers : [String] = []
+                
+                for user in tempUsersDict! {
+                    tempUsers.append(user.value as! String)
+                }
+                print(tempUsers)
+                self.users = tempUsers
             }
             //print("A")
             if snapshotValue["playlist"] != nil {
                 let tempSongsDict = snapshotValue["playlist"] as! NSDictionary
                 var tempSongs : [Song] = []
                 for element in tempSongsDict {
-                    var s = Song(dictionary: element.value as! NSDictionary)
+                    let s = Song(dictionary: element.value as! NSDictionary)
                     tempSongs.append(s)
                 }
                 self.songs = tempSongs
@@ -103,8 +109,13 @@ class Party {
             }
             //print("A")
             if snapshotValue["songHistory"] != nil {
-                
-                let tempCurrentSongHistory = snapshotValue["songHistory"] as! NSDictionary
+                let tempCurrentSongHistoryDict = snapshotValue["songHistory"] as! NSDictionary
+                var tempCurrentSongHistory : [Song] = []
+                for element in tempCurrentSongHistoryDict {
+                    let s = Song(dictionary: element.value as! NSDictionary)
+                    tempCurrentSongHistory.append(s)
+                }
+                self.songHistory = tempCurrentSongHistory
                 //print(tempCurrentSongHistory)
             }
             //print("A")
@@ -153,7 +164,7 @@ class Party {
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
             print(term)
             let url = NSURL(string: "https://itunes.apple.com/lookup?id=\(term)&entity=song")
-            print(url)
+            print(url ?? "")
             let request = NSMutableURLRequest(
                 url: url! as URL,
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,

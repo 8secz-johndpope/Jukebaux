@@ -7,7 +7,6 @@ target 'JamSesh' do
 
   # Pods for JamSesh
 	pod 'IQKeyboardManagerSwift'
-	pod 'lottie-ios'
 	pod 'Firebase/Core'
     pod 'Firebase/Database'
     pod 'Firebase/Auth'

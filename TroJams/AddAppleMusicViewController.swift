@@ -58,7 +58,6 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
             else {
                 return results.count
             }
-        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -88,7 +87,6 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
             print(term)
             let url = NSURL(string: "https://geo.itunes.apple.com/search?term=\(term)&media=music")
-            print(url)
             let request = NSMutableURLRequest(
                 url: url! as URL,
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,

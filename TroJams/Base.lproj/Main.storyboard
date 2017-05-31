@@ -237,7 +237,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="231" sectionHeaderHeight="28" sectionFooterHeight="28" id="4ja-28-ngE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PartyCell" rowHeight="231" id="9Uu-Iq-j99" customClass="PartyTableViewCell" customModule="JamSesh" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="231"/>
@@ -977,7 +977,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JamSesh" translatesAutoresizingMaskIntoConstraints="NO" id="m4l-sz-0gN" userLabel="Logo">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="troJamsLogo" translatesAutoresizingMaskIntoConstraints="NO" id="m4l-sz-0gN" userLabel="Logo">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
@@ -1132,7 +1132,6 @@
     </scenes>
     <resources>
         <image name="Camera" width="512" height="512"/>
-        <image name="JamSesh" width="512" height="512"/>
         <image name="PhotoLibrary" width="512" height="512"/>
         <image name="button_search" width="40" height="13"/>
         <image name="downvoteImage" width="85" height="85"/>
@@ -1141,6 +1140,7 @@
         <image name="party" width="512" height="512"/>
         <image name="playButton1" width="512" height="512"/>
         <image name="purpleBackground" width="512" height="512"/>
+        <image name="troJamsLogo" width="512" height="512"/>
         <image name="upvoteImage" width="85" height="85"/>
     </resources>
 </document>

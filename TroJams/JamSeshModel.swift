@@ -15,10 +15,10 @@ class JamSeshModel {
     
     var parties : [Party] = []
     var currentPartyIndex: Int = 0
-    var ref: FIRDatabaseReference!
+    var ref: DatabaseReference!
     var partiesChanged = true
-    var storage : FIRStorage
-    var storageRef : FIRStorageReference
+    var storage : Storage
+    var storageRef : StorageReference
     var myUser : User
     
     //singleton
@@ -26,10 +26,10 @@ class JamSeshModel {
     
     init() {
         print("Initializing JamSesh model")
-        ref = FIRDatabase.database().reference()
+        ref = Database.database().reference()
         
         // Get a reference to the storage service using the default Firebase App
-        storage = FIRStorage.storage()
+        storage = Storage.storage()
         // Create a storage reference from our storage service
         storageRef = storage.reference()
         
@@ -49,9 +49,9 @@ class JamSeshModel {
         let tempStorageRef = storageRef.child("\(tempImageName).png")
         var tempSavedImageURL = ""
         if let uploadData = UIImageJPEGRepresentation(partyImage, 0.1) {
-            tempStorageRef.put(uploadData, metadata: nil, completion: { (metadata, error) in
+            tempStorageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil {
-                    print (error)
+                    print (error ?? "Error")
                     return
                 }
                 
@@ -108,15 +108,15 @@ class JamSeshModel {
     
     /******************* New load from firebase - observe *******************/
     func loadFromFirebase(completionHandler: @escaping CompletionHandler) {
-        ref.child("parties").queryOrdered(byChild: "numberJoined").observe(FIRDataEventType.value, with: { (snapshot) in
+        ref.child("parties").queryOrdered(byChild: "numberJoined").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
                 print("snapshot of parties doesnt exist")
                 return
             }
             var newParties : [Party] = []
-            for child in (snapshot.children.allObjects as? [FIRDataSnapshot])! {
-                print("LOADFROMFIREBASE \((child.value as? NSDictionary)?["partyName"])")
-                let party = Party(snapshot: child as! FIRDataSnapshot)
+            for child in (snapshot.children.allObjects as? [DataSnapshot])! {
+                print("LOADFROMFIREBASE \(String(describing: (child.value as? NSDictionary)?["partyName"]))")
+                let party = Party(snapshot: child )
                 newParties.append(party)
             }
             self.parties = newParties

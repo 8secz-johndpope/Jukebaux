@@ -25,7 +25,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let partyMusicHandler = PlayMusicHandler.shared
     var timer = Timer()
     
-    var handle : FIRDatabaseHandle = FIRDatabaseHandle()
+    var handle : DatabaseHandle = DatabaseHandle()
     
     var party : Party = Party()
     let nc = NotificationCenter.default
@@ -166,14 +166,14 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func loadPartyFromFirebase() {
-        handle = SharedJamSeshModel.ref.child("parties").observe(FIRDataEventType.value, with: { (snapshot) in
+        handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
                 print("snapshot of parties doesnt exist")
                 return
             }
             
             print("PARTY LOAD FROM FIREBASE")
-            if let child = snapshot.childSnapshot(forPath: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID) as? FIRDataSnapshot {
+            if let child = snapshot.childSnapshot(forPath: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID) as? DataSnapshot {
                 if let party = Party(snapshot: child) as? Party {
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex] = party
                 }
@@ -302,16 +302,16 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[cellId].upVotes > 0 {
             SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[cellId].upVotes -= 1
             
-            SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+            SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
                 if var post = currentData.value as? [String : AnyObject] {
                     //increment the number joined by 1
-                    var upVotes = post["upVotes"] as? Int ?? 0
+                    let upVotes = post["upVotes"] as? Int ?? 0
                     post["upVotes"] = upVotes - 1 as AnyObject?
                     // Set value and report transaction success
                     currentData.value = post
-                    return FIRTransactionResult.success(withValue: currentData)
+                    return TransactionResult.success(withValue: currentData)
                 }
-                return FIRTransactionResult.success(withValue: currentData)
+                return TransactionResult.success(withValue: currentData)
             }) { (error, committed, snapshot) in
                 if let error = error {
                     print(error.localizedDescription)
@@ -348,17 +348,17 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         print("-----------------------------\(songName)")
         let songRef = SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).child("playlist").child(songName)
             
-            songRef.runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+            songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
             if var post = currentData.value as? [String : AnyObject] {
                 //increment the number joined by 1
-                var upVotes = post["upVotes"] as? Int ?? 0
+                let upVotes = post["upVotes"] as? Int ?? 0
                 post["upVotes"] = upVotes + 1 as AnyObject?
                 // Set value and report transaction success
                 currentData.value = post
-                return FIRTransactionResult.success(withValue: currentData)
+                return TransactionResult.success(withValue: currentData)
             }
             print("fail")
-            return FIRTransactionResult.success(withValue: currentData)
+            return TransactionResult.success(withValue: currentData)
         }) { (error, committed, snapshot) in
             if let error = error {
                 print(error.localizedDescription)

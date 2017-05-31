@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     override init() {
         super.init()
-        FIRApp.configure()
-        FIRDatabase.database().persistenceEnabled = false
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = false
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

@@ -14,18 +14,18 @@ class ChatViewController: JSQMessagesViewController {
 
    
     let SharedJamSeshModel = JamSeshModel.shared
-    var chatRef : FIRDatabaseReference?
+    var chatRef : DatabaseReference?
     
     var messages = [JSQMessage]()
     
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
     
-    private lazy var messageRef: FIRDatabaseReference = self.chatRef!.child("messages")
-    private var newMessageRefHandle: FIRDatabaseHandle?
+    private lazy var messageRef: DatabaseReference = self.chatRef!.child("messages")
+    private var newMessageRefHandle: DatabaseHandle?
     
     
-    private lazy var userIsTypingRef: FIRDatabaseReference =
+    private lazy var userIsTypingRef: DatabaseReference =
         self.chatRef!.child("typingIndicator").child(self.senderId) // 1
     private var localTyping = false // 2
     var isTyping: Bool {
@@ -39,14 +39,14 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
     
-    private lazy var usersTypingQuery: FIRDatabaseQuery =
+    private lazy var usersTypingQuery: DatabaseQuery =
         self.chatRef!.child("typingIndicator").queryOrderedByValue().queryEqual(toValue: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("chat view did load")
         
-        self.senderId = FIRAuth.auth()?.currentUser?.uid
+        self.senderId = Auth.auth().currentUser?.uid
         // No avatars
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
@@ -158,7 +158,7 @@ class ChatViewController: JSQMessagesViewController {
         userIsTypingRef.onDisconnectRemoveValue()
 
     // 1
-    usersTypingQuery.observe(.value) { (data: FIRDataSnapshot) in
+    usersTypingQuery.observe(.value) { (data: DataSnapshot) in
     // 2 You're the only one typing, don't show the indicator
     if data.childrenCount == 1 && self.isTyping {
     return
