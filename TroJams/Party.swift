@@ -54,32 +54,33 @@ class Party {
     
     convenience init(snapshot: DataSnapshot) {
         self.init()
-        print(" party snapshot initializer")
         key = snapshot.key
         ref = snapshot.ref
         if !(snapshot.value is NSNull) {
-            //print("A")
             let snapshotValue = snapshot.value as! [String: AnyObject]
-            //print(snapshot.value)
             self.partyName = snapshotValue["partyName"] as! String
-            //print("A")
             self.privateParty = snapshotValue["privateParty"] as! Bool
-            //print("A")
             self.password = snapshotValue["password"] as! String
-            //print("A")
             self.numberJoined = snapshotValue["numberJoined"] as! Int
-            //print("A")
             self.hostName = snapshotValue["hostName"] as! String
-            //print("A")
             self.hostID = snapshotValue["hostID"] as! String
-            //print("A")
             self.partyID = snapshotValue["partyID"] as! String
-            //print("A")
             self.currentSongPersistentIDKey = snapshotValue["currentSongPersistentIDKey"] as! Int
-            //print("A")
             self.savedImageURL = snapshotValue["savedImageURL"] as! String
-            //print("A")
-            
+            if snapshotValue["currentSong"] != nil {
+                let tempCurrentSongDict = snapshotValue["currentSong"] as! NSDictionary
+                self.currentSong = Song(dictionary: tempCurrentSongDict)
+            }
+            //Going to try adding the songs to the playlist in the PartyViewController because running it on the dispatchqueue will load it after the view loads, and waiting for all the songs to load will cause the app to freeze
+            /*if snapshotValue["playlist"] != nil {
+                let tempSongsDict = snapshotValue["playlist"] as! NSDictionary
+                var tempSongs : [Song] = []
+                for element in tempSongsDict {
+                        let s = Song(dictionary: element.value as! NSDictionary)
+                        tempSongs.append(s)
+                }
+                self.songs = tempSongs
+            }*/
             if snapshotValue["users"] != nil {
                 let tempUsersDict = snapshotValue["users"] as? NSDictionary
                 var tempUsers : [String] = []
@@ -87,27 +88,8 @@ class Party {
                 for user in tempUsersDict! {
                     tempUsers.append(user.value as! String)
                 }
-                print(tempUsers)
                 self.users = tempUsers
             }
-            //print("A")
-            if snapshotValue["playlist"] != nil {
-                let tempSongsDict = snapshotValue["playlist"] as! NSDictionary
-                var tempSongs : [Song] = []
-                for element in tempSongsDict {
-                    let s = Song(dictionary: element.value as! NSDictionary)
-                    tempSongs.append(s)
-                }
-                self.songs = tempSongs
-            }
-            //print("A")
-            if snapshotValue["currentSong"] != nil {
-                
-                let tempCurrentSongDict = snapshotValue["currentSong"] as! NSDictionary
-                //print(tempCurrentSongDict)
-                self.currentSong = Song(dictionary: tempCurrentSongDict)
-            }
-            //print("A")
             if snapshotValue["songHistory"] != nil {
                 let tempCurrentSongHistoryDict = snapshotValue["songHistory"] as! NSDictionary
                 var tempCurrentSongHistory : [Song] = []
@@ -116,9 +98,7 @@ class Party {
                     tempCurrentSongHistory.append(s)
                 }
                 self.songHistory = tempCurrentSongHistory
-                //print(tempCurrentSongHistory)
             }
-            //print("A")
         }
     }
     
@@ -157,14 +137,12 @@ class Party {
     typealias CompletionHandler = (_ success:Bool) -> Void
     func getTrackImageURLandThenAddSong(songName: String, songArtist : String, songID : Int, songImage : UIImage, songDuration: Int, completionHandler: @escaping CompletionHandler) {
         
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue(qos: .background).async {
             
             var trackImageURL = ""
             var term = String(songID).replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
-            print(term)
             let url = NSURL(string: "https://itunes.apple.com/lookup?id=\(term)&entity=song")
-            print(url ?? "")
             let request = NSMutableURLRequest(
                 url: url! as URL,
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
@@ -198,7 +176,6 @@ class Party {
     }
     
     func setCurrentSong (songId: String) {
-        print("set current song")
         var i = 0
         songHistory.append(currentSong)
         for element in songs {
@@ -217,7 +194,6 @@ class Party {
         }
         
         var songsDict = [String : AnyObject]()
-        print("party to any object")
         for element in songs {
             songsDict[encodeForFirebaseKey(string: element.songName)] = element.toAnyObject() as AnyObject
         }
@@ -225,11 +201,6 @@ class Party {
         for element in songHistory {
             songsHistoryDict[encodeForFirebaseKey(string: element.songName)] = element.toAnyObject() as AnyObject
         }
-        print(usersDict)
-        print("^V^V^V^V^V^V^V^V^V^V^V^V^V^^V^V^V^V^V^V^V^V^V^")
-        print(songsDict)
-        print("^V^V^V^V^V^V^V^V^V^V^V^V^V^^V^V^V^V^V^V^V^V^V^")
-        print(songsHistoryDict)
         
         return [
             "hostName": hostName,
@@ -253,7 +224,6 @@ class Party {
     func playlistToAnyObject() -> Any {
         
         var songsDict = [String : AnyObject]()
-        print("party to any object")
         for element in songs {
             songsDict[encodeForFirebaseKey(string: element.songName)] = element.toAnyObject() as AnyObject
         }

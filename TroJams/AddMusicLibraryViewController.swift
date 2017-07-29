@@ -24,17 +24,14 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        print("hoo raa raa")
         self.present(mediaPicker, animated: true, completion: nil)
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController){
-        print("howdy")
         self.present(mediaPicker, animated: true, completion: nil)
     }
     
     func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-        print("GET ME OUT OF HERE")
         self.dismiss(animated: true, completion: nil)
         let selectedSongs = mediaItemCollection
         
@@ -47,7 +44,6 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                 tempString += "\(String(describing: element.title!))\n"
             } else {
                 // Fallback on earlier versions
-                print("craaaaaaap")
             }
             
         }
@@ -71,18 +67,15 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                             
                             //if all the songs have been added
                             if(i == selectedSongs.count){
-                                print("done? \(i)")
                                 self.SharedJamSeshModel.updateParty(party: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex], completionHandler: {_ in })
                                 self.navigationController?.popViewController(animated: true)
                             } else {
-                                print(i)
                                 i += 1
                             }
                         })
                     }
                 } else {
                     // Fallback on earlier versions
-                    print("craaaaap2")
                 }
             }
         }
@@ -99,7 +92,6 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
     
     // MPMediaPickerController Delegate methods
     func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
-        print("cancelled like SNAP")
         self.dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true)
 

@@ -33,7 +33,6 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
 
     
     @IBAction func imageButtonTapped(_ sender: AnyObject) {
-        print("CHOOSE PICTURE")
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
@@ -45,7 +44,6 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     
     //https://makeapppie.com/2016/06/28/how-to-use-uiimagepickercontroller-for-a-camera-and-photo-library-in-swift-3-0/
     func takePicture(){
-        print("1")
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             imagePicker.allowsEditing = false
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
@@ -98,16 +96,9 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
             let password = passwordTextField.text {
             var password1 = ""
             if password != nil { password1 = password}
-            print("create party")
             SharedJamSeshModel.newParty(name: partyName , partyImage: partyImage, privateParty: privatePartySwitch.isOn, password: password1, numberJoined: 1, hostName: SharedJamSeshModel.myUser.username, hostID: SharedJamSeshModel.myUser.userID)
             self.dismiss(animated: true) {}
         }
-       
-        
-        //let sourceController = self.presentingViewController as! PartiesTableViewController
-        //sourceController.tableView.reloadData()
-        //print("reloading data")
-    
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -118,9 +109,7 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        print("this just might work")
         if let controller = sender as? PartiesTableViewController {
-            print("boom shakalaka")
             controller.tableView.reloadData()
         }
     }

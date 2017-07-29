@@ -35,7 +35,6 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     
     @IBAction func searchSongButton(_ sender: Any) {
-        print("uhhh search")
         if(self.searchSongTextField.text != "") {
             if(searchTerm != self.searchSongTextField.text){
                 self.searchSongTextField.resignFirstResponder()
@@ -62,8 +61,6 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print("loading table view data cell for row at indexpath")
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedSongCell", for: indexPath) as! SuggestedSongTableViewCell
     
             let suggestedSong = results[indexPath.row] as NSDictionary
@@ -80,12 +77,10 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     typealias CompletionHandler = (_ success:Bool) -> Void
     
     func searchSongs(string: String, completionHandler: @escaping CompletionHandler) {
-        print("SEARCH")
         DispatchQueue.global(qos: .background).async {
             
             var term = string.replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
-            print(term)
             let url = NSURL(string: "https://geo.itunes.apple.com/search?term=\(term)&media=music")
             let request = NSMutableURLRequest(
                 url: url! as URL,

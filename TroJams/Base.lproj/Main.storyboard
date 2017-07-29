@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="76T-Bg-EST">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="76T-Bg-EST">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -7,13 +7,14 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--CreateA Party View Controller-->
         <scene sceneID="0y7-ne-ukx">
             <objects>
-                <viewController id="4N1-tS-GC4" customClass="CreateAPartyViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4N1-tS-GC4" customClass="CreateAPartyViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="snF-9W-9rY"/>
                         <viewControllerLayoutGuide type="bottom" id="WdR-O2-2iu"/>
@@ -233,20 +234,20 @@
         <!--Parties Table View Controller-->
         <scene sceneID="3eM-Zi-fYj">
             <objects>
-                <tableViewController id="MIl-Wx-AA9" customClass="PartiesTableViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="MIl-Wx-AA9" customClass="PartiesTableViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="231" sectionHeaderHeight="28" sectionFooterHeight="28" id="4ja-28-ngE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PartyCell" rowHeight="231" id="9Uu-Iq-j99" customClass="PartyTableViewCell" customModule="JamSesh" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PartyCell" rowHeight="231" id="9Uu-Iq-j99" customClass="PartyTableViewCell" customModule="TroJams" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="231"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Uu-Iq-j99" id="2ci-NS-GNB">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="231"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PRm-di-WWJ" customClass="UIGradientImageView" customModule="JamSesh" customModuleProvider="target">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PRm-di-WWJ" customClass="UIGradientImageView" customModule="TroJams" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="231"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="HostName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bbl-Az-gdk" customClass="MarqueeLabel" customModule="MarqueeLabel">
@@ -318,7 +319,7 @@
         <!--Chat View Controller-->
         <scene sceneID="zoC-nb-Xdr">
             <objects>
-                <viewController id="scJ-0s-igb" customClass="ChatViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="scJ-0s-igb" customClass="ChatViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Eew-9a-I5b"/>
                         <viewControllerLayoutGuide type="bottom" id="1be-MY-iOj"/>
@@ -336,7 +337,7 @@
         <!--Party View Controller-->
         <scene sceneID="dbr-bz-B5n">
             <objects>
-                <viewController id="o4Z-tU-Puh" customClass="PartyViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="o4Z-tU-Puh" customClass="PartyViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Lwf-9H-GWp"/>
                         <viewControllerLayoutGuide type="bottom" id="1hj-Y9-tbc"/>
@@ -366,7 +367,7 @@
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" clipsSubviews="YES" alpha="0.5" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-fW-H5b">
+                                                    <button hidden="YES" opaque="NO" clipsSubviews="YES" alpha="0.5" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-fW-H5b">
                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="195"/>
                                                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                                         <state key="normal" backgroundImage="playButton1">
@@ -376,19 +377,11 @@
                                                             <action selector="emptyQueueButtonPressed:" destination="o4Z-tU-Puh" eventType="touchUpInside" id="5EB-Mi-AR8"/>
                                                         </connections>
                                                     </button>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggest Songs and then click here to start the party!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JzF-TH-HDI">
-                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="195"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstItem="1bN-3x-R1M" firstAttribute="leading" secondItem="z5v-mA-WwO" secondAttribute="leading" id="AEh-WZ-doG"/>
-                                                    <constraint firstItem="JzF-TH-HDI" firstAttribute="leading" secondItem="z5v-mA-WwO" secondAttribute="leading" id="AcF-6X-zOv"/>
                                                     <constraint firstItem="wyj-fW-H5b" firstAttribute="leading" secondItem="z5v-mA-WwO" secondAttribute="leading" id="HUz-TL-1jj"/>
-                                                    <constraint firstAttribute="trailing" secondItem="JzF-TH-HDI" secondAttribute="trailing" id="HXK-vw-wb2"/>
                                                     <constraint firstItem="Hk8-xL-yT6" firstAttribute="leading" secondItem="z5v-mA-WwO" secondAttribute="leading" id="NPK-WR-U3d"/>
                                                     <constraint firstItem="Hk8-xL-yT6" firstAttribute="top" secondItem="z5v-mA-WwO" secondAttribute="top" constant="123" id="RKe-bT-hPt"/>
                                                     <constraint firstAttribute="bottom" secondItem="1bN-3x-R1M" secondAttribute="bottom" id="Rms-x3-zh9"/>
@@ -397,9 +390,7 @@
                                                     <constraint firstItem="wyj-fW-H5b" firstAttribute="top" secondItem="z5v-mA-WwO" secondAttribute="top" id="f5M-x4-cBc"/>
                                                     <constraint firstItem="1bN-3x-R1M" firstAttribute="top" secondItem="z5v-mA-WwO" secondAttribute="top" id="fpL-WL-86f"/>
                                                     <constraint firstAttribute="bottom" secondItem="wyj-fW-H5b" secondAttribute="bottom" id="iNl-MX-RKR"/>
-                                                    <constraint firstAttribute="bottom" secondItem="JzF-TH-HDI" secondAttribute="bottom" id="oii-0S-ele"/>
                                                     <constraint firstItem="Hk8-xL-yT6" firstAttribute="width" secondItem="z5v-mA-WwO" secondAttribute="width" id="p5b-qK-neZ"/>
-                                                    <constraint firstItem="JzF-TH-HDI" firstAttribute="top" secondItem="z5v-mA-WwO" secondAttribute="top" id="u4B-9H-Tn8"/>
                                                     <constraint firstAttribute="height" constant="195" id="znd-dj-bii"/>
                                                 </constraints>
                                             </view>
@@ -495,7 +486,7 @@
                                                 </constraints>
                                                 <color key="separatorColor" red="0.50196081400000003" green="0.0" blue="1" alpha="0.751953125" colorSpace="calibratedRGB"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongCell" rowHeight="92" id="Pdo-m1-GOU" customClass="SongTableViewCell" customModule="JamSesh" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SongCell" rowHeight="92" id="Pdo-m1-GOU" customClass="SongTableViewCell" customModule="TroJams" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="320" height="92"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pdo-m1-GOU" id="57W-ai-2OO">
@@ -616,12 +607,15 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3g1-SP-MA5">
-                        <barButtonItem key="rightBarButtonItem" title="Chat" id="DG6-5f-0Ie">
-                            <connections>
-                                <action selector="chatButtonPressed:" destination="o4Z-tU-Puh" id="x7p-44-Lac"/>
-                                <segue destination="scJ-0s-igb" kind="show" identifier="ChatSegue" id="bKn-Kk-0GM"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Chat" id="DG6-5f-0Ie">
+                                <connections>
+                                    <action selector="chatButtonPressed:" destination="o4Z-tU-Puh" id="x7p-44-Lac"/>
+                                    <segue destination="scJ-0s-igb" kind="show" identifier="ChatSegue" id="bKn-Kk-0GM"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="End Party" id="BVz-wK-880"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1000"/>
@@ -633,7 +627,7 @@
                         <outlet property="currentlyPlayingSongTimeElapsedLabel" destination="aTU-LU-u0W" id="JgI-Xb-71k"/>
                         <outlet property="currentlyPlayingSongTimeSlider" destination="TBm-lU-e2Y" id="IwD-Ky-cHu"/>
                         <outlet property="emptyQueueButton" destination="wyj-fW-H5b" id="YCY-Bp-YxD"/>
-                        <outlet property="emptyQueueLabel" destination="JzF-TH-HDI" id="vUU-9i-Dae"/>
+                        <outlet property="nextButton" destination="hau-rO-EnA" id="Ltz-LH-3ct"/>
                         <outlet property="partyImage" destination="1bN-3x-R1M" id="ePF-sU-7Qn"/>
                         <outlet property="partyNameLabel" destination="Hk8-xL-yT6" id="SZN-sQ-2dU"/>
                         <outlet property="playPauseButton" destination="rmb-9I-Iwl" id="dw2-fC-Hfb"/>
@@ -648,7 +642,7 @@
         <!--Apple Music-->
         <scene sceneID="Lvk-Wm-7fg">
             <objects>
-                <viewController id="NKz-Qo-9EO" customClass="AddAppleMusicViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="NKz-Qo-9EO" customClass="AddAppleMusicViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="slh-0s-hJG"/>
                         <viewControllerLayoutGuide type="bottom" id="eaO-1y-m9r"/>
@@ -665,7 +659,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuggestedSongCell" rowHeight="64" id="nyI-07-t8i" customClass="SuggestedSongTableViewCell" customModule="JamSesh" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuggestedSongCell" rowHeight="64" id="nyI-07-t8i" customClass="SuggestedSongTableViewCell" customModule="TroJams" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nyI-07-t8i" id="ZPV-K8-tSS">
@@ -806,7 +800,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuggestedSongCell" rowHeight="64" id="2JO-yX-RPV" customClass="SuggestedSongTableViewCell" customModule="JamSesh" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuggestedSongCell" rowHeight="64" id="2JO-yX-RPV" customClass="SuggestedSongTableViewCell" customModule="TroJams" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2JO-yX-RPV" id="2C0-oE-Ksa">
@@ -887,7 +881,7 @@
                             <rect key="frame" x="0.0" y="223" width="375" height="444"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <prototypes>
-                                <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuggestedSongCell" rowHeight="64" id="Oy1-uw-D9S" customClass="SuggestedSongTableViewCell" customModule="JamSesh" customModuleProvider="target">
+                                <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SuggestedSongCell" rowHeight="64" id="Oy1-uw-D9S" customClass="SuggestedSongTableViewCell" customModule="TroJams" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="28" width="375" height="64"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oy1-uw-D9S" id="CVK-1B-rqe">
@@ -968,7 +962,7 @@
         <!--Log In View Controller-->
         <scene sceneID="FJq-VZ-ILY">
             <objects>
-                <viewController id="76T-Bg-EST" customClass="LogInViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="76T-Bg-EST" customClass="LogInViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mRT-FB-s5H"/>
                         <viewControllerLayoutGuide type="bottom" id="M1z-2j-5r1"/>
@@ -981,9 +975,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVh-nt-D7R">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GVh-nt-D7R">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="dismissKeyboardButton:" destination="76T-Bg-EST" eventType="touchUpInside" id="bSb-i1-72c"/>
                                 </connections>
@@ -998,41 +991,56 @@
                                     <action selector="TapToPartyPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="r2t-bT-O8W"/>
                                 </connections>
                             </button>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gOM-pJ-dZP">
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gOM-pJ-dZP">
                                 <rect key="frame" x="37" y="77" width="245" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="245" id="aRe-oV-u33"/>
+                                    <constraint firstAttribute="height" constant="30" id="wOT-Ly-EW1"/>
+                                </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yqP-gy-6xH">
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yqP-gy-6xH">
                                 <rect key="frame" x="37" y="143" width="245" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="245" id="0zn-vo-Ieb"/>
+                                    <constraint firstAttribute="height" constant="30" id="HzY-Pc-omk"/>
+                                </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZa-rS-re2">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UZa-rS-re2">
                                 <rect key="frame" x="37" y="222" width="114" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="dBQ-Io-Giy"/>
+                                    <constraint firstAttribute="width" constant="114" id="jD5-cQ-XnP"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Log In"/>
                                 <connections>
                                     <action selector="logInButtonPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="SQn-dh-ZK0"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ADl-92-876">
+                            <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ADl-92-876">
                                 <rect key="frame" x="152" y="222" width="109" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="7FC-4S-imR"/>
+                                    <constraint firstAttribute="width" constant="109" id="BMU-3V-2pw"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="Create Account"/>
                                 <connections>
                                     <action selector="createAccountButtonPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="EaD-uS-w0G"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZU-Ux-0FU">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZU-Ux-0FU">
                                 <rect key="frame" x="58" y="260" width="203" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="203" id="lrO-nB-Q3g"/>
+                                    <constraint firstAttribute="height" constant="30" id="xqA-n6-Zng"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <state key="normal" title="Join as Guest"/>
                                 <connections>
@@ -1043,14 +1051,31 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.50196081400000003" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="yqP-gy-6xH" secondAttribute="trailing" constant="22" id="0z5-HK-pED"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gOM-pJ-dZP" secondAttribute="trailing" constant="22" id="4gx-Uc-bp7"/>
+                            <constraint firstItem="gOM-pJ-dZP" firstAttribute="leading" secondItem="GtG-pX-pYR" secondAttribute="leadingMargin" constant="21" id="5Ud-Bh-4hQ"/>
+                            <constraint firstItem="GVh-nt-D7R" firstAttribute="top" secondItem="GtG-pX-pYR" secondAttribute="top" id="62M-Wa-Bmf"/>
+                            <constraint firstItem="yqP-gy-6xH" firstAttribute="top" secondItem="gOM-pJ-dZP" secondAttribute="bottom" constant="36" id="7fF-oc-KWG"/>
+                            <constraint firstItem="gOM-pJ-dZP" firstAttribute="top" secondItem="mRT-FB-s5H" secondAttribute="bottom" constant="57" id="DVS-At-iRK"/>
+                            <constraint firstItem="hZU-Ux-0FU" firstAttribute="top" secondItem="UZa-rS-re2" secondAttribute="bottom" constant="8" id="IbA-Y9-2f8"/>
+                            <constraint firstItem="M1z-2j-5r1" firstAttribute="top" secondItem="GVh-nt-D7R" secondAttribute="bottom" id="Irh-OL-eqf"/>
                             <constraint firstItem="M1z-2j-5r1" firstAttribute="top" secondItem="bVp-i5-OmT" secondAttribute="bottom" id="NeX-Xv-Vzp"/>
+                            <constraint firstItem="ADl-92-876" firstAttribute="leading" secondItem="UZa-rS-re2" secondAttribute="trailing" constant="1" id="QVG-Sg-lCp"/>
+                            <constraint firstItem="ADl-92-876" firstAttribute="top" secondItem="yqP-gy-6xH" secondAttribute="bottom" constant="49" id="TOH-dD-BwI"/>
+                            <constraint firstItem="ADl-92-876" firstAttribute="leading" secondItem="GVh-nt-D7R" secondAttribute="trailing" constant="-168" id="TeR-9t-T3P"/>
                             <constraint firstAttribute="trailing" secondItem="m4l-sz-0gN" secondAttribute="trailing" id="VRT-t9-0Mc"/>
+                            <constraint firstItem="GVh-nt-D7R" firstAttribute="leading" secondItem="hZU-Ux-0FU" secondAttribute="trailing" constant="-261" id="WCu-aO-Itq"/>
                             <constraint firstItem="m4l-sz-0gN" firstAttribute="leading" secondItem="GtG-pX-pYR" secondAttribute="leading" id="WpD-55-7f6"/>
+                            <constraint firstItem="UZa-rS-re2" firstAttribute="top" secondItem="yqP-gy-6xH" secondAttribute="bottom" constant="49" id="WrZ-Ay-qNJ"/>
                             <constraint firstItem="M1z-2j-5r1" firstAttribute="top" secondItem="m4l-sz-0gN" secondAttribute="bottom" id="bsL-Bx-om2"/>
+                            <constraint firstItem="GVh-nt-D7R" firstAttribute="leading" secondItem="UZa-rS-re2" secondAttribute="trailing" constant="-151" id="ft6-B8-t3d"/>
                             <constraint firstAttribute="trailing" secondItem="bVp-i5-OmT" secondAttribute="trailing" id="gaT-B6-FfO"/>
                             <constraint firstItem="m4l-sz-0gN" firstAttribute="top" secondItem="GtG-pX-pYR" secondAttribute="top" id="lkL-Af-PQh"/>
+                            <constraint firstItem="yqP-gy-6xH" firstAttribute="leading" secondItem="GtG-pX-pYR" secondAttribute="leadingMargin" constant="21" id="mh2-ui-RFh"/>
                             <constraint firstItem="bVp-i5-OmT" firstAttribute="leading" secondItem="GtG-pX-pYR" secondAttribute="leading" id="oQc-BW-pge"/>
+                            <constraint firstItem="GVh-nt-D7R" firstAttribute="leading" secondItem="GtG-pX-pYR" secondAttribute="leading" id="rne-yf-TTr"/>
                             <constraint firstItem="bVp-i5-OmT" firstAttribute="top" secondItem="mRT-FB-s5H" secondAttribute="bottom" constant="406" id="xs6-fV-78W"/>
+                            <constraint firstAttribute="trailing" secondItem="GVh-nt-D7R" secondAttribute="trailing" id="yCm-TV-8YV"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1108,7 +1133,7 @@
         <!--Music Library-->
         <scene sceneID="fPk-TE-eMr">
             <objects>
-                <viewController id="af6-vK-THc" customClass="AddMusicLibraryViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="af6-vK-THc" customClass="AddMusicLibraryViewController" customModule="TroJams" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9cW-ns-HKo"/>
                         <viewControllerLayoutGuide type="bottom" id="FI4-hX-JPh"/>

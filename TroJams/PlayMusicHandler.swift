@@ -143,8 +143,6 @@ class PlayMusicHandler: NSObject {
     }
     
     func appleMusicPlayTrackId(ids:[String]) {
-        print("play!")
-        print(ids)
         applicationMusicPlayer.setQueueWithStoreIDs(ids)
         applicationMusicPlayer.play()
     }
@@ -171,7 +169,6 @@ class PlayMusicHandler: NSObject {
     }
     
     func playCloser() {
-        print("play Closer")
         applicationMusicPlayer.setQueueWithStoreIDs(["1170699703"])
         applicationMusicPlayer.play()
     }

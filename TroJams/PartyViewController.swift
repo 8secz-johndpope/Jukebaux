@@ -25,7 +25,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let partyMusicHandler = PlayMusicHandler.shared
     var timer = Timer()
     
-    var handle : DatabaseHandle = DatabaseHandle()
+    var handle : DatabaseHandle?
     
     var party : Party = Party()
     let nc = NotificationCenter.default
@@ -46,9 +46,9 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet var playPauseButton: UIButton!
     @IBOutlet var partyImage: UIImageView!
     @IBOutlet var partyNameLabel: UILabel!
+    @IBOutlet var nextButton: UIButton!
     
     @IBOutlet var songsTableView: UITableView!
-    @IBOutlet var emptyQueueLabel: UILabel!
     @IBOutlet var emptyQueueButton: UIButton!
     
     var chatBarButtonItem  = UIButton(type: .custom)
@@ -56,17 +56,13 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("3 PartyViewController did load")
-        //scrollView.contentSize.height = 1200
-        //scrollView.contentSize.height.contentSize = CGSizeMake(320, 1800);
         partyImage.image = party.image
         partyNameLabel.text = party.partyName
-        
+        emptyQueueButton.isHidden=true
         songsTableView.delegate = self
         songsTableView.dataSource = self
         songsTableView.layer.borderWidth = 5.0;
         songsTableView.layer.borderColor = UIColor.purple.cgColor
-        //print("PARTY: \(party.toAnyObject())")
         loadPartyFromFirebase()
         
         let px = 1 / UIScreen.main.scale
@@ -83,7 +79,13 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                        using:songChanged)
         
         //check if the user is the host of the party. Being the host will allow them to perform functionalities like playing music etc.
-        if SharedJamSeshModel.myUser.userID == SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].hostID { isHost = true} else { isHost  = false }
+        if SharedJamSeshModel.myUser.userID == SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].hostID {
+            isHost = true
+        } else {
+            isHost  = false
+            playPauseButton.isHidden = true
+            nextButton.isHidden = true
+        }
         
         if isHost && !SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].hasStarted{
             if SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].currentSong.songName != "" {
@@ -97,22 +99,13 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     /*****************************************************************************/
     
-    /*****************************************************************************/
-    
-    deinit {
-        //TODO
-        //if let refHandle = handle {
-            //SharedJamSeshModel.ref.removeObserver(withHandle: refHandle)
-        //}
-    }
-    /*****************************************************************************/
     
     
     /*****************************************************************************/
     override func viewWillAppear(_ animated: Bool) {
-        print("4 Partyviewcontroller view will appear")
         //loadPartyFromFirebase()
-        if partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.stopped {
+        
+        if isHost && partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.stopped {
             if( SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count < 1 ) {
                 playCurrentSong()
             }else {
@@ -125,15 +118,26 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     
     /*****************************************************************************/
+    deinit {
+        
+        if let refHandle = handle {
+            SharedJamSeshModel.ref.removeObserver(withHandle: refHandle)
+        }
+        
+        
+    }
+    /*****************************************************************************/
+    
+    /*****************************************************************************/
     func playNextSong () {
         //if songs are empty
         if SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count < 1 {
-            emptyQueueLabel.isHidden = false
-            emptyQueueButton.isHidden = false
+            //emptyQueueLabel.isHidden = false
+            //emptyQueueButton.isHidden = false
         }
         else {
-            emptyQueueLabel.isHidden = true
-            emptyQueueButton.isHidden = true
+            //emptyQueueLabel.isHidden = true
+            //emptyQueueButton.isHidden = true
             
             //try just playing one song at a time
             sortSongs()
@@ -148,12 +152,12 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func playCurrentSong () {
         //if songs are empty
         if SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count < 1 {
-            emptyQueueLabel.isHidden = false
-            emptyQueueButton.isHidden = false
+            //emptyQueueLabel.isHidden = false
+            //emptyQueueButton.isHidden = false
         }
         else {
-            emptyQueueLabel.isHidden = true
-            emptyQueueButton.isHidden = true
+            //emptyQueueLabel.isHidden = true
+            //emptyQueueButton.isHidden = true
             
             //try just playing one song at a time
             sortSongs()
@@ -166,18 +170,33 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func loadPartyFromFirebase() {
+        print("load party from firebase")
         handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
-                print("snapshot of parties doesnt exist")
                 return
             }
-            
-            print("PARTY LOAD FROM FIREBASE")
             if let child = snapshot.childSnapshot(forPath: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID) as? DataSnapshot {
                 if let party = Party(snapshot: child) as? Party {
+                    if !(snapshot.value is NSNull) {
+                        let snapshotValue = snapshot.value as! [String: AnyObject]
+                        if snapshotValue["playlist"] != nil {
+                            let tempSongsDict = snapshotValue["playlist"] as! NSDictionary
+                            print("here: \(tempSongsDict)")
+                            for element in tempSongsDict {
+                                //run on background thread because pulling song image takes a while
+                                print("element: \(element)")
+                                DispatchQueue.main.async{
+                                    let s = Song(dictionary: element.value as! NSDictionary)
+                                    print(s.songName)
+                                    party.songs.append(s)
+                                    self.songsTableView.reloadData()
+                                }
+                            }
+                        }
+                    }
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex] = party
+                    }
                 }
-            }
             self.sortSongs()
             self.songsTableView.reloadData()
         })
@@ -188,10 +207,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func songChanged (notification: Notification) -> Void {
         
         if partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.stopped {
-            print("stopped playback what whaaaaaaat")
-            print("song changed - \((notification.userInfo?.first?.value as? Int)!) vs \(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].currentSongPersistentIDKey)")
             SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].currentSongPersistentIDKey = (notification.userInfo?.first?.value as? Int)!
-            print("count - \(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count)")
             if(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count > 0){
                 playNextSong()
                 updateNowPlayingInfo()
@@ -216,7 +232,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     @IBAction func nextButtonPressed(_ sender: Any) {
-        print("next")
         if(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count > 0){
             playNextSong()
             updateNowPlayingInfo()
@@ -234,8 +249,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     @IBAction func emptyQueueButtonPressed(_ sender: Any) {
         if SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs.count > 0 {
-            emptyQueueButton.isHidden = true
-            emptyQueueLabel.isHidden = true
+            //emptyQueueButton.isHidden = true
+            //emptyQueueLabel.isHidden = true
         }
     }
     /*****************************************************************************/
@@ -266,8 +281,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        print("reload data")
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongTableViewCell
         cell.delegate = self
         let song = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[indexPath.row]
@@ -298,7 +311,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //from SongTableViewCell delegate
     //if there are less than 0 downvotes, prompt user to remove song from queue
     func downvoteButtonPressed(cellId: Int) {
-        print( "downvote button pressed" )
         if SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[cellId].upVotes > 0 {
             SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[cellId].upVotes -= 1
             
@@ -338,14 +350,11 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     //from SongTableViewCell delegate
     func upvoteButtonPressed(cellId: Int) {
-        print( "upvote button pressed" )
-        
         SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[cellId].upVotes += 1
         self.songsTableView.reloadData()
         
         //send change to firebase
         let songName = SharedJamSeshModel.encodeForFirebaseKey(string: (SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[cellId].songName))
-        print("-----------------------------\(songName)")
         let songRef = SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).child("playlist").child(songName)
             
             songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
@@ -357,7 +366,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 currentData.value = post
                 return TransactionResult.success(withValue: currentData)
             }
-            print("fail")
             return TransactionResult.success(withValue: currentData)
         }) { (error, committed, snapshot) in
             if let error = error {
@@ -388,7 +396,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             currentlyPlayingSongDurationLabel.text = "\(trackDurationMinutes):\(trackDurationSeconds)"
         }
         if (partyMusicHandler.getCurrentPlaybackTime().isNaN || partyMusicHandler.getCurrentPlaybackTime().isInfinite) {
-            //print("awkward...")
         } else {
             let trackElapsed = partyMusicHandler.getCurrentPlaybackTime()
             let trackElapsedMinutes = Int(trackElapsed / 60)
@@ -436,15 +443,13 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        SharedJamSeshModel.ref.removeObserver(withHandle: handle)
+        SharedJamSeshModel.ref.removeObserver(withHandle: handle!)
         
         if segue.identifier == "ChatSegue" {
-            print("chat segue found")
-            
             if let chatVC = segue.destination as? ChatViewController {
                 chatVC.chatRef = SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).child("chat")
                 
-                    chatVC.senderDisplayName = SharedJamSeshModel.myUser.username
+                chatVC.senderDisplayName = SharedJamSeshModel.myUser.username
                 chatVC.title = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyName
             }
         }

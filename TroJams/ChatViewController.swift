@@ -44,7 +44,6 @@ class ChatViewController: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("chat view did load")
         
         self.senderId = Auth.auth().currentUser?.uid
         // No avatars
@@ -52,19 +51,25 @@ class ChatViewController: JSQMessagesViewController {
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         
         observeMessages()
-        print("end chat view did load")
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print("chat view did appear")
         super.viewDidAppear(animated)
         observeTyping()
-        print("end chat view did appear")
     }
     
-    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+    /*****************************************************************************/
+    deinit {
+        
+        if let refHandle = newMessageRefHandle {
+            SharedJamSeshModel.ref.removeObserver(withHandle: refHandle)
+        }
+        
+        
+    }
+    /*****************************************************************************/
     
-        print("chat did press send")
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         let itemRef = messageRef.childByAutoId() // 1
         let messageItem = [ // 2
             "senderId": senderId!,
@@ -78,11 +83,9 @@ class ChatViewController: JSQMessagesViewController {
         
         finishSendingMessage() // 5
         isTyping = false
-        print("end chat did press send")
     }
     
     private func observeMessages() {
-        print("chat observe messages")
         messageRef = (chatRef?.child("messages"))!
         // 1.
         let messageQuery = messageRef.queryLimited(toLast:25)
@@ -103,15 +106,12 @@ class ChatViewController: JSQMessagesViewController {
                 print("Error! Could not decode message data")
             }
         })
-        print("end chat observe messages")
     }
     
     private func addMessage(withId id: String, name: String, text: String) {
-        print("chat add message")
         if let message = JSQMessage(senderId: id, displayName: name, text: text) {
             messages.append(message)
         }
-        print("end chat add message")
     }
  
     

@@ -68,6 +68,7 @@ class Song {
     convenience init(dictionary: NSDictionary) {
         self.init()
         
+        print(dictionary)
         
         if dictionary["songName"] != nil {
             self.songName = dictionary["songName"] as! String
@@ -77,38 +78,34 @@ class Song {
         
         if dictionary["songArtist"] != nil {
             self.songArtist = dictionary["songArtist"] as! String
-            //print(dictionary["songArtist"] as! String)
         }
         
         if dictionary["songID"] != nil {
             self.songID = dictionary["songID"] as! Int
-            //print(dictionary["songID"] as! Int)
         }
         
         if dictionary["songImageURL"] != nil {
             self.songImageURL = dictionary["songImageURL"] as! String
-            //print(dictionary["songImageURL"] as! String)
             let url = URL(string: self.songImageURL)
-            if(url != nil) {
-                if let data = try? Data(contentsOf: url!) { //make sure your image in this URL does exist, otherwise unwrap in a if let check / try-catch
-                    self.songImage = UIImage(data: data)!
+            //DispatchQueue.main.async {
+                if(url != nil) {
+                    if let data = try? Data(contentsOf: url!) { //make sure your image in this URL does exist, otherwise unwrap in a if let check / try-catch
+                        self.songImage = UIImage(data: data)!
+                    }
                 }
-            }
+            //}
         }
         
         if dictionary["songDuration"] != nil {
             self.songDuration = dictionary["songDuration"] as! Int //parameter is in milliseconds
-            //print(dictionary["songDuration"] as! Int)
         }
         
         if dictionary["upVotes"] != nil {
             self.upVotes = dictionary["upVotes"] as! Int
-            //print(dictionary["upVotes"] as! Int)
         }
     }
 
     func toAnyObject() -> Any {
-        //print("song to any object - \(self.songName)")
         return [
             "songName": songName,
             "songArtist": songArtist,

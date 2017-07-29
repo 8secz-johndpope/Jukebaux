@@ -15,11 +15,10 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     
     let SharedJamSeshModel = JamSeshModel.shared
     var parties : [Party] = []
-    var handle : DatabaseHandle = DatabaseHandle()
+    var handle : DatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("1 PartiesViewController did load")
         self.navigationController?.delegate = self
         self.navigationController?.navigationBar.barTintColor = UIColor.purple
         self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
@@ -30,16 +29,20 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("2 PartiesViewController will appear")
         //loadPartiesFromFirebase()
         self.tableView.reloadData()
     }
     
+    deinit {
+        if let refHandle = handle {
+            SharedJamSeshModel.ref.removeObserver(withHandle: refHandle)
+        }
+    }
+
+    
     func loadPartiesFromFirebase() {
-        print("****************************1")
         handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
-                print("snapshot of parties doesnt exist")
                 return
             }
             var i = 0
@@ -47,7 +50,6 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             for child in (snapshot.children.allObjects as? [DataSnapshot])! {
                 
                 //*************************
-                print("LOADPARTIESFROMFIREBASE: \(i) - \(String(describing: (child.value as? NSDictionary)?["partyName"]!))")
                 i += 1
                 let party = Party(snapshot: child)
                 newParties.append(party)
@@ -56,21 +58,16 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             self.SharedJamSeshModel.parties = newParties
             self.tableView.reloadData()
         })
-        print("Handle: \(handle)")
-        print("***************************2")
     }
     
     func loadData() {
         let activityIndicatorView = NVActivityIndicatorView(frame: self.view.frame, type: .lineScalePulseOut, color: UIColor.purple, padding: CGFloat(0))
-        print("****************refresh***************")
         
         activityIndicatorView.startAnimating()
         SharedJamSeshModel.loadFromFirebase(completionHandler: {_ in
-        print("completion handler")
         self.parties = self.SharedJamSeshModel.parties
         self.parties.sort() { $0.numberJoined > $1.numberJoined }
         self.tableView.reloadData()
-        print("****************refreshEnding***************")
         activityIndicatorView.stopAnimating()
         })
     }
@@ -98,7 +95,6 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         let partyName = party.partyName
         let hostName = party.hostName //TODO add host functionality
         let numberJoined = party.numberJoined
-        print("tableview party name: \(partyName) \(hostName) \(numberJoined)")
         
         cell.hostName.text = hostName
         cell.partyName.text = partyName
@@ -109,16 +105,12 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         //get party image from firebase
         let FBSavedImageURL = party.savedImageURL
         if  let url = URL(string: FBSavedImageURL){
-            print(FBSavedImageURL)
-            print("^^^^")
             URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                 
                 //ran into some download error
                 if error != nil {
-                    print(error ?? "error")
                     return
                 }
-                print("got image yay!")
                 if let data1 = data {
                     DispatchQueue.main.async {
                         partyImage = UIImage(data: data1)!
@@ -200,16 +192,12 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             }
             
             //remove the parties observer so that observer is not duplicated in each individual party view controller
-            print("remove parties handle \(handle)")
-            SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: handle)
+            SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: handle!)
             
             let party = SharedJamSeshModel.parties[indexPath!.row]
-            print("Show Party Segue \(party.partyName)")
-            print("Host: \(party.hostName) vs \(SharedJamSeshModel.myUser.username)")
             
             let partyViewController = segue.destination as! PartyViewController
             partyViewController.party = party
-            print("passing party to partyviewcontroller")
         }
     }
     

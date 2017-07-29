@@ -25,7 +25,6 @@ class JamSeshModel {
     static var shared = JamSeshModel()
     
     init() {
-        print("Initializing JamSesh model")
         ref = Database.database().reference()
         
         // Get a reference to the storage service using the default Firebase App
@@ -34,9 +33,6 @@ class JamSeshModel {
         storageRef = storage.reference()
         
         myUser = User()
-        
-        //loadFromFirebase(completionHandler: {_ in print("yaaaaaaaas")})
-        
     }
     
     func newParty(name: String , partyImage: UIImage, privateParty: Bool, password: String, numberJoined: Int, hostName: String, hostID: String) {
@@ -62,12 +58,10 @@ class JamSeshModel {
                 
                 //upload to firebase
                 self.ref.child("parties").child(partyID).setValue(newParty.toAnyObject())
-                print("uploaded party")
                 //pull from firebase to make new party and add to local parties
                 self.ref.child("parties").queryEqual(toValue: partyID).observeSingleEvent(of: .value, with: { (snapshot) in
                     let p = Party(snapshot: snapshot)
                     self.parties.append(p)
-                    print("appended \(p.partyName)")
                 }){ (error) in
                     print(error.localizedDescription)
                 }
@@ -84,7 +78,6 @@ class JamSeshModel {
             self.ref.child("parties").queryEqual(toValue: partyID).observeSingleEvent(of: .value, with: { (snapshot) in
                 let p = Party(snapshot: snapshot)
                 self.parties.append(p)
-                print("appended \(p.partyName)")
                     }){ (error) in
                         print(error.localizedDescription)
             }
@@ -110,12 +103,10 @@ class JamSeshModel {
     func loadFromFirebase(completionHandler: @escaping CompletionHandler) {
         ref.child("parties").queryOrdered(byChild: "numberJoined").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
-                print("snapshot of parties doesnt exist")
                 return
             }
             var newParties : [Party] = []
             for child in (snapshot.children.allObjects as? [DataSnapshot])! {
-                print("LOADFROMFIREBASE \(String(describing: (child.value as? NSDictionary)?["partyName"]))")
                 let party = Party(snapshot: child )
                 newParties.append(party)
             }
@@ -130,18 +121,13 @@ class JamSeshModel {
     }
     
     func addNewUser(newUser: User) {
-        print("add new user")
         ref.child("users").child(newUser.userID).setValue(newUser.toAnyObject())
     }
     
     //update the numberJoined and playlist of the party
     func updateParty(party: Party, completionHandler: @escaping CompletionHandler) {
-        print("update dis partay")
-        
             ref.child("parties").child(party.partyID).child("numberJoined").setValue(party.numberJoined)
             ref.child("parties").child(party.partyID).updateChildValues(party.playlistToAnyObject() as! [AnyHashable : Any])
-        
-        print("partay updated")
         completionHandler(true)
     }
     

@@ -46,7 +46,7 @@
 		F51A62DD1E78D66700C03FBD /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		F534C6121ED0AFC000242C0D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		F57A63581E37FAB600243461 /* JamSesh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JamSesh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F57A63581E37FAB600243461 /* TroJams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TroJams.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F57A635B1E37FAB600243461 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F57A63601E37FAB600243461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F57A63621E37FAB600243461 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 		F57A634F1E37FAB600243461 = {
 			isa = PBXGroup;
 			children = (
-				F57A635A1E37FAB600243461 /* JamSesh */,
+				F57A635A1E37FAB600243461 /* TroJams */,
 				F57A63591E37FAB600243461 /* Products */,
 				FC83A6AFEDA00CDEF83C6655 /* Pods */,
 				F5483E759D0BFB3969D5E47E /* Frameworks */,
@@ -143,12 +143,12 @@
 		F57A63591E37FAB600243461 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F57A63581E37FAB600243461 /* JamSesh.app */,
+				F57A63581E37FAB600243461 /* TroJams.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F57A635A1E37FAB600243461 /* JamSesh */ = {
+		F57A635A1E37FAB600243461 /* TroJams */ = {
 			isa = PBXGroup;
 			children = (
 				F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */,
@@ -160,7 +160,6 @@
 				F57A63641E37FAB600243461 /* LaunchScreen.storyboard */,
 				F57A63671E37FAB600243461 /* Info.plist */,
 			);
-			name = JamSesh;
 			path = TroJams;
 			sourceTree = "<group>";
 		};
@@ -178,9 +177,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F57A63571E37FAB600243461 /* JamSesh */ = {
+		F57A63571E37FAB600243461 /* TroJams */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "JamSesh" */;
+			buildConfigurationList = F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "TroJams" */;
 			buildPhases = (
 				8E91D8A31EC5E4854A3FD51D /* [CP] Check Pods Manifest.lock */,
 				F57A63541E37FAB600243461 /* Sources */,
@@ -193,9 +192,9 @@
 			);
 			dependencies = (
 			);
-			name = JamSesh;
+			name = TroJams;
 			productName = TroJams;
-			productReference = F57A63581E37FAB600243461 /* JamSesh.app */;
+			productReference = F57A63581E37FAB600243461 /* TroJams.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -215,7 +214,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F57A63531E37FAB600243461 /* Build configuration list for PBXProject "JamSesh" */;
+			buildConfigurationList = F57A63531E37FAB600243461 /* Build configuration list for PBXProject "TroJams" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -228,7 +227,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F57A63571E37FAB600243461 /* JamSesh */,
+				F57A63571E37FAB600243461 /* TroJams */,
 			);
 		};
 /* End PBXProject section */
@@ -471,7 +470,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F57A63531E37FAB600243461 /* Build configuration list for PBXProject "JamSesh" */ = {
+		F57A63531E37FAB600243461 /* Build configuration list for PBXProject "TroJams" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F57A63681E37FAB600243461 /* Debug */,
@@ -480,7 +479,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "JamSesh" */ = {
+		F57A636A1E37FAB600243461 /* Build configuration list for PBXNativeTarget "TroJams" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F57A636B1E37FAB600243461 /* Debug */,

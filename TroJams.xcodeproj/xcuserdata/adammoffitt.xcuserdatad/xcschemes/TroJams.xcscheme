@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F57A63571E37FAB600243461"
-               BuildableName = "JamSesh.app"
-               BlueprintName = "JamSesh"
-               ReferencedContainer = "container:JamSesh.xcodeproj">
+               BuildableName = "TroJams.app"
+               BlueprintName = "TroJams"
+               ReferencedContainer = "container:TroJams.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F57A63571E37FAB600243461"
-            BuildableName = "JamSesh.app"
-            BlueprintName = "JamSesh"
-            ReferencedContainer = "container:JamSesh.xcodeproj">
+            BuildableName = "TroJams.app"
+            BlueprintName = "TroJams"
+            ReferencedContainer = "container:TroJams.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F57A63571E37FAB600243461"
-            BuildableName = "JamSesh.app"
-            BlueprintName = "JamSesh"
-            ReferencedContainer = "container:JamSesh.xcodeproj">
+            BuildableName = "TroJams.app"
+            BlueprintName = "TroJams"
+            ReferencedContainer = "container:TroJams.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
@@ -82,9 +82,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F57A63571E37FAB600243461"
-            BuildableName = "JamSesh.app"
-            BlueprintName = "JamSesh"
-            ReferencedContainer = "container:JamSesh.xcodeproj">
+            BuildableName = "TroJams.app"
+            BlueprintName = "TroJams"
+            ReferencedContainer = "container:TroJams.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

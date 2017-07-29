@@ -92,10 +92,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     func logIn(email: String, password: String) {
-        print("logging in")
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, err) in
             if(err != nil ){
-                print(err ?? "error")
                 self.dismissKeyboard()
                 SCLAlertView().showError("Whoops!", subTitle: err!.localizedDescription)
             }
@@ -103,22 +101,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 self.userDefaults.setValue(email, forKey: "email")
                 self.userDefaults.setValue(password, forKey: "password")
                 let uid = Auth.auth().currentUser?.uid
-                print("a1 \(uid!)")
                 Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                    print("b2 \(snapshot.value!)")
                     if let dict = snapshot.value as? [String: AnyObject] {
-                        print(snapshot.value!)
                         let username = (dict["username"] as? String)!
                         let newUser = User(name: username, email:email, password:password)
-                        print("USERNAME: \(username)")
                         newUser.userID = (dict["userID"] as? String)!
                         newUser.gender = (dict["gender"] as? String)!.characters.first!
                         newUser.age = (dict["age"] as? Int)!
                         
                         self.SharedJamSeshModel.setMyUser(newUser:newUser)
                     }
-                    
-                    print("User signed in correctly")
                     self.performSegue(withIdentifier: "LogInSegue", sender: nil)
                 }, withCancel: nil)
             }
@@ -137,18 +129,14 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let email = alert.addTextField("Email: ")
         let password = alert.addTextField("Password: ")
         alert.addButton("Let's Party!") {
-            print("ummmm")
             //if textfields are both not empty, create new user (in firebase and model) and segway to parties
             if(username.text != "" && password.text != "" && email.text != "") {
-                    print("should be logging in now")
                 Auth.auth().createUser(withEmail: email.text!, password: password.text!) { (user, error) in
                     if(error != nil ){
-                        print(error ?? "error")
                         self.dismissKeyboard()
                         SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
                     }
                     else{
-                    print("user created")
                         let newUser = User(name: username.text!, email: email.text!, password: password.text!, id: (user?.uid)!)
                     self.SharedJamSeshModel.addNewUser(newUser: newUser)
                     self.SharedJamSeshModel.setMyUser(newUser: newUser)
@@ -171,7 +159,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     func dismissKeyboard() {
-       print ("dismiss keyboard")
         if self.usernameTextField.isFirstResponder {
                 self.usernameTextField.resignFirstResponder()
             } else if self.passwordTextField.isFirstResponder {
