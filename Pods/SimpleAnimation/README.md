@@ -7,10 +7,6 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
-Latest versions:
-  * Swift 3: **0.3.0**
-  * Swift 2: **0.2.0**
-
 **SimpleAnimation is a UIView extension that makes adding basic animations, like fades and bounces, simple...**
 
 ```swift
@@ -34,34 +30,33 @@ view.shake(toward: .top, amount: 0.5, duration: 2, delay: 0.5)
 ```
 <img src="screenshots/customShake.gif" width="240" height="212">
 
-SimpleAnimation is written in Swift 3, but older versions can be used with Swift 2.
-
 
 ## Installation
 
 ### CocoaPods
 
-SimpleAnimation is available through [CocoaPods](http://cocoapods.org). To install
-it, add the following to your `Podfile`:
+To integrate SimpleAnimation into a project using [CocoaPods](http://cocoapods.org), add the following to your `Podfile`:
 
 ```ruby
 pod "SimpleAnimation"
 ```
 
-For Swift 2.2 or 2.3, use:
-```ruby
-pod "SimpleAnimation", "~>0.2.0"
-```
 
 
 ### Carthage
 
-SimpleAnimation is available through [Carthage](https://github.com/Carthage/Carthage). To install
-it, add the following to your `Cartfile`:
+To integrate SimpleAnimation into a project using [Carthage](https://github.com/Carthage/Carthage), add the following to your `Cartfile`:
 
 ```
 github "keithito/SimpleAnimation"
 ```
+
+
+### Older Xcode Versions
+
+If you are using Xcode 8 to build your project, you need to use version **0.3.2** of SimpleAnimation.
+You can do so by specifying the version number in your Podfile or Cartfile.
+
 
 
 ## Supported Animations
@@ -69,6 +64,7 @@ github "keithito/SimpleAnimation"
 The following animations are supported so far:
   * fadeIn
   * fadeOut
+  * fadeColor
   * slideIn
   * slideOut
   * bounceIn
@@ -78,12 +74,9 @@ The following animations are supported so far:
   * hop
   * shake
 
-Please see the [example ViewController](Example/Source/ViewController.swift) for more usage examples. You can launch the example in Xcode with:
-```
-cd Example
-pod install
-open SimpleAnimation.xcworkspace
-```
+Please see the [example ViewController](Example/Source/ViewController.swift) for more usage examples.
+To build the example in XCode, open Example/Example.xcodeproj.
+
 
 ## License
 
