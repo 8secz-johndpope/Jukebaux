@@ -24,6 +24,7 @@
 		F57A63701E37FECA00243461 /* JamSeshModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57A636F1E37FECA00243461 /* JamSeshModel.swift */; };
 		F5A8CF3D1E4500ED00FE17D7 /* AddAppleMusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */; };
 		F5A8CF3F1E45106700FE17D7 /* SuggestedSongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */; };
+		F5AA587B200FD8120067C6E5 /* LeftDrawerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */; };
 		F5C706881E3BCA2F00524F34 /* PartyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C706871E3BCA2F00524F34 /* PartyViewController.swift */; };
 		F5C7068A1E3BCA5800524F34 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */; };
 		F5C7068C1E3BCA6B00524F34 /* PartyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */; };
@@ -57,6 +58,7 @@
 		F57A636F1E37FECA00243461 /* JamSeshModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JamSeshModel.swift; sourceTree = "<group>"; };
 		F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAppleMusicViewController.swift; sourceTree = "<group>"; };
 		F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedSongTableViewCell.swift; sourceTree = "<group>"; };
+		F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftDrawerTableViewController.swift; sourceTree = "<group>"; };
 		F5C706871E3BCA2F00524F34 /* PartyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyViewController.swift; sourceTree = "<group>"; };
 		F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableViewCell.swift; sourceTree = "<group>"; };
 		F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyTableViewCell.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				F5C706871E3BCA2F00524F34 /* PartyViewController.swift */,
 				F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */,
 				F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */,
+				F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -255,9 +258,40 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AMWaveTransition/AMWaveTransition.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
+				"${BUILT_PRODUCTS_DIR}/KYDrawerController/KYDrawerController.framework",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
+				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
+				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
+				"${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework",
+				"${BUILT_PRODUCTS_DIR}/SimpleAnimation/SimpleAnimation.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMWaveTransition.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KYDrawerController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shimmer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleAnimation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -285,13 +319,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JamSesh-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -306,6 +343,7 @@
 				F57A636E1E37FCE500243461 /* PartiesTableViewController.swift in Sources */,
 				F5A8CF3F1E45106700FE17D7 /* SuggestedSongTableViewCell.swift in Sources */,
 				F5A8CF3D1E4500ED00FE17D7 /* AddAppleMusicViewController.swift in Sources */,
+				F5AA587B200FD8120067C6E5 /* LeftDrawerTableViewController.swift in Sources */,
 				F57A63701E37FECA00243461 /* JamSeshModel.swift in Sources */,
 				F534C6131ED0AFC000242C0D /* User.swift in Sources */,
 				F5466C8D1FEDC03A00242E1D /* Extensions.swift in Sources */,

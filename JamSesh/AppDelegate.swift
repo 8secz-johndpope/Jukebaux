@@ -11,12 +11,24 @@ import Firebase
 import FirebaseDatabase
 import IQKeyboardManagerSwift
 import AVFoundation
+import MediaPlayer
+import KYDrawerController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var drawerController = KYDrawerController.init(drawerDirection: .left, drawerWidth: 300)
+    
+//    let mainViewController = PartiesTableViewController()
+//    let drawerViewController = LeftDrawerTableViewController()
+//    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//    let drawerController = storyboard.instantiateViewController(withIdentifier: "KYDrawerControllerId") as! KYDrawerController
+//    drawerController.mainViewController = UINavigationController(
+//        rootViewController: mainViewController
+//    )
+//    drawerController.drawerViewController = drawerViewController
+    
     override init() {
         super.init()
         FirebaseApp.configure()
@@ -57,13 +69,101 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-            try AVAudioSession.sharedInstance().setActive(false)
+           // try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+            //try AVAudioSession.sharedInstance().setActive(false)
+            let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+            applicationMusicPlayer.pause()
+            
         } catch {
             print(error)
         }
     }
 
+    /*
+    private var _drawerViewController: KGDrawerViewController?
+    var drawerViewController: KGDrawerViewController {
+        get {
+            if let viewController = _drawerViewController {
+                return viewController
+            }
+            return prepareDrawerViewController()
+        }
+    }
+    
+    func prepareDrawerViewController() -> KGDrawerViewController {
+        let drawerViewController = KGDrawerViewController()
+        
+        drawerViewController.centerViewController = drawerSettingsViewController()
+        drawerViewController.leftViewController = leftViewController()
+        // drawerViewController.rightViewController = rightViewController()
+        drawerViewController.backgroundImage = UIImage(named: "purpleBackground")
+        
+        _drawerViewController = drawerViewController
+        
+        return drawerViewController
+    }
+    
+    private func drawerStoryboard() -> UIStoryboard {
+        let storyboard = UIStoryboard(name: kKGDrawersStoryboardName, bundle: nil)
+        return storyboard
+    }
+    
+    private func viewControllerForStoryboardId(storyboardId: String) -> UIViewController {
+        let viewController: UIViewController = drawerStoryboard().instantiateViewControllerWithIdentifier(storyboardId)
+        return viewController
+    }
+    
+    func drawerSettingsViewController() -> UIViewController {
+        let viewController = viewControllerForStoryboardId(kKGDrawerSettingsViewControllerStoryboardId)
+        return viewController
+    }
+    
+    func sourcePageViewController() -> UIViewController {
+        let viewController = viewControllerForStoryboardId(kKGDrawerWebViewViewControllerStoryboardId)
+        return viewController
+    }
+    
+    private func leftViewController() -> UIViewController {
+        let viewController = viewControllerForStoryboardId(kKGLeftDrawerStoryboardId)
+        return viewController
+    }
+    
+    private func rightViewController() -> UIViewController {
+        let viewController = viewControllerForStoryboardId(kKGRightDrawerStoryboardId)
+        return viewController
+    }
+    
+    func toggleLeftDrawer(sender:AnyObject, animated:Bool) {
+        _drawerViewController?.toggleDrawer(.Left, animated: true, complete: { (finished) -> Void in
+            // do nothing
+        })
+    }
+    
+    func toggleRightDrawer(sender:AnyObject, animated:Bool) {
+        _drawerViewController?.toggleDrawer(.Right, animated: true, complete: { (finished) -> Void in
+            // do nothing
+        })
+    }
+    
+    private var _centerViewController: UIViewController?
+    var centerViewController: UIViewController {
+        get {
+            if let viewController = _centerViewController {
+                return viewController
+            }
+            return drawerSettingsViewController()
+        }
+        set {
+            if let drawerViewController = _drawerViewController {
+                drawerViewController.closeDrawer(drawerViewController.currentlyOpenedSide, animated: true) { finished in }
+                if drawerViewController.centerViewController != newValue {
+                    drawerViewController.centerViewController = newValue
+                }
+            }
+            _centerViewController = newValue
+        }
+    }
+    */
 
 }
 

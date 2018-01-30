@@ -19,6 +19,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         searchSongTextField.resignFirstResponder()
     }
 
+    @IBOutlet var searchView: UIView!
     @IBOutlet var searchSongTextField: UITextField!
     
     @IBOutlet var suggestedSongsTableView: UITableView!
@@ -35,17 +36,19 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         suggestedSongsTableView.dataSource = self
     
         // Start loading view animation
-        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
-        loadingIndicatorView.center = self.view.center
+        let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.height-self.searchView.frame.height)
+            
+        loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
         
-        overlay = UIView(frame: view.frame)
+        overlay = UIView(frame: frame)
         overlay!.backgroundColor = UIColor.black
         overlay!.alpha = 0.7
         
-        self.suggestedSongsTableView.addSubview(overlay!)
+        loadingIndicatorView.addSubview(overlay!)
         self.overlay?.isHidden = true
-        self.suggestedSongsTableView.addSubview(loadingIndicatorView!)
         self.loadingIndicatorView.isHidden = true
+        self.view.addSubview(loadingIndicatorView!)
+        
     
     }
     @IBAction func searchSongButton(_ sender: Any) {

@@ -19,4 +19,5 @@ target 'JamSesh' do
     pod 'MarqueeLabel/Swift'
     pod 'JSQMessagesViewController'
     pod 'Shimmer'
+    pod 'KYDrawerController'
 end

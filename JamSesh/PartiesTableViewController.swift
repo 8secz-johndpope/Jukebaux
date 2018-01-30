@@ -10,6 +10,8 @@ import UIKit
 import FirebaseDatabase
 import NVActivityIndicatorView
 import AMWaveTransition
+import KYDrawerController
+import SCLAlertView
 
 class PartiesTableViewController: UITableViewController, UINavigationControllerDelegate {
     
@@ -19,6 +21,9 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let storyboard = UIStoryboard(name: "main", bundle: nil)
+//        self.leftViewController = storyboard().instantiateViewControllerWithIdentifier(storyboardId)
+//        return viewController
         self.navigationController?.delegate = self
         self.navigationController?.navigationBar.barTintColor = UIColor.purple
         self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
@@ -36,6 +41,16 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         }
     }
     
+    @IBAction func leftDrawerButtonPressed(_ sender: Any) {
+        print("left drawer pressed")
+        
+        let appDel = UIApplication.shared.delegate as! AppDelegate
+        appDel.drawerController.setDrawerState(.opened, animated: true)
+        
+        // let elDrawer = self.navigationController?.parent;
+        // (elDrawer as! KYDrawerController).setDrawerState(KYDrawerController.DrawerState.opened, animated: true);
+    }
+    
     func loadPartiesFromFirebase() {
         handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
@@ -44,14 +59,36 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             
             var newParties : [Party] = []
             for child in (snapshot.children.allObjects as? [DataSnapshot])! {
-                
                 //*************************
                 let party = Party(snapshot: child)
                 newParties.append(party)
                 //*************************
-                
             }
+            
             self.SharedJamSeshModel.parties = newParties
+            
+            for (index, party) in self.SharedJamSeshModel.parties.enumerated() {
+                let FBSavedImageURL = party.savedImageURL
+                if  let url = URL(string: FBSavedImageURL){
+                    URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                        
+                        //ran into some download error
+                        if error != nil {
+                            return
+                        }
+                        if let data1 = data {
+                            DispatchQueue.main.async {
+                                self.SharedJamSeshModel.parties[index].image = UIImage(data: data1)!
+                                let rowToReload = IndexPath.init(row: index, section: 0)
+                                let rowsToReload = Array.init(arrayLiteral: rowToReload)
+                                self.tableView.reloadRows(at: rowsToReload, with: .automatic)
+                                print("reload row: \(index)")
+                            }
+                        }
+                    }).resume()
+                }
+            }
+            
             self.tableView.reloadData()
         })
     }
@@ -87,7 +124,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         
         let party = SharedJamSeshModel.parties[indexPath.row]
         
-        var partyImage = party.image
+        let partyImage = party.image
         let partyName = party.partyName
         let hostName = party.hostName //TODO add host functionality
         let numberJoined = party.numberJoined
@@ -97,25 +134,6 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         cell.numberJoined.text = String(describing: numberJoined)
         cell.partyImage.image = partyImage
         cell.partyImage.contentMode = UIViewContentMode.scaleAspectFill
-        
-        //get party image from firebase
-        let FBSavedImageURL = party.savedImageURL
-        if  let url = URL(string: FBSavedImageURL){
-            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                
-                //ran into some download error
-                if error != nil {
-                    return
-                }
-                if let data1 = data {
-                    DispatchQueue.main.async {
-                        partyImage = UIImage(data: data1)!
-                        self.SharedJamSeshModel.parties[indexPath.row].image = partyImage
-                        cell.partyImage.image = partyImage
-                    }
-                }
-            }).resume()
-        }
         
         return cell
     }
@@ -156,6 +174,16 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         }
     }
     
+    func warnHostOfLeavingParty() {
+        let appearance = SCLAlertView.SCLAppearance(
+            showCloseButton: true
+        )
+        let alertView = SCLAlertView(appearance: appearance)
+        alertView.addButton("Join Party") {
+            
+        }
+        alertView.showInfo("Cancel your current Party?", subTitle: "You are currently hosting a party, and joining a different party will cause your current party to be canceled. Are you sure you want to leave your party?")
+    }
     
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if (operation != UINavigationControllerOperation.none) {

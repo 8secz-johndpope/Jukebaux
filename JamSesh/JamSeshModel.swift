@@ -88,13 +88,10 @@ class JamSeshModel {
         
         //set current song on firebase
         ref.child("parties").child(parties[currentPartyIndex].partyID).child("currentSong").setValue(song.toAnyObject())
+    }
     
-        //remove song from playlist on firebase
+    func removePartySong(song: Song) {
         ref.child("parties").child(parties[currentPartyIndex].partyID).child("playlist").child(encodeForFirebaseKey(string: song.songName)).removeValue()
-        
-        //set current song locally
-        parties[currentPartyIndex].setCurrentSong(songId: String(describing: song.songID))
-        
     }
     
     typealias CompletionHandler = (_ success:Bool) -> Void

@@ -11,6 +11,7 @@ import SCLAlertView
 import FirebaseAuth
 import FirebaseDatabase
 import Shimmer
+import NVActivityIndicatorView
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
 
@@ -30,6 +31,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet var tapToPartyShimmeringView: FBShimmeringView!
     
+    var loadingIndicatorView : NVActivityIndicatorView!
+    var overlay : UIView?
+    
     //singleton
     let SharedJamSeshModel = JamSeshModel.shared
     let userDefaults = UserDefaults.standard
@@ -45,6 +49,17 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.delegate = self
         tapToPartyShimmeringView.contentView = tapToPartyButton
         tapToPartyShimmeringView.isShimmering = true
+        
+        // Set up loading view animation
+        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        loadingIndicatorView.center = self.view.center
+        overlay = UIView(frame: view.frame)
+        overlay!.backgroundColor = UIColor.black
+        overlay!.alpha = 0.7
+        loadingIndicatorView.isHidden = true
+        overlay?.isHidden = true
+        self.view.addSubview(overlay!)
+        self.view.addSubview(loadingIndicatorView!)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -56,7 +71,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func TapToPartyPressed(_ sender: Any) {
-        
+        print("tap to party")
         UIView.animate(withDuration: 0.5,delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             let frame = self.JamSeshLogo.frame
             self.JamSeshLogo.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 100)
@@ -93,6 +108,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
         let email = self.usernameTextField.text
         let password = self.passwordTextField.text
+        self.loadingIndicatorView.isHidden = false
+        self.loadingIndicatorView.startAnimating()
+        self.overlay?.isHidden = false
         logIn(email: email!, password: password!)
     }
     
@@ -100,6 +118,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, err) in
             if(err != nil ){
                 self.dismissKeyboard()
+                self.loadingIndicatorView.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                self.overlay?.isHidden = true
                 SCLAlertView().showError("Whoops!", subTitle: err!.localizedDescription)
             }
             else{
@@ -115,8 +136,26 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         newUser.age = (dict["age"] as? Int)!
                         
                         self.SharedJamSeshModel.setMyUser(newUser:newUser)
+                        self.loadingIndicatorView.stopAnimating()
+                        self.loadingIndicatorView.isHidden = true
+                        self.overlay?.isHidden = true
                     }
-                    self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+                    
+                    // KYDrawerController
+                    let appDel = UIApplication.shared.delegate as! AppDelegate
+                    
+                    let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
+                    let menuVC = self.storyboard?.instantiateViewController(withIdentifier: "menuNavVC")
+                    appDel.drawerController.mainViewController = mainVC
+                    appDel.drawerController.drawerViewController = menuVC
+                    appDel.drawerController.drawerWidth = 150
+                    
+                    
+                    appDel.window?.rootViewController = appDel.drawerController
+                    appDel.window?.makeKeyAndVisible()
+                    
+                    
+                    // self.performSegue(withIdentifier: "LogInSegue", sender: nil)
                 }, withCancel: nil)
             }
         })

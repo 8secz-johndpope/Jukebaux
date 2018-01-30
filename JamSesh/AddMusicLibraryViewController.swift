@@ -84,7 +84,8 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                                     i+=1
                                     print("added: \(name) : \(i)/\(selectedSongs.count)")
                                     // If all the songs have been added
-                                    if (i == selectedSongs.count){ // All songs have been created and added to queue
+                                    let minimumDoneSongs = Int(Double(selectedSongs.count) * 0.9)
+                                    if ( i >= minimumDoneSongs ) { // At least 90% of songs have been created and added to queue (TODO solve problem well some songs cant be added. For now, 90% is good enough)
                                         print("All songs have been created and added to queue")
                                         self.SharedJamSeshModel.updatePartyOnFirebase(party: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex], completionHandler: {_ in
                                             
@@ -98,9 +99,10 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                             })
                         } else {
                             print("item failed to load") // Element didnt have all fields hmmm
+                            i+=1
                     }
                 } else {
-                    // Fallback on earlier versions
+                    // Fallback on earlier versions TODO ????
                 }
             }
         }

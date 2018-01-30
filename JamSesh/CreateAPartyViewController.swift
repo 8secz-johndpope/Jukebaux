@@ -31,7 +31,6 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
         self.appleMusicCheckIfDeviceCanPlayback()
     }
 
-    
     @IBAction func imageButtonTapped(_ sender: AnyObject) {
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
