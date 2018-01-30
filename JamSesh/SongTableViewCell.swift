@@ -26,17 +26,11 @@ class SongTableViewCell: UITableViewCell {
     
     @IBOutlet var upvoteCount: UILabel!
     
-    @IBOutlet var upvoteImageView: UIImageView!
-    @IBOutlet var downvoteImageView: UIImageView!
-    
-    @IBOutlet var downvoteView: UIView!
-    @IBOutlet var upvoteView: UIView!
-    
+    @IBOutlet var upvoteButton: UIButton!
+    @IBOutlet var downvoteButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        upvoteImageView.image = UIImage(named: "upvoteImage")
-        downvoteImageView.image = UIImage(named: "downvoteImage")
         
     }
 
@@ -53,8 +47,10 @@ class SongTableViewCell: UITableViewCell {
     }
     
     @IBAction func upvoteButton(_ sender: Any) {
-        upvoteImageView.transform = .identity
-        upvoteImageView.hop(toward: .top)
+        //upvoteImageView.transform = .identity
+        //upvoteImageView.hop(toward: .top)
+        upvoteButton.transform = .identity
+        upvoteButton.hop(toward: .top)
         upvoteCounter += 1
         upvoteCount.text = String(upvoteCounter)
         delegate?.upvoteButtonPressed(cellId: cellId)

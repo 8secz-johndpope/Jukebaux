@@ -428,6 +428,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     if(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.isEmpty) {
                         self.showEmptyPlaylistButton()
                     }
+                    self.sortSongs()
                 }
             }
         })

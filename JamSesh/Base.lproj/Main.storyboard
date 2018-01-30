@@ -496,103 +496,75 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="32v-OE-7FN" customClass="MarqueeLabel" customModule="MarqueeLabel">
-                                                                    <rect key="frame" x="114" y="30" width="199" height="13"/>
+                                                                    <rect key="frame" x="114" y="28" width="199" height="20.5"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="13" id="s15-uW-hpg"/>
+                                                                        <constraint firstAttribute="width" constant="199" id="RLl-yn-wr8"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CyG-LG-lC0" customClass="LAAnimationView">
-                                                                    <rect key="frame" x="271" y="47" width="41" height="33"/>
-                                                                    <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="downvoteImage" translatesAutoresizingMaskIntoConstraints="NO" id="iaG-w1-wgu" userLabel="downvoteImageView">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="41" height="33"/>
-                                                                        </imageView>
-                                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mZg-m8-4a8" userLabel="DownVote">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="41" height="33"/>
-                                                                            <connections>
-                                                                                <action selector="downvoteButtonPressed:" destination="Pdo-m1-GOU" eventType="touchUpInside" id="Xdq-FK-Pw5"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                    </subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="T4g-LD-ggo" userLabel="#Upvotes">
+                                                                    <rect key="frame" x="229" y="60" width="40" height="21"/>
                                                                     <constraints>
-                                                                        <constraint firstItem="iaG-w1-wgu" firstAttribute="trailing" secondItem="mZg-m8-4a8" secondAttribute="trailing" id="0mx-eF-4at"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="iaG-w1-wgu" secondAttribute="bottom" id="Btt-y7-nFm"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="mZg-m8-4a8" secondAttribute="trailing" id="Qwk-QT-Pfz"/>
-                                                                        <constraint firstItem="iaG-w1-wgu" firstAttribute="leading" secondItem="CyG-LG-lC0" secondAttribute="leading" id="Rks-X0-4dl"/>
-                                                                        <constraint firstItem="mZg-m8-4a8" firstAttribute="leading" secondItem="iaG-w1-wgu" secondAttribute="leading" id="iDI-O2-Aal"/>
-                                                                        <constraint firstItem="mZg-m8-4a8" firstAttribute="bottom" secondItem="iaG-w1-wgu" secondAttribute="bottom" id="tcW-e1-2r6"/>
-                                                                        <constraint firstItem="mZg-m8-4a8" firstAttribute="top" secondItem="CyG-LG-lC0" secondAttribute="top" id="uax-hj-UDo"/>
-                                                                        <constraint firstItem="mZg-m8-4a8" firstAttribute="top" secondItem="iaG-w1-wgu" secondAttribute="top" id="yld-hU-StT"/>
-                                                                    </constraints>
-                                                                </view>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T4g-LD-ggo" userLabel="#Upvotes">
-                                                                    <rect key="frame" x="219" y="51" width="51" height="21"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" constant="51" id="5eH-ns-fhG"/>
-                                                                        <constraint firstAttribute="height" constant="21" id="6OL-sG-gdQ"/>
+                                                                        <constraint firstAttribute="height" constant="21" id="8sE-ru-iZG"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <view opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ghs-Hy-Ai1" customClass="LAAnimationView">
-                                                                    <rect key="frame" x="178" y="47" width="41" height="33"/>
-                                                                    <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="upvoteImage" translatesAutoresizingMaskIntoConstraints="NO" id="goj-Ua-5d3" userLabel="upvoteImageView">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="41" height="33"/>
-                                                                        </imageView>
-                                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AeE-Rf-ZcJ" userLabel="UPVote">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="41" height="33"/>
-                                                                            <connections>
-                                                                                <action selector="upvoteButton:" destination="Pdo-m1-GOU" eventType="touchUpInside" id="Qle-VY-gXC"/>
-                                                                            </connections>
-                                                                        </button>
-                                                                    </subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AeE-Rf-ZcJ" userLabel="UPVote">
+                                                                    <rect key="frame" x="188" y="55" width="41" height="35"/>
                                                                     <constraints>
-                                                                        <constraint firstItem="goj-Ua-5d3" firstAttribute="leading" secondItem="AeE-Rf-ZcJ" secondAttribute="leading" id="G1N-hP-ae6"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="goj-Ua-5d3" secondAttribute="trailing" id="Ilm-G3-2gj"/>
-                                                                        <constraint firstItem="goj-Ua-5d3" firstAttribute="leading" secondItem="ghs-Hy-Ai1" secondAttribute="leading" id="Qu5-mD-qZL"/>
-                                                                        <constraint firstItem="AeE-Rf-ZcJ" firstAttribute="bottom" secondItem="goj-Ua-5d3" secondAttribute="bottom" id="cHv-RA-avc"/>
-                                                                        <constraint firstItem="goj-Ua-5d3" firstAttribute="top" secondItem="AeE-Rf-ZcJ" secondAttribute="top" id="gGh-7v-cU9"/>
-                                                                        <constraint firstItem="goj-Ua-5d3" firstAttribute="top" secondItem="ghs-Hy-Ai1" secondAttribute="top" id="hUf-dc-JuN"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="goj-Ua-5d3" secondAttribute="bottom" id="mgP-ND-h9n"/>
-                                                                        <constraint firstItem="AeE-Rf-ZcJ" firstAttribute="trailing" secondItem="goj-Ua-5d3" secondAttribute="trailing" id="r4A-Ut-A7q"/>
+                                                                        <constraint firstAttribute="height" constant="35" id="HmF-Eu-XHW"/>
+                                                                        <constraint firstAttribute="width" constant="41" id="ld2-Q6-FKD"/>
                                                                     </constraints>
-                                                                </view>
+                                                                    <state key="normal" backgroundImage="upvoteImage"/>
+                                                                    <connections>
+                                                                        <action selector="upvoteButton:" destination="Pdo-m1-GOU" eventType="touchUpInside" id="Qle-VY-gXC"/>
+                                                                    </connections>
+                                                                </button>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mZg-m8-4a8" userLabel="DownVote">
+                                                                    <rect key="frame" x="271" y="55" width="42" height="31"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="31" id="7jk-DO-o10"/>
+                                                                        <constraint firstAttribute="width" constant="42" id="U3j-Zn-dIq"/>
+                                                                    </constraints>
+                                                                    <state key="normal" backgroundImage="downvoteImage"/>
+                                                                    <connections>
+                                                                        <action selector="downvoteButtonPressed:" destination="Pdo-m1-GOU" eventType="touchUpInside" id="Xdq-FK-Pw5"/>
+                                                                    </connections>
+                                                                </button>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="ghs-Hy-Ai1" firstAttribute="top" secondItem="32v-OE-7FN" secondAttribute="bottom" constant="4" id="6pi-sX-aed"/>
-                                                                <constraint firstItem="ATk-cD-yfe" firstAttribute="trailing" secondItem="32v-OE-7FN" secondAttribute="trailing" id="7rz-Lm-QWV"/>
+                                                                <constraint firstItem="T4g-LD-ggo" firstAttribute="bottom" secondItem="57W-ai-2OO" secondAttribute="bottomMargin" id="14p-e9-GyH"/>
                                                                 <constraint firstItem="ATk-cD-yfe" firstAttribute="top" secondItem="57W-ai-2OO" secondAttribute="top" id="Akx-qR-wkH"/>
-                                                                <constraint firstItem="T4g-LD-ggo" firstAttribute="leading" secondItem="ghs-Hy-Ai1" secondAttribute="trailing" id="BP5-gW-n4X"/>
-                                                                <constraint firstItem="ghs-Hy-Ai1" firstAttribute="top" secondItem="CyG-LG-lC0" secondAttribute="top" id="JUi-w7-u4r"/>
+                                                                <constraint firstAttribute="bottom" secondItem="AeE-Rf-ZcJ" secondAttribute="bottom" constant="1.5" id="DZD-ZE-pSW"/>
+                                                                <constraint firstItem="mZg-m8-4a8" firstAttribute="leading" secondItem="T4g-LD-ggo" secondAttribute="trailing" constant="2" id="E3V-k8-YId"/>
+                                                                <constraint firstAttribute="trailing" secondItem="mZg-m8-4a8" secondAttribute="trailing" constant="7" id="FMX-54-fEC"/>
+                                                                <constraint firstItem="T4g-LD-ggo" firstAttribute="leading" secondItem="AeE-Rf-ZcJ" secondAttribute="trailing" id="HKN-dm-Sr8"/>
                                                                 <constraint firstAttribute="bottom" secondItem="1kY-kY-Qav" secondAttribute="bottom" constant="10.5" id="KX3-lA-bu6"/>
+                                                                <constraint firstItem="32v-OE-7FN" firstAttribute="top" secondItem="ATk-cD-yfe" secondAttribute="bottom" constant="-1" id="KhU-rY-wMs"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="ATk-cD-yfe" secondAttribute="trailing" constant="-8" id="LVP-2Y-jqe"/>
-                                                                <constraint firstItem="CyG-LG-lC0" firstAttribute="leading" secondItem="57W-ai-2OO" secondAttribute="leading" constant="271" id="MxB-LZ-7zE"/>
+                                                                <constraint firstItem="T4g-LD-ggo" firstAttribute="leading" secondItem="AeE-Rf-ZcJ" secondAttribute="trailing" id="PDq-mc-G6j"/>
                                                                 <constraint firstItem="1kY-kY-Qav" firstAttribute="leading" secondItem="57W-ai-2OO" secondAttribute="leading" constant="8" id="PS3-A8-yzT"/>
-                                                                <constraint firstItem="ATk-cD-yfe" firstAttribute="leading" secondItem="32v-OE-7FN" secondAttribute="leading" id="PmH-9p-gyA"/>
-                                                                <constraint firstItem="T4g-LD-ggo" firstAttribute="top" secondItem="32v-OE-7FN" secondAttribute="bottom" constant="8" symbolic="YES" id="R6k-6I-OC5"/>
-                                                                <constraint firstItem="ghs-Hy-Ai1" firstAttribute="bottom" secondItem="CyG-LG-lC0" secondAttribute="bottom" id="UgO-tF-36b"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="ghs-Hy-Ai1" secondAttribute="bottom" constant="1" id="cCu-G4-3CR"/>
-                                                                <constraint firstItem="CyG-LG-lC0" firstAttribute="leading" secondItem="T4g-LD-ggo" secondAttribute="trailing" constant="1" id="dlI-Kg-fs7"/>
-                                                                <constraint firstItem="32v-OE-7FN" firstAttribute="trailing" secondItem="CyG-LG-lC0" secondAttribute="trailing" id="iOq-VP-ev0"/>
+                                                                <constraint firstItem="AeE-Rf-ZcJ" firstAttribute="leading" secondItem="1kY-kY-Qav" secondAttribute="trailing" constant="82" id="TKJ-PY-SlK"/>
+                                                                <constraint firstAttribute="bottom" secondItem="mZg-m8-4a8" secondAttribute="bottom" constant="5.5" id="i9W-dZ-kzJ"/>
                                                                 <constraint firstItem="ATk-cD-yfe" firstAttribute="leading" secondItem="1kY-kY-Qav" secondAttribute="trailing" constant="8" id="jbF-11-vRk"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="T4g-LD-ggo" secondAttribute="bottom" constant="9" id="xRa-gS-ocX"/>
+                                                                <constraint firstItem="32v-OE-7FN" firstAttribute="leading" secondItem="1kY-kY-Qav" secondAttribute="trailing" constant="8" id="nXz-WE-frV"/>
+                                                                <constraint firstItem="mZg-m8-4a8" firstAttribute="top" secondItem="32v-OE-7FN" secondAttribute="bottom" constant="6.5" id="rFg-Tg-Svi"/>
+                                                                <constraint firstItem="AeE-Rf-ZcJ" firstAttribute="top" secondItem="32v-OE-7FN" secondAttribute="bottom" constant="6.5" id="tyv-Rb-0KD"/>
+                                                                <constraint firstItem="T4g-LD-ggo" firstAttribute="top" secondItem="32v-OE-7FN" secondAttribute="bottom" constant="11.5" id="v6Z-cD-Tnn"/>
                                                                 <constraint firstItem="1kY-kY-Qav" firstAttribute="top" secondItem="57W-ai-2OO" secondAttribute="top" constant="5" id="xz9-0y-PdU"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="downvoteImageView" destination="iaG-w1-wgu" id="ZSL-fv-X6L"/>
-                                                            <outlet property="downvoteView" destination="CyG-LG-lC0" id="LF6-6x-Q9j"/>
+                                                            <outlet property="downvoteButton" destination="mZg-m8-4a8" id="LSB-1a-K4C"/>
                                                             <outlet property="songArtist" destination="32v-OE-7FN" id="Ug0-kD-mxE"/>
                                                             <outlet property="songImage" destination="1kY-kY-Qav" id="v52-xm-nTi"/>
                                                             <outlet property="songName" destination="ATk-cD-yfe" id="p4n-wK-rTa"/>
+                                                            <outlet property="upvoteButton" destination="AeE-Rf-ZcJ" id="koO-tu-p9O"/>
                                                             <outlet property="upvoteCount" destination="T4g-LD-ggo" id="nEu-Uw-d1c"/>
-                                                            <outlet property="upvoteImageView" destination="goj-Ua-5d3" id="l8K-m9-Xns"/>
-                                                            <outlet property="upvoteView" destination="ghs-Hy-Ai1" id="dDo-be-y32"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
