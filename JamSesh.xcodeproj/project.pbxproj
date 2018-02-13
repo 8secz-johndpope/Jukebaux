@@ -34,6 +34,8 @@
 		F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760DA1ED8A5C400845803 /* ChatViewController.swift */; };
 		F5DEB0471E432157001E1480 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0461E432157001E1480 /* Song.swift */; };
 		F5DEB0491E432177001E1480 /* Party.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0481E432177001E1480 /* Party.swift */; };
+		F5FF0ECA2023F9A500BA616F /* FirebaseChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FF0EC92023F9A500BA616F /* FirebaseChatViewController.swift */; };
+		F5FF0ECC2023FD3D00BA616F /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FF0ECB2023FD3D00BA616F /* UIImage+Gif.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +71,8 @@
 		F5D760DA1ED8A5C400845803 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F5DEB0461E432157001E1480 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		F5DEB0481E432177001E1480 /* Party.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Party.swift; sourceTree = "<group>"; };
+		F5FF0EC92023F9A500BA616F /* FirebaseChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseChatViewController.swift; sourceTree = "<group>"; };
+		F5FF0ECB2023FD3D00BA616F /* UIImage+Gif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				F5D760DA1ED8A5C400845803 /* ChatViewController.swift */,
+				F5FF0EC92023F9A500BA616F /* FirebaseChatViewController.swift */,
 				F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */,
 				F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */,
 				F51A62DD1E78D66700C03FBD /* LogInViewController.swift */,
@@ -160,6 +165,7 @@
 			children = (
 				F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */,
 				F57A635B1E37FAB600243461 /* AppDelegate.swift */,
+				F5FF0ECD2023FD5000BA616F /* Supporting Files */,
 				F55379231E45645900252B78 /* View */,
 				F55379221E45645100252B78 /* Model */,
 				F55379241E45646D00252B78 /* Controller */,
@@ -168,6 +174,14 @@
 				F57A63671E37FAB600243461 /* Info.plist */,
 			);
 			path = JamSesh;
+			sourceTree = "<group>";
+		};
+		F5FF0ECD2023FD5000BA616F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F5FF0ECB2023FD3D00BA616F /* UIImage+Gif.swift */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FC83A6AFEDA00CDEF83C6655 /* Pods */ = {
@@ -352,6 +366,8 @@
 				F5DEB0471E432157001E1480 /* Song.swift in Sources */,
 				F5350FF71FEAD92000D9F56F /* ChangeSet.swift in Sources */,
 				F51A62DE1E78D66700C03FBD /* LogInViewController.swift in Sources */,
+				F5FF0ECC2023FD3D00BA616F /* UIImage+Gif.swift in Sources */,
+				F5FF0ECA2023F9A500BA616F /* FirebaseChatViewController.swift in Sources */,
 				F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */,
 				F57A635C1E37FAB600243461 /* AppDelegate.swift in Sources */,
 				F5C7068E1E3C37CB00524F34 /* CreateAPartyViewController.swift in Sources */,

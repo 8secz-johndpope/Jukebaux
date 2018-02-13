@@ -12,7 +12,6 @@ import MediaPlayer
 
 class PlayMusicHandler: NSObject {
 
-    
     let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
     
     let serviceController = SKCloudServiceController()
@@ -30,9 +29,6 @@ class PlayMusicHandler: NSObject {
     // Check if the device is capable of playback
     func appleMusicCheckIfDeviceCanPlayback() {
         serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) -> Void in
-            
-            let serviceController = SKCloudServiceController()
-            serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
                 if capability.contains(SKCloudServiceCapability.musicCatalogPlayback) {
                     print("The user has an Apple Music subscription and can playback music!")
                     
@@ -41,10 +37,9 @@ class PlayMusicHandler: NSObject {
                     
                 } else {
                     print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one?")
-                    
+                    // TOOO hunget got this error but he pays for apple music ...
                 }  
             }
-        }
     }
     
     // Request permission from the user to access the Apple Music library
@@ -169,6 +164,10 @@ class PlayMusicHandler: NSObject {
             applicationMusicPlayer.pause()
             UIApplication.shared.isIdleTimerDisabled = false
         }
+    }
+    
+    func stop() {
+        applicationMusicPlayer.stop()
     }
     
     func playCloser() {

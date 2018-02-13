@@ -28,7 +28,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     var results: [NSDictionary] = []
     var searchTerm : String = ""
     var loadingIndicatorView : NVActivityIndicatorView!
-    var overlay : UIView?
+    var overlay : UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +40,14 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
             
         loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
         
-        overlay = UIView(frame: frame)
-        overlay!.backgroundColor = UIColor.black
-        overlay!.alpha = 0.7
+//        overlay = UIView(frame: frame)
+//        overlay.backgroundColor = UIColor.black
+//        overlay.alpha = 0.7
         
-        loadingIndicatorView.addSubview(overlay!)
-        self.overlay?.isHidden = true
+        //loadingIndicatorView.addSubview(overlay)
+//        self.overlay.isHidden = false
         self.loadingIndicatorView.isHidden = true
-        self.view.addSubview(loadingIndicatorView!)
+        self.view.addSubview(loadingIndicatorView)
         
     
     }
@@ -79,16 +79,20 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedSongCell", for: indexPath) as! SuggestedSongTableViewCell
-    
+            print(1)
             let suggestedSong = results[indexPath.row] as NSDictionary
+            print(2)
             cell.suggestedSongName.text = suggestedSong["trackName"] as? String
+        print(3)
             cell.suggestedSongArtist.text = suggestedSong["artistName"] as? String
+        print(4)
             
             
             if let data = try? Data(contentsOf: URL(string: suggestedSong["artworkUrl60"] as! String)!)  {
+                print(5)
                 cell.suggestedSongImageView.image = UIImage(data: data)!
+                print(6)
             }
         return cell
     }
@@ -97,9 +101,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     func searchSongs(string: String, completionHandler: @escaping CompletionHandler) {
         // Show loading screen
-        self.loadingIndicatorView.isHidden = false
-        self.overlay?.isHidden = false
-        self.loadingIndicatorView.startAnimating()
+        showLoadingAnimation()
         DispatchQueue.global(qos: .background).async {
             var term = string.replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
@@ -126,10 +128,12 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
                                                                     }
                                                                     DispatchQueue.main.async {
                                                                         self.suggestedSongsTableView.reloadData()
-                                                                        self.loadingIndicatorView.stopAnimating()
-                                                                        self.loadingIndicatorView.isHidden = true
-                                                                        self.overlay?.isHidden = true
+                                                                        self.hideLoadingAnimation()
                                                                     }
+                                                                }
+                                                                if error != nil {
+                                                                    self.hideLoadingAnimation()
+                                                                    print("Error \(error?.localizedDescription)")
                                                                 }
             })
             task.resume()
@@ -160,6 +164,16 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    func hideLoadingAnimation() {
+        self.loadingIndicatorView.stopAnimating()
+        self.loadingIndicatorView.isHidden = true
+    }
+    
+    func showLoadingAnimation() {
+        self.loadingIndicatorView.startAnimating()
+        self.loadingIndicatorView.isHidden = false
     }
 }
 

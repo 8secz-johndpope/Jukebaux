@@ -54,6 +54,12 @@ class User: NSObject {
         self.userID = userID
     }
     
+    convenience init(id: String, name: String) {
+        self.init()
+        self.username = name
+        self.userID = id
+    }
+    
     func toAnyObject() -> Any {
         return [
             "username": username,

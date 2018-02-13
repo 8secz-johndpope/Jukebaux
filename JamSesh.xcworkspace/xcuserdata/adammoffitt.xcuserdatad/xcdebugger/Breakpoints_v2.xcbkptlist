@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "538996128.321066"
+            timestampString = "539718107.452265"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
-            landmarkName = "setPlaylistFBObservers(partyID:)"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
+            landmarkName = "loadPartyFromFirebase()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

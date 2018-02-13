@@ -12,7 +12,7 @@ import KYDrawerController
 class LeftDrawerTableViewController: UITableViewController {
     
     let backgroundImage = UIImage(named: "purpleBackground")
-    let menu = ["Parties", "Party", "Logout"]
+    let menu = ["Logout"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +69,7 @@ class LeftDrawerTableViewController: UITableViewController {
         let appDel = UIApplication.shared.delegate as! AppDelegate
         
         switch (indexPath.row) {
-        case 0:do {
+        /* case 0:do {
             let partiesVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
             appDel.drawerController.mainViewController = partiesVC
             break;
@@ -78,18 +78,20 @@ class LeftDrawerTableViewController: UITableViewController {
             let partyVC = self.storyboard?.instantiateViewController(withIdentifier: "partyVC") as! PartyViewController
             appDel.drawerController.mainViewController = partyVC
             break;
-            }
-        case 2:do{ //logout
+            } */
+        case 0:do{ //logout
             let userDefaults = UserDefaults.standard
             userDefaults.removeObject(forKey: "email")
             userDefaults.removeObject(forKey: "password")
             let signInVC = self.storyboard?.instantiateViewController(withIdentifier: "signInVC") as! LogInViewController
             appDel.drawerController.mainViewController = signInVC
+            appDel.drawerController.setDrawerState(.opened, animated: true)
             break;
             }
         default:do {
-            let partiesVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC") as! PartiesTableViewController
-            appDel.drawerController.mainViewController = partiesVC
+            let partiesVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
+                appDel.drawerController.mainViewController = partiesVC
+                appDel.drawerController.setDrawerState(.opened, animated: true)
             break;
             }
         }

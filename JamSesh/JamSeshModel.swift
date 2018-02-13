@@ -58,29 +58,12 @@ class JamSeshModel {
                 
                 //upload to firebase
                 self.ref.child("parties").child(partyID).setValue(newParty.toAnyObject())
-                //pull from firebase to make new party and add to local parties
-                self.ref.child("parties").queryEqual(toValue: partyID).observeSingleEvent(of: .value, with: { (snapshot) in
-                    let p = Party(snapshot: snapshot)
-                    self.parties.append(p)
-                }){ (error) in
-                    print(error.localizedDescription)
-                }
-
-                
             })
         } else {
             let newParty = Party(name: name , partyID: partyID, partyImage: partyImage, savedImageURL: tempSavedImageURL, privateParty: privateParty, password: password, numberJoined: numberJoined, partyPlaylist: [], hostName: hostName, hostID: hostID, users: [self.myUser.username])
             
             //upload to firebase
             self.ref.child("parties").child(partyID).setValue(newParty.toAnyObject())
-            
-            //pull from firebase to make new party and add to local parties
-            self.ref.child("parties").queryEqual(toValue: partyID).observeSingleEvent(of: .value, with: { (snapshot) in
-                let p = Party(snapshot: snapshot)
-                self.parties.append(p)
-                    }){ (error) in
-                        print(error.localizedDescription)
-            }
         }
     }
     

@@ -67,31 +67,24 @@ class Party {
             if snapshotValue["password"] != nil {
                 self.password = snapshotValue["password"] as! String
             }
-            
             if snapshotValue["numberJoined"] != nil {
                 self.numberJoined = snapshotValue["numberJoined"] as! Int
             }
-            
             if snapshotValue["hostName"] != nil {
                 self.hostName = snapshotValue["hostName"] as! String
             }
-            
             if snapshotValue["hostID"]  != nil {
                 self.hostID = snapshotValue["hostID"] as! String
             }
-            
             if snapshotValue["partyID"] != nil {
                 self.partyID = snapshotValue["partyID"] as! String
             }
-            
             if snapshotValue["currentSongPersistentIDKey"] != nil {
                 self.currentSongPersistentIDKey = snapshotValue["currentSongPersistentIDKey"] as! Int
             }
-            
             if snapshotValue["savedImageURL"] != nil {
                 self.savedImageURL = snapshotValue["savedImageURL"] as! String
             }
-            
             if snapshotValue["currentSong"] != nil {
                 let tempCurrentSongDict = snapshotValue["currentSong"] as! NSDictionary
                 self.currentSong = Song(dictionary: tempCurrentSongDict)
@@ -156,15 +149,15 @@ class Party {
     }
     
     func addSong(songName: String, songArtist : String, songID : Int, songImageUrl : String, songDuration: Int) {
-        print("ADD SONG HERE: \(songName)")
-        songs.append(Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : songImageUrl, songDuration: songDuration, upVotes: 1))
+        if (!songs.contains(where: { $0.songID == songID })) { // check for not duplicate
+            songs.append(Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : songImageUrl, songDuration: songDuration, upVotes: 1))
+        }
     }
     
     typealias CompletionHandler = (_ success:Bool) -> Void
     func getTrackImageURLandThenAddSong(songName: String, songArtist : String, songID : Int, songImage : UIImage, songDuration: Int, completionHandler: @escaping CompletionHandler) {
         
         DispatchQueue.global(qos: .userInitiated).sync {
-            
             var trackImageURL = ""
             var term = String(songID).replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
@@ -174,7 +167,6 @@ class Party {
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
                 timeoutInterval: 10)
             request.httpMethod = "GET"
-            
             let session = URLSession(
                 configuration: URLSessionConfiguration.default,
                 delegate: nil,
@@ -190,12 +182,20 @@ class Party {
                                                                         var tempResults = (responseDictionary["results"] as?[NSDictionary])!
                                                                         if (!tempResults.isEmpty && tempResults[0]["artworkUrl100"] != nil) {
                                                                             trackImageURL = tempResults[0]["artworkUrl100"] as! String
-                                                                            //now that we got the imageURL, add the song using the other addSong function
-                                                                            print("add: \(songName)")
-                                                                            self.songs.append(Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : trackImageURL, songImage: songImage, songDuration: songDuration, upVotes: 0))
+                                                                            //now that we got the imageURL, add the song
+                                                                            if (!self.songs.contains(where: { $0.songID == songID })) { //check for not duplicate
+                                                                                self.songs.append(Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : trackImageURL, songImage: songImage, songDuration: songDuration, upVotes: 1))
+                                                                                }
+                                                                            completionHandler(true)
+                                                                        } else {
+                                                                            print ("uh oh \(songName)")
                                                                             completionHandler(true)
                                                                         }
                                                                     }
+                                                                }
+                                                                if error != nil {
+                                                                    print(error)
+                                                                    completionHandler(true)
                                                                 }
             })
             task.resume()
@@ -244,7 +244,8 @@ class Party {
             "currentSong": currentSong.toAnyObject(),
             "currentSongPersistentIDKey": currentSongPersistentIDKey,
             "hasStarted": hasStarted,
-            "songHistory": songsHistoryDict
+            "songHistory": songsHistoryDict,
+            "partyEndNotification" : false
         ]
     }
     

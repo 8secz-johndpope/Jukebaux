@@ -94,9 +94,9 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
             let partyImage = partyImage.image,
             let password = passwordTextField.text {
             var password1 = ""
-            if password != nil { password1 = password}
+            if password != nil { password1 = password }
             SharedJamSeshModel.newParty(name: partyName , partyImage: partyImage, privateParty: privatePartySwitch.isOn, password: password1, numberJoined: 1, hostName: SharedJamSeshModel.myUser.username, hostID: SharedJamSeshModel.myUser.userID)
-            self.dismiss(animated: true) {}
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -124,9 +124,6 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     // Check if the device is capable of playback
     func appleMusicCheckIfDeviceCanPlayback() {
         let serviceController = SKCloudServiceController()
-        serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) -> Void in
-            
-            let serviceController = SKCloudServiceController()
             serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
                 if capability.contains(SKCloudServiceCapability.musicCatalogPlayback) {
                     print("The user has an Apple Music subscription and can playback music!")
@@ -137,8 +134,8 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
                 } else {
                     print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one?")
                     self.promptAppleMusicPurchase()
+                    // TOOO hunget got this error but he pays for apple music ...
                 }
-            }
         }
     }
     

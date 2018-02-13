@@ -60,12 +60,9 @@ class ChatViewController: JSQMessagesViewController {
     
     /*****************************************************************************/
     deinit {
-        
         if let refHandle = newMessageRefHandle {
             SharedJamSeshModel.ref.removeObserver(withHandle: refHandle)
         }
-        
-        
     }
     /*****************************************************************************/
     
@@ -157,16 +154,75 @@ class ChatViewController: JSQMessagesViewController {
         userIsTypingRef = (typingIndicatorRef?.child(senderId))!
         userIsTypingRef.onDisconnectRemoveValue()
 
-    // 1
-    usersTypingQuery.observe(.value) { (data: DataSnapshot) in
-    // 2 You're the only one typing, don't show the indicator
-    if data.childrenCount == 1 && self.isTyping {
-    return
+        // 1
+        usersTypingQuery.observe(.value) { (data: DataSnapshot) in
+        // 2 You're the only one typing, don't show the indicator
+        if data.childrenCount == 1 && self.isTyping {
+        return
+        }
+        
+        // 3 Are there others typing?
+        self.showTypingIndicator = data.childrenCount > 0
+        self.scrollToBottom(animated: true)
+        }
     }
     
-    // 3 Are there others typing?
-    self.showTypingIndicator = data.childrenCount > 0
-    self.scrollToBottom(animated: true)
+    override func collectionView(_ collectionView: JSQMessagesCollectionView, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath) -> NSAttributedString? {
+        let message = messages[indexPath.item]
+        
+        // Displaying names above messages
+        //Mark: Removing Sender Display Name
+        /**
+         *  Example on showing or removing senderDisplayName based on user settings.
+         *  This logic should be consistent with what you return from `heightForCellTopLabelAtIndexPath:`
+         */
+        
+        return NSAttributedString(string: message.senderDisplayName)
     }
+    override func collectionView(_ collectionView: JSQMessagesCollectionView, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout, heightForCellTopLabelAt indexPath: IndexPath) -> CGFloat {
+        /**
+         *  Each label in a cell has a `height` delegate method that corresponds to its text dataSource method
+         */
+        
+        /**
+         *  This logic should be consistent with what you return from `attributedTextForCellTopLabelAtIndexPath:`
+         *  The other label height delegate methods should follow similarly
+         *
+         *  Show a timestamp for every 3rd message
+         */
+        if indexPath.item % 3 == 0 {
+            return kJSQMessagesCollectionViewCellLabelHeightDefault
+        }
+        
+        return 0.0
+    }
+    
+    override func collectionView(_ collectionView: JSQMessagesCollectionView, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout, heightForMessageBubbleTopLabelAt indexPath: IndexPath) -> CGFloat {
+        
+        /**
+         *  Example on showing or removing senderDisplayName based on user settings.
+         *  This logic should be consistent with what you return from `attributedTextForCellTopLabelAtIndexPath:`
+         */
+        
+        /**
+         *  iOS7-style sender name labels
+         */
+        let currentMessage = self.messages[indexPath.item]
+        
+        /*
+        // If you want to not display your own name
+        if currentMessage.senderId == self.senderId() {
+            return 0.0
+        }
+        */
+        
+        if indexPath.item - 1 > 0 {
+            let previousMessage = self.messages[indexPath.item - 1]
+            if previousMessage.senderId == currentMessage.senderId {
+                return 0.0
+            }
+        }
+        
+        return kJSQMessagesCollectionViewCellLabelHeightDefault;
     }
 }

@@ -24,13 +24,15 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     let SharedJamSeshModel = JamSeshModel.shared
     let partyMusicHandler = PlayMusicHandler.shared
-    var timer = Timer()
+    var timer : Timer?
     
     var playlistHandleAdd : DatabaseHandle?
     var playlistHandleRemove : DatabaseHandle?
     var playlistHandleModify : DatabaseHandle?
+    var currentSongHandle : DatabaseHandle?
     var numberJoinedHandle : DatabaseHandle?
     var partyHandle : DatabaseHandle?
+    var partyEndHandle : DatabaseHandle?
     
     let notificationCenter = NotificationCenter.default
     var isHost : Bool = false
@@ -55,9 +57,10 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBOutlet var songsTableView: UITableView!
     
-    var chatBarButtonItem  = UIButton(type: .custom)
+    var endPartyBarButtonItem = UIBarButtonItem()
+    var chatBarButtonItem = UIBarButtonItem()
     var loadingIndicatorView : NVActivityIndicatorView!
-    var overlay : UIView?
+    var overlay : UIView!
     var emptyPlaylistButton : UIButton!
     
     /*****************************************************************************/
@@ -69,8 +72,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         loadingIndicatorView.center = self.view.center
         
         overlay = UIView(frame: view.frame)
-        overlay!.backgroundColor = UIColor.black
-        overlay!.alpha = 0.7
+        overlay.backgroundColor = UIColor.black
+        overlay.alpha = 0.7
         
         self.view.addSubview(overlay!)
         self.view.addSubview(loadingIndicatorView!)
@@ -85,7 +88,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         songsTableView.dataSource = self
         songsTableView.layer.borderWidth = 5.0;
         songsTableView.layer.borderColor = UIColor.purple.cgColor
-        
         let px = 1 / UIScreen.main.scale
         let frame = CGRect(x:0, y:0, width:songsTableView.frame.size.width, height: px)
         let header = UILabel(frame: CGRect(x:0, y:0, width:songsTableView.frame.size.width, height: px))
@@ -93,42 +95,46 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         line.addSubview(header)
         songsTableView.tableHeaderView = line
         
-        currentlyPlayingSongTimeSlider.setThumbImage(UIImage(named: "triangle")!, for: .normal)
+        //currentlyPlayingSongTimeSlider.setThumbImage(UIImage(named: "triangle")!, for: .normal)
         
         // Button to prompt user to add songs when playlist is empty
         emptyPlaylistButton = UIButton(frame: CGRect(x: self.view.frame.minX + 10, y: self.view.frame.minY+100, width: self.view.frame.width-20, height: 400))
         emptyPlaylistButton.alpha = 0.8
         emptyPlaylistButton.backgroundColor = UIColor.purple
-        //TODO doesnt set background image
-        emptyPlaylistButton.setBackgroundImage(UIImage(named: "purpleBackground"), for: UIControlState.application)
         emptyPlaylistButton.setTitle("The playlist for this party is empty! Click here to add some songs and keep the tunes rolling.",for: .normal)
         emptyPlaylistButton.titleLabel?.numberOfLines = 0
        emptyPlaylistButton.titleLabel?.textAlignment = NSTextAlignment.center
         emptyPlaylistButton.titleLabel?.textColor = UIColor.white
         emptyPlaylistButton.addTarget(self, action:#selector(emptyPlaylistButtonPressed), for: .touchUpInside)
-        notificationCenter.addObserver(forName:Notification.Name.MPMusicPlayerControllerNowPlayingItemDidChange,
-                       object:nil, queue:nil,
-                       using: testNowPlayingDidChange)
-                       // using:songChanged)
+        let dismissButton = UIButton(frame: CGRect(x: 20, y: 3*emptyPlaylistButton.frame.height/4, width: emptyPlaylistButton.frame.width-20, height: 40))
+        dismissButton.backgroundColor = UIColor.black
+        dismissButton.setTitle("Dismiss",for: .normal)
+        dismissButton.titleLabel?.textAlignment = NSTextAlignment.center
+        dismissButton.titleLabel?.textColor = UIColor.purple
+        dismissButton.addTarget(self, action:#selector(dismissEmptyPlaylistButtonPressed), for: .touchUpInside)
+        emptyPlaylistButton.addSubview(dismissButton)
         
-        //TODO delete
-        notificationCenter.addObserver(forName:Notification.Name.MPMusicPlayerControllerPlaybackStateDidChange,
-                                       object:nil, queue:nil,
-                                       using: testPlaybackStopped)
-        
-        
+        chatBarButtonItem = UIBarButtonItem(title: "Chat", style: UIBarButtonItemStyle.plain, target: self, action: #selector(chatBarButtonPressed))
         // Check if the user is the host of the party. Being the host will allow them to perform functionalities like playing music etc.
         if SharedJamSeshModel.myUser.userID == currentParty.hostID { // User is Host
             isHostLabel.text = "You are the Host"
             isHost = true
             playPauseButton.isHidden = false
             nextButton.isHidden = false
+            
+            endPartyBarButtonItem =  UIBarButtonItem(title: "End Party", style: UIBarButtonItemStyle.plain, target: self, action: #selector(endPartyButtonPressed))
+            self.navigationItem.rightBarButtonItems = [chatBarButtonItem, endPartyBarButtonItem]
         } else { // user is not host
             isHost  = false
+           
+            self.navigationItem.rightBarButtonItems = [chatBarButtonItem]
+            
             isHostLabel.text = "You are the not the Host"
             playPauseButton.isHidden = true
             nextButton.isHidden = true
             currentlyPlayingSongTimeSlider.isHidden = true
+            currentlyPlayingSongTimeElapsedLabel.isHidden = true
+            currentlyPlayingSongDurationLabel.isHidden = true
         }
         
         print("call VWA")
@@ -136,47 +142,54 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     
     
+    /*****************************************************************************/
     func testNowPlayingDidChange (notification: Notification) -> Void  {
         if ( partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.stopped) {
             print("TEST NOW PLAYING DID CHANGE - move to next song :: \(partyMusicHandler.getPlaybackState().rawValue) :: \(MPMusicPlaybackState.stopped.rawValue)")
            // moveToNextSong()
         }
     }
+    /*****************************************************************************/
     
+    /*****************************************************************************/
     func testPlaybackStopped (notification: Notification) -> Void {
         print("TEST PLAYBACK STOPPED")
     }
-    
+    /*****************************************************************************/
+
     /*****************************************************************************/
     override func viewWillAppear(_ animated: Bool) {
         let currentParty = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex]
-        print("view will appear \(partyMusicHandler.getPlaybackState())")
-//        if isHost && partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.stopped {
-//            if( currentParty.currentSong != nil ) {
-//                print("view will appear is going to play current song")
-//                playCurrentSong()
-//            }else {
-//                playNextSong()
-//            }
-//        }
+        print("view will appear \(partyMusicHandler.getPlaybackState().rawValue)")
         songsTableView.reloadData()
     }
     /*****************************************************************************/
     
     /*****************************************************************************/
     deinit {
+        print("deinit")
+        stopTimer()
+        let partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
+        
         if let refHandleAdd = playlistHandleAdd {
-            SharedJamSeshModel.ref.removeObserver(withHandle: refHandleAdd)
+            SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").removeObserver(withHandle: refHandleAdd)
         }
         if let refHandleRemove = playlistHandleRemove {
-            SharedJamSeshModel.ref.removeObserver(withHandle: refHandleRemove)
+            SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").removeObserver(withHandle: refHandleRemove)
         }
         if let refHandleObserve = playlistHandleModify {
-            SharedJamSeshModel.ref.removeObserver(withHandle: refHandleObserve)
+            SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").removeObserver(withHandle: refHandleObserve)
+        }
+        if let currentSongH = currentSongHandle {
+            SharedJamSeshModel.ref.child("parties").child(partyID).removeObserver(withHandle:  currentSongH)
+        }
+        if let partyEndH = partyEndHandle {
+            SharedJamSeshModel.ref.child("parties").child(partyID).removeObserver(withHandle:  partyEndH)
         }
     }
     /*****************************************************************************/
     
+    /*****************************************************************************/
     func showEmptyPlaylistButton() {
         if (!self.view.subviews.contains(emptyPlaylistButton)) {
             self.view.addSubview(emptyPlaylistButton)
@@ -192,16 +205,18 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func moveToNextSong() {
-        let currentParty = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex]
-        // If songs are empty
-        if currentParty.songs.count < 1 {
-            //Handle empty songs
-            showEmptyPlaylistButton()
-        }
-        else {
-            hideEmptyPlaylistButton()
-            SharedJamSeshModel.setPartySong(song: currentParty.songs[0])
-            SharedJamSeshModel.removePartySong(song: currentParty.songs[0])
+        if (SharedJamSeshModel.currentPartyIndex < SharedJamSeshModel.parties.count) {
+            let currentParty = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex]
+            // If songs are empty
+            if currentParty.songs.count < 1 {
+                //Handle empty songs
+                showEmptyPlaylistButton()
+            }
+            else {
+                hideEmptyPlaylistButton()
+                SharedJamSeshModel.setPartySong(song: currentParty.songs[0])
+                SharedJamSeshModel.removePartySong(song: currentParty.songs[0])
+            }
         }
     }
     /*****************************************************************************/
@@ -273,25 +288,72 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         })
         */
         
-        SharedJamSeshModel.ref.child("parties").child(partyID).child("currentSong").observe(DataEventType.value, with: { (snapshot) in
+        partyEndHandle = SharedJamSeshModel.ref.child("parties").child(partyID).child("partyEndNotification").observe(DataEventType.value, with: { (snapshot) in
+                if !snapshot.exists() {
+                    print("bad partyEndNotification")
+                    return
+                }
+                print("party end notification received \(snapshot)")
+                if let indicator = snapshot.value as? Bool{
+                    print(indicator)
+                    if indicator {
+                        if let refHandleRemove = self.playlistHandleRemove {
+                            self.SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").removeObserver(withHandle: refHandleRemove)
+                        }
+                        if let currentHandle = self.currentSongHandle {
+                            self.SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").removeObserver(withHandle: currentHandle)
+                        }
+                        // TODO this is probably a bad way to do it as then you get a lot of people writing nils to FB but whateves hopefully it works for now
+                        if (self.isHost) {
+                            let partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
+                            self.stopTimer()
+                            self.partyMusicHandler.stop()
+                            self.navigationController?.popViewController(animated: true)
+                            self.SharedJamSeshModel.parties.remove(at: self.SharedJamSeshModel.currentPartyIndex)
+                            self.SharedJamSeshModel.ref.child("parties").child(partyID).setValue(nil) { error in
+                                if error != nil {
+                                    print("party remove error \(error)")
+                                } else {
+                                    print("party removed")
+                                }
+                            }
+                        } else {
+                            let appearance = SCLAlertView.SCLAppearance(
+                                showCloseButton: false
+                            )
+                            let alertView = SCLAlertView(appearance: appearance)
+                            alertView.addButton("Okay", action: {
+                                let partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
+                                self.SharedJamSeshModel.parties.remove(at: self.SharedJamSeshModel.currentPartyIndex)
+                                self.navigationController?.popViewController(animated: true)
+                            })
+                            alertView.showInfo("Your current party ended", subTitle: "Looks like the host ended the party. Join another party and keep the tunes coming!")
+                        }
+                    }
+                }
+            })
+            
+        
+        currentSongHandle  = SharedJamSeshModel.ref.child("parties").child(partyID).child("currentSong").observe(DataEventType.value, with: { (snapshot) in
             if !snapshot.exists() {
                 print("get current song doesnt exist")
-                print("play next song from observer")
-                // self.playNextSong()
-                self.moveToNextSong()
+                if ( self.isHost ) {
+                    self.moveToNextSong()
+                }
                 return
             }
             if let currentSongSnapshot = snapshot as? DataSnapshot {
                 
                 let tempCurrentSong = Song(dictionary: currentSongSnapshot.value as! NSDictionary)
-                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].currentSong = tempCurrentSong
+                if (self.SharedJamSeshModel.currentPartyIndex < self.SharedJamSeshModel.parties.count) {
+                    self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].currentSong = tempCurrentSong
+                }
                 print("get current song: \(tempCurrentSong.songName)")
                 
                 DispatchQueue.global(qos: .userInitiated).async {
                     let url1 = URL(string: tempCurrentSong.songImageURL)
                     if (url1 != nil) {
                         if let data = try? Data(contentsOf: url1!)  {
-                            //print("VWA song image: \(song.songName) SET \(counter)")
                             DispatchQueue.main.async {
                                 self.currentlyPlayingSongImage.image = UIImage(data: data)!
                             }
@@ -351,19 +413,23 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     /*****************************************************************************/
     
+    /*****************************************************************************/
+
     func hideLoadingAnimation() {
         self.loadingIndicatorView.stopAnimating()
         self.loadingIndicatorView.isHidden = true
-        self.overlay?.isHidden = true
-        self.view.willRemoveSubview(self.overlay!)
+        self.overlay.isHidden = true
+        self.view.willRemoveSubview(self.overlay)
     }
     
     func showLoadingAnimation() {
         self.loadingIndicatorView.startAnimating()
         self.loadingIndicatorView.isHidden = false
-        self.overlay?.isHidden = false
-        self.view.addSubview(self.overlay!)
+        self.overlay.isHidden = false
+        self.view.addSubview(self.overlay)
     }
+    /*****************************************************************************/
+
     
     /*****************************************************************************/
     func indexOfMessage(_ snapshot: DataSnapshot) -> Int {
@@ -382,32 +448,52 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func setPlaylistFBObservers(partyID: String) {
+        print("set Playlist FB observers")
         
         playlistHandleAdd = SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").observe(DataEventType.childAdded, with: { (snapshot) -> Void in
             if !snapshot.exists() {
                 return
             }
             self.hideEmptyPlaylistButton()
+            let currentParty = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex]
             //self.showLoadingAnimation()
             // The listener is passed a snapshot containing the new child's data.
             if let childSongSnapshot = snapshot as? DataSnapshot {
                 let newSong = Song(dictionary: childSongSnapshot.value as! NSDictionary)
                print("observed add in playlist \(newSong.songName)")
-                if !self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.contains(where: { $0.songID == newSong.songID}) {
-                    self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.append(newSong)
-                    //self.songsTableView.beginUpdates()
-                    let end = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.count-1
-                    let indexPath:IndexPath = IndexPath(row: end, section: 0)
-                    self.songsTableView.insertRows(at: [indexPath], with: .automatic)
-                    //self.songsTableView.endUpdates()
+                
+                // if is the host, and the current song is done playing, and there is no other songs, put right into current song
+                if self.isHost && Float(self.partyMusicHandler.getCurrentPlaybackTime()) >= Float(currentParty.currentSong.songDuration) {
+                    self.SharedJamSeshModel.setPartySong(song: newSong)
+                }
+                
+                
+                if !currentParty.songs.contains(where: { $0.songID == newSong.songID}) { // if song isnt already in the playlist
+                    if let index = currentParty.songs.index(where: { // get index where new song should go
+                        return $0.upVotes < newSong.upVotes
+                    }) {
+                        let indexPath:IndexPath = IndexPath(row: index, section: 0)
+//                        self.songsTableView.beginUpdates()
+                       currentParty.songs.insert(newSong, at: index)
+//                        self.songsTableView.insertRows(at: [indexPath], with: .automatic)
+//                        self.songsTableView.endUpdates()
+                          self.sortSongs()  // TODO does changing this break things? motivation is that if you are adding a song in the middle of the tableview, all the cellID's are going to be messed up
+                          self.songsTableView.reloadData()
+                    } else {
+                        let indexPath:IndexPath = IndexPath(row: currentParty.songs.count-1, section: 0)
+                        self.songsTableView.beginUpdates()
+                        currentParty.songs.append(newSong)
+                        self.songsTableView.insertRows(at: [indexPath], with: .automatic)
+                        self.songsTableView.endUpdates()
+                    }
                     self.hideLoadingAnimation()
-                    self.sortSongs()
+//                    self.sortSongs()
+//                    self.songsTableView.reloadData()
                 }
             }
         })
         
         playlistHandleRemove = SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").observe(DataEventType.childRemoved, with: { (snapshot) -> Void in
-            print("observed removed in playlist")
             if !snapshot.exists() {
                 print("observed removed in playlist, null snapshot")
                 return
@@ -417,18 +503,24 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if let childSongSnapshot = snapshot as? DataSnapshot {
                 // print("observed removed in playlist childSongsnapshot: \(snapshot)")
                 let childSongID = (childSongSnapshot.value as! NSDictionary)["songID"] as! Int
-                if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID as! Int == childSongID }) {
-                    print("observed removed in playlist \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].songName) :: \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.count) :: \(i)")
-                    self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.remove(at: i)
+                if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID == childSongID }) {
+                    print("observed removed in playlist \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].songName) :: \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.count) :: \(i) :: \(self.songsTableView.numberOfRows(inSection: 0))")
                     let rowToDelete = IndexPath.init(row: i, section: 0)
                     let rowsToDelete = [rowToDelete]
-                    //self.songsTableView.beginUpdates()
-                    self.songsTableView.deleteRows(at: rowsToDelete, with: .automatic)
-                    //self.songsTableView.endUpdates()
+                    if (self.songsTableView.numberOfRows(inSection: 0) > 0) {
+                        self.songsTableView.beginUpdates()
+                        self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.remove(at: i)
+                        self.songsTableView.deleteRows(at: rowsToDelete, with: .automatic)
+                        self.songsTableView.endUpdates()
+                    }
+                    
+                    
+                    self.sortSongs()
+                    self.songsTableView.reloadData() // TODO maybe causing crash
+                    
                     if(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.isEmpty) {
                         self.showEmptyPlaylistButton()
                     }
-                    self.sortSongs()
                 }
             }
         })
@@ -441,31 +533,30 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             // Find which child was changed, and update that row
             // The snapshot passed to the event listener contains the updated data for the child.
-            if let childSongSnapshot = snapshot as? DataSnapshot {
-                let childSongID = (childSongSnapshot.value as! NSDictionary)["songID"] as! Int
-                // Get changed song index in curent songs array
-                if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID == childSongID }) {
-                    
-                    let newUpVotes = (childSongSnapshot.value as! NSDictionary)["upVotes"] as! Int
-                    // Check if was upvote or downvote
-                    let isUpVote = (self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes <= newUpVotes) // if true, then change is upvote, if false, then downvote
-                    
-                    self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes = newUpVotes
-                    print("reloading \(i)")
-                    let rowToReload = IndexPath.init(row: i, section: 0)
-                    let rowsToReload = Array.init(arrayLiteral: rowToReload)
-                    //self.songsTableView.beginUpdates()
-                    self.songsTableView.reloadRows(at: rowsToReload, with: .automatic)
-                    //self.songsTableView.endUpdates()
-                        
-                    /* Animate moving song rows */
-                    
-                    if (isUpVote) {
-                        self.moveUpVote(rowToMove: i)
-                    }
-                    else{
-                        self.moveDownVote(rowToMove: i, newUpVotes: newUpVotes)
-                    }
+            let childSongID = (snapshot.value as! NSDictionary)["songID"] as! Int
+            // Get changed song index in curent songs array
+            if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID == childSongID }) {
+                
+                let newUpVotes = (snapshot.value as! NSDictionary)["upVotes"] as! Int
+                // Check if was upvote or downvote
+                let isUpVote = (self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes <= newUpVotes) // if true, then change is upvote, if false, then downvote
+                
+                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes = newUpVotes
+                print("reloading \(i)")
+                let rowToReload = IndexPath.init(row: i, section: 0)
+                let rowsToReload = Array.init(arrayLiteral: rowToReload)
+                
+                self.songsTableView.beginUpdates()
+                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes = newUpVotes
+                self.songsTableView.reloadRows(at: rowsToReload, with: .automatic)
+                self.songsTableView.endUpdates()
+                
+                /* Animate moving song rows */
+                if (isUpVote) {
+                    self.moveUpVote(rowToMove: i)
+                }
+                else{
+                    self.moveDownVote(rowToMove: i, newUpVotes: newUpVotes)
                 }
             }
         })
@@ -494,7 +585,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let songName = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[rowToMove].songName
         if ( newUpVotes < 0 ) {
             if( isHost ) {
-                let appearance = SCLAlertView.SCLAppearance(
+                let appearance = SCLAlertView.SCLAppearance( // Prompt host to remove song as has less than 0 upvotes
                     showCloseButton: false
                 )
                 let alertView = SCLAlertView(appearance: appearance)
@@ -506,7 +597,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[rowToMove].upVotes = 0
                     self.setSongUpVotesOnFirebase(songName: songName, newUpVotes: 0)
                 }
-                alertView.showInfo("Remove Song?", subTitle: "\(songName) has less than zero upvotes. Remove from playlist?") // Info
+                alertView.showInfo("Remove Song?", subTitle: "\(songName) has less than zero upvotes. Remove from playlist?")
             }
         } else { // Downvote rearrangement logic
             for (index, item) in self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.enumerated().reversed() {
@@ -521,17 +612,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
         }
-        
-        /* OLD Downvote rearrangement logic
-        print("downvote: \($0.upVotes) - \(fromSong.upVotes)")
-        if ($0.songID == fromSong.songID) {
-            let indexOf$0 = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(of: $0)
-            let nextSong = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[indexOf$0!+1]
-            return $0.upVotes > nextSong.upVotes } //return if current song upvotes > the subsequent song upvotes
-        return $0.upVotes <= fromSong.upVotes
-        */
-        
-        
     }
     /****************************************************************************/
     
@@ -545,7 +625,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("VWA NOT null song image\(song.songName)")
                 counter = counter + 1
             } else {
-                //print("VWA IS null song image: \(song.songName)")
                 DispatchQueue.global(qos: .userInitiated).async {
                     let url1 = URL(string: song.songImageURL)
                     if (url1 != nil) {
@@ -592,6 +671,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     @IBAction func newSuggestSongButtonPressed(_ sender: Any) {
         print(" new suggest song button pressed")
+        emptyPlaylistButtonPressed()
     }
     /*****************************************************************************/
     
@@ -599,15 +679,20 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         performSegue(withIdentifier: "suggestSongSegue", sender: self)
     }
     
+    func dismissEmptyPlaylistButtonPressed() {
+        self.hideEmptyPlaylistButton()
+    }
+    
     /*****************************************************************************/
-    @IBAction func chatButtonPressed(_ sender: Any) {
-        
+    func chatBarButtonPressed() {
+        self.performSegue(withIdentifier: "ChatSegue", sender: self)
     }
     /*****************************************************************************/
     
     /*****************************************************************************/
     @IBAction func suggestSongButton(_ sender: Any) {
         print("suggest song button pressed")
+        emptyPlaylistButtonPressed()
     }
     /*****************************************************************************/
     
@@ -627,40 +712,43 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongTableViewCell
         cell.delegate = self
-        if let song = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[indexPath.row] as? Song {
-            var songImage = UIImage(named: "party")
-            if song.songImage != nil  && song.songImage != UIImage(named:"party")! {
-                //print("NOT null song image\(song.songName)")
-                songImage = song.songImage
-                cell.songImage.image = songImage
-            } else if song.songImageURL != nil {
-                cell.songImage.addSubview(makeLoadingIndicatorView(tempView: cell.songImage))
-               print("IS null song image\(song.songName)")
-                DispatchQueue.global(qos: .userInitiated).async {
-                    let url1 = URL(string: song.songImageURL)
-                    if let data = try? Data(contentsOf: url1!)  {
-                        print("song image\(song.songName) SET")
-                        songImage = UIImage(data: data)!
-                        DispatchQueue.main.async {
-                            cell.songImage.image = songImage
-                            cell.reloadInputViews()
-                            for view in cell.songImage.subviews {
-                                if let indicatorView = view as? NVActivityIndicatorView { // if the view is an activity indicator view
-                                    indicatorView.stopAnimating()
-                                }
-                                view.removeFromSuperview()
+        let song = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[indexPath.row]
+        var songImage = UIImage(named: "party")
+        if song.songImage != nil  && song.songImage != UIImage(named:"party")! {
+            //print("NOT null song image\(song.songName)")
+            songImage = song.songImage
+            cell.songImage.image = songImage
+        } else if song.songImageURL != "" {
+            let v = makeLoadingIndicatorView(tempView: cell.songImage)
+            cell.songImage.addSubview(v)
+            cell.addConstraint(NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: cell.songImage, attribute: .trailing, multiplier: 1, constant: 0))
+            cell.addConstraint(NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: cell.songImage, attribute: .leading, multiplier: 1, constant: 0))
+            cell.addConstraint(NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: cell.songImage, attribute: .top, multiplier: 1, constant: 0))
+            cell.addConstraint(NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: cell.songImage, attribute: .bottom, multiplier: 1, constant: 0))
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                let url1 = URL(string: song.songImageURL)
+                if let data = try? Data(contentsOf: url1!)  {
+                    songImage = UIImage(data: data)!
+                    DispatchQueue.main.async {
+                        cell.songImage.image = songImage
+                        cell.reloadInputViews()
+                        for view in cell.songImage.subviews {
+                            if let indicatorView = view as? NVActivityIndicatorView { // if the view is an activity indicator view
+                                indicatorView.stopAnimating()
                             }
+                            view.removeFromSuperview()
                         }
                     }
                 }
             }
-            cell.cellId = indexPath.row
-            // cell.partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
-            cell.songName.text = song.songName
-            cell.songArtist.text = song.songArtist
-            cell.upvoteCounter = song.upVotes
-            cell.upvoteCount.text = String(cell.upvoteCounter)
         }
+        cell.cellId = indexPath.row
+        // cell.partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
+        cell.songName.text = song.songName
+        cell.songArtist.text = song.songArtist
+        cell.upvoteCounter = song.upVotes
+        cell.upvoteCount.text = String(cell.upvoteCounter)
         
         return cell
     }
@@ -675,7 +763,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let tempOverlay = UIView(frame: tempView.frame)
         tempOverlay.backgroundColor = UIColor.black
-        tempOverlay.alpha = 0.7
+        tempOverlay.alpha = 0.5
         
         tempLoadingIndicatorView.addSubview(tempOverlay)
         
@@ -701,7 +789,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             return TransactionResult.success(withValue: currentData)
         }) { (error, committed, snapshot) in
             if let error = error {
-                print(error.localizedDescription)
+                print("error: \(error.localizedDescription)")
             }
         }
     }
@@ -799,19 +887,43 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         if segue.identifier == "ChatSegue" {
-            if let chatVC = segue.destination as? ChatViewController {
+            if let chatVC = segue.destination as? FirebaseChatViewController {
                 let currentParty = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex]
-                chatVC.chatRef = SharedJamSeshModel.ref.child("parties").child(currentParty.partyID).child("chat")
-                
+                chatVC.channelRef = SharedJamSeshModel.ref.child("parties").child(currentParty.partyID)
+                print("USERNAME: \(SharedJamSeshModel.myUser.username)")
                 chatVC.senderDisplayName = SharedJamSeshModel.myUser.username
                 chatVC.title = currentParty.partyName
+            }
+        } else if segue.identifier == "ReturnToPartiesSegue" {
+            if let partiesVC = segue.destination as? PartiesTableViewController {
+                partiesVC.partyEndedNotification()
             }
         }
     }
     /*****************************************************************************/
     
+    /*****************************************************************************/
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if(self.isMovingFromParentViewController){
+            let appearance = SCLAlertView.SCLAppearance(
+                showCloseButton: false
+            )
+            let alertView = SCLAlertView(appearance: appearance)
+            alertView.addButton("Leave Party") {
+                return true
+            }
+            alertView.addButton("Stay in Party") {
+                return false
+            }
+            alertView.showInfo("Cancel your current Party?", subTitle: "You are currently hosting a party, and joining a different party will cause your current party to be canceled. Are you sure you want to leave your party?")
+        }
+        
+        // by default, transition
+        return true
+    }
+    /*****************************************************************************/
+
     /*****************************************************************************/
     func loadingAnimation () {
         let indicator = NVActivityIndicatorView(frame: CGRect(x:0, y:0, width:40, height:40), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
@@ -838,9 +950,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         } else {
             currentlyPlayingSongDurationLabel.text = "\(trackDurationMinutes):\(trackDurationSeconds)"
         }
-        if (partyMusicHandler.getCurrentPlaybackTime().isNaN || partyMusicHandler.getCurrentPlaybackTime().isInfinite) {
-           print("weird partyMusicHandler time")
-        } else {
+        if (!partyMusicHandler.getCurrentPlaybackTime().isNaN && !partyMusicHandler.getCurrentPlaybackTime().isInfinite) {
             let trackElapsed = partyMusicHandler.getCurrentPlaybackTime()
             var trackElapsedMinutes = 0
             if !(trackElapsed.isNaN || trackElapsed.isInfinite) {
@@ -872,6 +982,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     @IBAction func songSliderTimeChanged(_ sender: Any) {
+        self.stopTimer()
         partyMusicHandler.setCurrentPlaybackTime(time: TimeInterval(currentlyPlayingSongTimeSlider.value))
     }
     /*****************************************************************************/
@@ -879,15 +990,28 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     func updateNowPlayingInfo(){
         if(isHost) {
-            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(PartyViewController.timerFired(_:)), userInfo: nil, repeats: true)
-            self.timer.tolerance = 0.1
+            if (self.timer == nil) {
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(PartyViewController.timerFired(_:)), userInfo: nil, repeats: true)
+                self.timer?.tolerance = 0.1
+            }
         }
     }
     /*****************************************************************************/
     
     /*****************************************************************************/
+
+    func stopTimer() {
+        if let t = self.timer {
+            t.invalidate()
+            self.timer = nil
+        }
+    }
+    /*****************************************************************************/
+
+    /*****************************************************************************/
     @IBAction func nextButtonPressed(_ sender: Any) {
         // playNextSong()
+        print("next button pressed")
         moveToNextSong()
     }
     /*****************************************************************************/
@@ -906,21 +1030,19 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     
     /*****************************************************************************/
+    func endPartyButtonPressed() {
+        print("end button pressed")
+        let partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
+        SharedJamSeshModel.ref.child("parties").child(partyID).child("partyEndNotification").setValue(true) { error in
+            if error != nil {
+                print("error \(error)")
+            } else {
+                print("party end notification sent")
+            }
+        }
+    }
     /*****************************************************************************/
-    /*****************************************************************************/
-    
-    /*****************************************************************************/
-    /*****************              Client                     *******************/
-    /*****************************************************************************/
-    
-    
-    /*****************************************************************************/
-    /*****************************************************************************/
-    /*****************************************************************************/
-    
 }
-
-
 
 extension UIButton {
     func hideAndAllowTouchesThrough() {

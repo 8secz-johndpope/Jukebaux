@@ -24,7 +24,7 @@ class Song {
         self.songID = 0
         self.songImageURL = ""
         self.songImage = UIImage(named:"party")!
-        self.upVotes = 0
+        self.upVotes = 1
         self.songDuration = 0
     }
     

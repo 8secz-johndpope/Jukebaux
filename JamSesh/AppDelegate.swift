@@ -71,8 +71,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
            // try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
             //try AVAudioSession.sharedInstance().setActive(false)
-            let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
-            applicationMusicPlayer.pause()
+            let partyMusicHandler = PlayMusicHandler.shared
+            partyMusicHandler.stop()
+            //let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+            //applicationMusicPlayer.pause()
             
         } catch {
             print(error)

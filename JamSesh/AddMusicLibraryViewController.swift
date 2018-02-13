@@ -70,10 +70,9 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
             self.loadingIndicatorView.isHidden = false
             self.loadingIndicatorView.startAnimating()
             
-            var i = 0
+            var i = 0 // TODO this all breaks for very large playlists
             for element in selectedSongs.items {
                 if #available(iOS 10.3, *) {
-                    print(element.title)
                         if let name = element.title,
                             let artist = element.artist,
                             let storeID = Int(element.playbackStoreID),
@@ -84,7 +83,7 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                                     i+=1
                                     print("added: \(name) : \(i)/\(selectedSongs.count)")
                                     // If all the songs have been added
-                                    let minimumDoneSongs = Int(Double(selectedSongs.count) * 0.9)
+                                    let minimumDoneSongs = Int(Double(selectedSongs.count) * 1)
                                     if ( i >= minimumDoneSongs ) { // At least 90% of songs have been created and added to queue (TODO solve problem well some songs cant be added. For now, 90% is good enough)
                                         print("All songs have been created and added to queue")
                                         self.SharedJamSeshModel.updatePartyOnFirebase(party: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex], completionHandler: {_ in

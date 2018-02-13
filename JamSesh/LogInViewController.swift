@@ -40,6 +40,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
         usernameTextField.isHidden=true
         passwordTextField.isHidden=true
         logInButton.isHidden=true
@@ -72,6 +73,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func TapToPartyPressed(_ sender: Any) {
         print("tap to party")
+        
+        UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
+            self.JamSeshLogo.alpha = 0.0
+            self.tapToPartyButton.isHidden = true
+        }, completion: {_ in
+            self.usernameTextField.isHidden=false
+            self.passwordTextField.isHidden=false
+            self.logInButton.isHidden=false
+            self.createAccountButton.isHidden=false
+            self.joinAsGuestButton.isHidden=false
+        })
+            
+        /*
         UIView.animate(withDuration: 0.5,delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             let frame = self.JamSeshLogo.frame
             self.JamSeshLogo.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 100)
@@ -95,7 +109,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 self.centerXAlignmentUsername.constant += self.view.bounds.width
             })*/
             
-        })
+        }) */
         
     }
     
@@ -141,21 +155,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         self.overlay?.isHidden = true
                     }
                     
-                    // KYDrawerController
-                    let appDel = UIApplication.shared.delegate as! AppDelegate
-                    
-                    let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
-                    let menuVC = self.storyboard?.instantiateViewController(withIdentifier: "menuNavVC")
-                    appDel.drawerController.mainViewController = mainVC
-                    appDel.drawerController.drawerViewController = menuVC
-                    appDel.drawerController.drawerWidth = 150
-                    
-                    
-                    appDel.window?.rootViewController = appDel.drawerController
-                    appDel.window?.makeKeyAndVisible()
-                    
-                    
-                    // self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+                    self.segueToPartiesScreen()
                 }, withCancel: nil)
             }
         })
@@ -184,7 +184,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         let newUser = User(name: username.text!, email: email.text!, password: password.text!, id: (user?.uid)!)
                     self.SharedJamSeshModel.addNewUser(newUser: newUser)
                     self.SharedJamSeshModel.setMyUser(newUser: newUser)
-                    self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+                    self.segueToPartiesScreen()
                     }
                 }
                 
@@ -195,7 +195,39 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func joinAsGuestButtonPressed(_ sender: Any) {
+        self.loadingIndicatorView.isHidden = false
+        self.loadingIndicatorView.startAnimating()
+        self.overlay?.isHidden = false
+        Auth.auth().signInAnonymously() { (user, error) in
+            if(error != nil ){
+                self.dismissKeyboard()
+                self.loadingIndicatorView.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                self.overlay?.isHidden = true
+                SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
+            } else {
+            print(user)
+                let newUser = User(id: user!.uid, name: "Rando \(user!.uid.suffix(5))")
+                self.SharedJamSeshModel.addNewUser(newUser: newUser)
+                self.SharedJamSeshModel.setMyUser(newUser: newUser)
+                self.segueToPartiesScreen()
+            }
+        }
+    }
+    
+    func segueToPartiesScreen() {
+        print("segue to parties screen")
+        // KYDrawerController
+        let appDel = UIApplication.shared.delegate as! AppDelegate
         
+        let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
+        let menuVC = self.storyboard?.instantiateViewController(withIdentifier: "menuNavVC")
+        appDel.drawerController.mainViewController = mainVC
+        appDel.drawerController.drawerViewController = menuVC
+        appDel.drawerController.drawerWidth = 150
+        
+        appDel.window?.rootViewController = appDel.drawerController
+        appDel.window?.makeKeyAndVisible()
     }
     
     @IBAction func dismissKeyboardButton(_ sender: Any) {
