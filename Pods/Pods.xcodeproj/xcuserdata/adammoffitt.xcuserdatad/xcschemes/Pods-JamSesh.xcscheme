@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "876283AD89637EDACCB067F06B900866"
+               BlueprintIdentifier = "F7583A3FB246F48008AE1FF0771248B3"
                BuildableName = "Pods_JamSesh.framework"
                BlueprintName = "Pods-JamSesh"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "876283AD89637EDACCB067F06B900866"
+            BlueprintIdentifier = "F7583A3FB246F48008AE1FF0771248B3"
             BuildableName = "Pods_JamSesh.framework"
             BlueprintName = "Pods-JamSesh"
             ReferencedContainer = "container:Pods.xcodeproj">

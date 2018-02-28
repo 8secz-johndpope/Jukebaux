@@ -17,6 +17,7 @@ class User: NSObject {
     var age : Int
     var currentPartyID : Int
     var userID : String
+    var isHost : Bool
     
     override init() {
         username = ""
@@ -26,6 +27,7 @@ class User: NSObject {
         age = 0
         currentPartyID = 0
         userID = ""
+        isHost = false
     }
     
     convenience init(name: String, email: String, password: String) {
@@ -68,7 +70,8 @@ class User: NSObject {
             "email": email,
             "age": age,
             "currentPartyID": currentPartyID,
-            "userID": userID
+            "userID": userID,
+            "isHost" : isHost
         ]
     }
 }

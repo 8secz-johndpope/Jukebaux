@@ -30,6 +30,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
 //        return viewController
         self.navigationController?.delegate = self
         self.navigationController?.navigationBar.barTintColor = UIColor.purple
+        self.navigationItem.rightBarButtonItem?.style = UIBarButtonItemStyle.done
         self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
         
         loadPartiesFromFirebase()
@@ -136,11 +137,8 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
                                     let index = self.SharedJamSeshModel.parties.index(where: {$0.partyID == newParty.partyID})
                                     self.SharedJamSeshModel.parties[index!].image = UIImage(data: data1)!
                                     indexPath = IndexPath(row: index! , section: 0)
-                                    do {
-                                        try self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                                    } catch {
-                                        print("caught exception")
-                                    }
+                                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                                    
                                 }
                             }
                         }).resume()
@@ -157,7 +155,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             }
             if let childPartySnapshot = snapshot as? DataSnapshot {
                 if let childPartyID = (childPartySnapshot.value as! NSDictionary)["partyID"] as? String {
-                    if let i = self.SharedJamSeshModel.parties.index(where: { $0.partyID as! String == childPartyID }) {
+                    if let i = self.SharedJamSeshModel.parties.index(where: { $0.partyID == childPartyID }) {
                         print("observed removed in parties \(self.SharedJamSeshModel.parties[i].partyName)")
                         let rowToDelete = IndexPath.init(row: i, section: 0)
                         let rowsToDelete = [rowToDelete]
@@ -181,7 +179,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             if let childPartySnapshot = snapshot as? DataSnapshot {
                 let childPartyID = (childPartySnapshot.value as! NSDictionary)["partyID"] as! String
                 // Get changed song index in curent songs array
-                if let i = self.SharedJamSeshModel.parties.index(where: { $0.partyID as! String == childPartyID }) {
+                if let i = self.SharedJamSeshModel.parties.index(where: { $0.partyID == childPartyID }) {
                     if let partyDictionary = (childPartySnapshot.value as? NSDictionary) {
                     if let nowPlayingSong = partyDictionary["currentSong"] as? NSDictionary {
                         if let nowPlayingSongTitle = nowPlayingSong["songName"] as? String {
@@ -220,7 +218,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         })
     }
     
-    func handleRefresh(refreshControl: UIRefreshControl) {
+    @objc func handleRefresh(refreshControl: UIRefreshControl) {
         //loadData()
         self.loadPartiesFromFirebase()
         refreshControl.endRefreshing()
@@ -291,12 +289,15 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             if let refHandleObserve = partyHandleModify {
                 SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleObserve)
             }
-            
-            let party = SharedJamSeshModel.parties[indexPath!.row]
-            
-            let partyViewController = segue.destination as! PartyViewController
         } else if (segue.identifier == "hostPartySegue") {
             // TODO if user is already a host, dont let them host again
+            if ( SharedJamSeshModel.myUser.isHost ) {
+                let appearance = SCLAlertView.SCLAppearance(
+                    showCloseButton: true
+                )
+                let alertView = SCLAlertView(appearance: appearance)
+                alertView.showInfo("Hold on Party Animal!", subTitle: "You are currently hosting a party, and can only host one party at a time. Please end your current party before hosting another one!")
+            }
         }
     }
     

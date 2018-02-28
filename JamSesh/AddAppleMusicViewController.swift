@@ -10,15 +10,16 @@ import UIKit
 import MediaPlayer
 import MobileCoreServices
 import NVActivityIndicatorView
+import EmptyDataSet_Swift
 
-class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, EmptyDataSetSource, EmptyDataSetDelegate {
     
     @IBAction func keyboardDismissButton(_ sender: Any) {
         self.view.endEditing(true)
         searchSongTextField.resignFirstResponder()
     }
 
+    @IBOutlet var searchButton: UIButton!
     @IBOutlet var searchView: UIView!
     @IBOutlet var searchSongTextField: UITextField!
     
@@ -32,9 +33,13 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        searchButton.layer.cornerRadius = 10
         suggestedSongsTableView.delegate = self
         suggestedSongsTableView.dataSource = self
-    
+        suggestedSongsTableView.emptyDataSetSource = self
+        suggestedSongsTableView.emptyDataSetDelegate = self
+        suggestedSongsTableView.reloadEmptyDataSet()
         // Start loading view animation
         let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.height-self.searchView.frame.height)
             
@@ -52,6 +57,20 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     }
     @IBAction func searchSongButton(_ sender: Any) {
+        if(self.searchSongTextField.text != "") {
+            if(searchTerm != self.searchSongTextField.text){
+                self.searchSongTextField.resignFirstResponder()
+                searchTerm = self.searchSongTextField.text!
+                searchSongs(string: self.searchSongTextField.text!, completionHandler: {_ in
+                    DispatchQueue.main.async {
+                        self.suggestedSongsTableView.reloadData()
+                    }
+                })
+            }
+        }
+    }
+    
+    func validSearchCheck() {
         if(self.searchSongTextField.text != "") {
             if(searchTerm != self.searchSongTextField.text){
                 self.searchSongTextField.resignFirstResponder()
@@ -174,6 +193,122 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     func showLoadingAnimation() {
         self.loadingIndicatorView.startAnimating()
         self.loadingIndicatorView.isHidden = false
+    }
+    
+    //MARK: - DZNEmptyDataSetSource
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        let text = "Hey Mr. DJ,"
+        let font = UIFont.systemFont(ofSize: 22)
+        let textColor = UIColor.lightGray
+        let a = NSAttributedStringKey.font
+        let b = NSAttributedStringKey.foregroundColor
+        guard let attributes = [
+            a: font,
+            b: textColor
+            ] as? [NSAttributedStringKey : Any] else {
+                return NSAttributedString.init()
+        }
+        return NSAttributedString.init(string: text, attributes: attributes)
+    }
+    
+    
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+       let  text = "Type the name of the song you want to add and hit search!"
+        let font = UIFont.systemFont(ofSize: 13.0)
+       let  textColor = UIColor.black
+        
+        guard let attributes = [
+            NSAttributedStringKey.font: font,
+            NSAttributedStringKey.foregroundColor: textColor
+            ] as? [NSAttributedStringKey : Any] else {
+                return NSAttributedString.init()
+        }
+        return NSAttributedString.init(string: text, attributes: attributes)
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        return UIImage.init(named: "music-player")
+    }
+    
+    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+        let animation = CABasicAnimation.init(keyPath: "transform")
+        animation.fromValue = NSValue.init(caTransform3D: CATransform3DIdentity)
+        animation.toValue = NSValue.init(caTransform3D: CATransform3DMakeRotation(.pi/2, 0.0, 0.0, 1.0))
+        animation.duration = 0.25
+        animation.isCumulative = true
+        animation.repeatCount = MAXFLOAT
+        
+        return animation;
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+        
+        let text = "Search Songs";
+        let font = UIFont.systemFont(ofSize: 16)
+        let textColor = (state == .normal ? UIColor.black : UIColor.darkGray)
+        
+        guard let attributes = [
+            NSAttributedStringKey.font: font,
+            NSAttributedStringKey.foregroundColor: textColor
+            ] as? [NSAttributedStringKey : Any] else {
+                return NSAttributedString.init()
+        }
+        return NSAttributedString.init(string: text, attributes: attributes)
+    }
+    
+    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> UIImage? {
+        var imageName = "button_background_addSongs"
+        
+        if state == .normal {
+            imageName = imageName + "_normal"
+        }
+        if state == .highlighted {
+            imageName = imageName + "_highlight"
+        }
+        
+        var capInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        var rectInsets = UIEdgeInsets.zero
+        
+        let image = UIImage.init(named: imageName)
+        
+        return image?.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withAlignmentRectInsets(rectInsets)
+    }
+    
+    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+        return UIColor.lightGray
+    }
+    
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        return 0.0
+    }
+    
+    //MARK: - DZNEmptyDataSetDelegate Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        return false
+    }
+    
+    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+        return false
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+        self.validSearchCheck();
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+            self.validSearchCheck()
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        return -300
     }
 }
 

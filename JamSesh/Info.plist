@@ -18,6 +18,17 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.527226100051-dg56mbvbkjakgjt46hjsng2npo8ent28</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0.2</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -31,10 +42,18 @@
 	<string>$(TroJams) uses music</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take a photo for your hosted party</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Listening to music is lame without friends. Jukebaux uses your contacts to make it easy to invite your friends to join your party.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select photo for hosted party</string>
 	<key>Privacy – Photo Library Usage</key>
 	<string>Select photo for hosted party</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

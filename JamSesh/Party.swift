@@ -16,7 +16,6 @@ class Party {
     var password : String
     var users : Array<String>
     var image : UIImage
-    var imageURL : String
     var savedImageURL : String
     var partyName : String
     var numberJoined : Int
@@ -38,10 +37,9 @@ class Party {
         image = UIImage()
         partyName = ""
         numberJoined = 0
-        imageURL = ""
         savedImageURL = ""
         privateParty = false
-        songs = [] //Song(songName: "Closer", songArtist : "The Chainsmokers", songID : 1170699703, songImageUrl : "http://is3.mzstatic.com/image/thumb/Music71/v4/8b/78/46/8b78469f-6b82-0fb7-fddd-40a66f356347/source/100x100bb.jpg", songDuration: 245506), Song(songName: "Súbame La Radio", songArtist : "Enrique Iglesias", songID : 1206540519, songImageUrl : "http://is3.mzstatic.com/image/thumb/Music111/v4/01/70/ca/0170ca0e-d78b-7531-94ac-9194e29cabf0/source/100x100bb.jpg", songDuration: 208163), Song(songName: "Thunder", songArtist : "Imagine Dragons", songID : 1233502633, songImageUrl : "http://is1.mzstatic.com/image/thumb/Music117/v4/2c/6b/cc/2c6bcc08-8a7a-dd89-d344-4e649f2a1bf8/source/100x100bb.jpg", songDuration: 187145)]
+        songs = [] 
         currentSong = Song()
         currentSongPersistentIDKey = -1
         hasStarted = false
@@ -121,9 +119,7 @@ class Party {
     }
     
     convenience init(name: String , partyID: String, partyImage: UIImage, privateParty: Bool, password: String, numberJoined: Int) {
-        
         self.init()
-        
         self.partyID = partyID
         self.partyName = name
         self.image = partyImage
@@ -150,7 +146,10 @@ class Party {
     
     func addSong(songName: String, songArtist : String, songID : Int, songImageUrl : String, songDuration: Int) {
         if (!songs.contains(where: { $0.songID == songID })) { // check for not duplicate
-            songs.append(Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : songImageUrl, songDuration: songDuration, upVotes: 1))
+            let s = Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : songImageUrl, songDuration: songDuration, upVotes: 1)
+            s.suggestedBy = JamSeshModel.shared.myUser.username
+            print("set suggested by: \(s.suggestedBy)")
+            songs.append(s)
         }
     }
     
@@ -184,7 +183,10 @@ class Party {
                                                                             trackImageURL = tempResults[0]["artworkUrl100"] as! String
                                                                             //now that we got the imageURL, add the song
                                                                             if (!self.songs.contains(where: { $0.songID == songID })) { //check for not duplicate
-                                                                                self.songs.append(Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : trackImageURL, songImage: songImage, songDuration: songDuration, upVotes: 1))
+                                                                               let s = Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : trackImageURL, songImage: songImage, songDuration: songDuration, upVotes: 1)
+                                                                                s.suggestedBy = JamSeshModel.shared.myUser.username
+                                                                                print("set suggested by: \(s.suggestedBy)")
+                                                                                self.songs.append(s)
                                                                                 }
                                                                             completionHandler(true)
                                                                         } else {
@@ -235,7 +237,6 @@ class Party {
             "partyID": partyID,
             "password": password,
             "users": usersDict,
-            "imageURL": imageURL,
             "savedImageURL": savedImageURL,
             "partyName": partyName,
             "numberJoined": numberJoined,

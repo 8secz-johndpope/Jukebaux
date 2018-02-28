@@ -12,9 +12,11 @@ import FirebaseAuth
 import FirebaseDatabase
 import Shimmer
 import NVActivityIndicatorView
+import GoogleSignIn
 
-class LogInViewController: UIViewController, UITextFieldDelegate {
-
+class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
+    
+    var gSignInButton: GIDSignInButton!
     @IBOutlet var JamSeshLogo: UIImageView!
     
     @IBOutlet var tapToPartyButton: UIButton!
@@ -61,13 +63,30 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         overlay?.isHidden = true
         self.view.addSubview(overlay!)
         self.view.addSubview(loadingIndicatorView!)
+        
+        gSignInButton = GIDSignInButton(frame: CGRect(x: (self.view.frame.width/2)-25,y: 2*self.view.frame.height/3, width: 50,height: 100))
+        gSignInButton.isHidden = true
+        gSignInButton.colorScheme = GIDSignInButtonColorScheme.dark
+        self.view.addSubview(gSignInButton)
+        
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signIn()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
-        if( userDefaults.string(forKey: "email") !=  nil ){
-            let email = userDefaults.string(forKey: "email")
-            let password = userDefaults.string(forKey: "password")
-            logIn(email: email!, password: password!)
+        if Auth.auth().currentUser != nil {
+            print("easy auth")
+            self.loadingIndicatorView.isHidden = false
+            self.loadingIndicatorView.startAnimating()
+            self.overlay?.isHidden = false
+            loadUserFromFirebaseThenSegue()
+        } else {
+            print("hard auth")
+            if( userDefaults.string(forKey: "email") !=  nil ){
+                let email = userDefaults.string(forKey: "email")
+                let password = userDefaults.string(forKey: "password")
+                //logIn(email: email!, password: password!)
+            }
         }
     }
     
@@ -81,35 +100,36 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             self.usernameTextField.isHidden=false
             self.passwordTextField.isHidden=false
             self.logInButton.isHidden=false
+            self.gSignInButton.isHidden = false
             self.createAccountButton.isHidden=false
             self.joinAsGuestButton.isHidden=false
         })
-            
+        
         /*
-        UIView.animate(withDuration: 0.5,delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-            let frame = self.JamSeshLogo.frame
-            self.JamSeshLogo.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 100)
-            
-            /*
-            self.usernameTextField.isHidden=false
-            self.passwordTextField.isHidden=false
-            */
-            
-            self.tapToPartyButton.isHidden = true
-        }, completion: {_ in
-            self.usernameTextField.isHidden=false
-            self.passwordTextField.isHidden=false
-            self.logInButton.isHidden=false
-            self.createAccountButton.isHidden=false
-            self.joinAsGuestButton.isHidden=false
-            
-            /*
-            UIView.animate(withDuration: 0.5, animations: {
-                self.centerXAlignmentPassword.constant += self.view.bounds.width
-                self.centerXAlignmentUsername.constant += self.view.bounds.width
-            })*/
-            
-        }) */
+         UIView.animate(withDuration: 0.5,delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
+         let frame = self.JamSeshLogo.frame
+         self.JamSeshLogo.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 100)
+         
+         /*
+         self.usernameTextField.isHidden=false
+         self.passwordTextField.isHidden=false
+         */
+         
+         self.tapToPartyButton.isHidden = true
+         }, completion: {_ in
+         self.usernameTextField.isHidden=false
+         self.passwordTextField.isHidden=false
+         self.logInButton.isHidden=false
+         self.createAccountButton.isHidden=false
+         self.joinAsGuestButton.isHidden=false
+         
+         /*
+         UIView.animate(withDuration: 0.5, animations: {
+         self.centerXAlignmentPassword.constant += self.view.bounds.width
+         self.centerXAlignmentUsername.constant += self.view.bounds.width
+         })*/
+         
+         }) */
         
     }
     
@@ -117,7 +137,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
         return false
     }
-   
+    
     @IBAction func logInButtonPressed(_ sender: Any) {
         
         let email = self.usernameTextField.text
@@ -128,6 +148,58 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         logIn(email: email!, password: password!)
     }
     
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        // ...
+        if let error = error {
+            // ...
+            return
+        }
+        
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        googleLogIn(credential: credential)
+    }
+    
+    func googleLogIn(credential: AuthCredential) {
+        print("google log in")
+        Auth.auth().signIn(with: credential) { (user, error) in
+            if let error = error {
+                self.dismissKeyboard()
+                self.loadingIndicatorView.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                self.overlay?.isHidden = true
+                SCLAlertView().showError("Whoops!", subTitle: error.localizedDescription)
+            }
+            
+            print("made it to here")
+            print (credential)
+            self.loadUserFromFirebaseThenSegue()
+        }
+    }
+    
+    func loadUserFromFirebaseThenSegue() {
+        let uid = Auth.auth().currentUser?.uid
+        Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let dict = snapshot.value as? [String: AnyObject] {
+                let username = (dict["username"] as? String)!
+                let email = (dict["email"] as? String)!
+                let password = (dict["password"] as? String)!
+                self.userDefaults.setValue(email, forKey: "email")
+                self.userDefaults.setValue(password, forKey: "password")
+                let newUser = User(name: username, email:email, password:password)
+                newUser.userID = (dict["userID"] as? String)!
+                
+                self.SharedJamSeshModel.setMyUser(newUser:newUser)
+                self.loadingIndicatorView.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                self.overlay?.isHidden = true
+                self.segueToPartiesScreen()
+                print("should segue to parties")
+            }
+        }, withCancel: nil)
+        
+    }
     func logIn(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, err) in
             if(err != nil ){
@@ -138,25 +210,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 SCLAlertView().showError("Whoops!", subTitle: err!.localizedDescription)
             }
             else{
-                self.userDefaults.setValue(email, forKey: "email")
-                self.userDefaults.setValue(password, forKey: "password")
-                let uid = Auth.auth().currentUser?.uid
-                Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let dict = snapshot.value as? [String: AnyObject] {
-                        let username = (dict["username"] as? String)!
-                        let newUser = User(name: username, email:email, password:password)
-                        newUser.userID = (dict["userID"] as? String)!
-                        newUser.gender = (dict["gender"] as? String)!.characters.first!
-                        newUser.age = (dict["age"] as? Int)!
-                        
-                        self.SharedJamSeshModel.setMyUser(newUser:newUser)
-                        self.loadingIndicatorView.stopAnimating()
-                        self.loadingIndicatorView.isHidden = true
-                        self.overlay?.isHidden = true
-                    }
-                    
-                    self.segueToPartiesScreen()
-                }, withCancel: nil)
+                self.loadUserFromFirebaseThenSegue()
             }
         })
     }
@@ -182,16 +236,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                     }
                     else{
                         let newUser = User(name: username.text!, email: email.text!, password: password.text!, id: (user?.uid)!)
-                    self.SharedJamSeshModel.addNewUser(newUser: newUser)
-                    self.SharedJamSeshModel.setMyUser(newUser: newUser)
-                    self.segueToPartiesScreen()
+                        self.SharedJamSeshModel.addNewUser(newUser: newUser)
+                        self.SharedJamSeshModel.setMyUser(newUser: newUser)
+                        self.segueToPartiesScreen()
                     }
                 }
                 
             }
         }
-       alert.showInfo("Create an Account", subTitle: "")
-
+        alert.showInfo("Create an Account", subTitle: "")
+        
     }
     
     @IBAction func joinAsGuestButtonPressed(_ sender: Any) {
@@ -206,7 +260,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 self.overlay?.isHidden = true
                 SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
             } else {
-            print(user)
+                print(user)
                 let newUser = User(id: user!.uid, name: "Rando \(user!.uid.suffix(5))")
                 self.SharedJamSeshModel.addNewUser(newUser: newUser)
                 self.SharedJamSeshModel.setMyUser(newUser: newUser)
@@ -236,10 +290,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     func dismissKeyboard() {
         if self.usernameTextField.isFirstResponder {
-                self.usernameTextField.resignFirstResponder()
-            } else if self.passwordTextField.isFirstResponder {
-                self.passwordTextField.resignFirstResponder()
-            }
+            self.usernameTextField.resignFirstResponder()
+        } else if self.passwordTextField.isFirstResponder {
+            self.passwordTextField.resignFirstResponder()
+        }
         //self.dismissKeyboard()
     }
     

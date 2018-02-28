@@ -12,7 +12,7 @@ import MediaPlayer
 
 class PlayMusicHandler: NSObject {
 
-    let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+    let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer
     
     let serviceController = SKCloudServiceController()
     var storefrontID : String
@@ -138,11 +138,14 @@ class PlayMusicHandler: NSObject {
     }
     
     func appleMusicPlayTrackId(ids:[String]) {
-        applicationMusicPlayer.setQueueWithStoreIDs(ids)
+        applicationMusicPlayer.setQueue(with: ids)
         applicationMusicPlayer.play()
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
+    func clearQueue() {
+        applicationMusicPlayer.setQueue(with: [""])
+    }
     
     func nextSong() {
         applicationMusicPlayer.currentPlaybackTime = 0
@@ -171,7 +174,59 @@ class PlayMusicHandler: NSObject {
     }
     
     func playCloser() {
-        applicationMusicPlayer.setQueueWithStoreIDs(["1170699703"])
+        applicationMusicPlayer.setQueue(with: ["1170699703"])
         applicationMusicPlayer.play()
+    }
+    
+     func setupNowPlayingInfoCenter() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        self.updateNowPlayingInfoCenter(artwork: UIImage())
+        MPRemoteCommandCenter.shared().playCommand.addTarget {event in
+            self.applicationMusicPlayer.play()
+            self.updateNowPlayingInfoCenter()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().pauseCommand.addTarget {event in
+            self.applicationMusicPlayer.pause()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget {event in
+            print("party music handler skip")
+            self.nextSong()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget {event in
+            self.prevSong()
+            return .success
+        }
+    }
+    
+     func updateNowPlayingInfoCenter(artwork: UIImage? = nil) {
+        guard let file = applicationMusicPlayer.nowPlayingItem else {
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = [String: AnyObject]()
+            return
+        }
+        print("file: \(file.title)")
+        
+            if let imageURL = URL(string: JamSeshModel.shared.parties[JamSeshModel.shared.currentPartyIndex].currentSong.songImageURL) {
+                URLSession.shared.dataTask(with: imageURL, completionHandler: { (data, response, error) in
+                        //ran into some download error
+                        if error != nil {
+                            return
+                        }
+                    print("hi")
+                    MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: UIImage(data: data!)!)
+                })
+            }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyTitle: file.title ?? "Test",
+//            MPMediaItemPropertyAlbumTitle: file.albumTitle ?? "",
+//            MPMediaItemPropertyArtist: file.artist ?? "",
+//            MPMediaItemPropertyPlaybackDuration: applicationMusicPlayer.nowPlayingItem?.playbackDuration,
+//            MPNowPlayingInfoPropertyElapsedPlaybackTime: applicationMusicPlayer.currentPlaybackTime
+        ]
+    }
+    func stopSystemMusicPlayer() {
+        MPMusicPlayerController.systemMusicPlayer.stop()
     }
 }

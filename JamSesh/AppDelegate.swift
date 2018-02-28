@@ -13,10 +13,12 @@ import IQKeyboardManagerSwift
 import AVFoundation
 import MediaPlayer
 import KYDrawerController
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
+    
     var window: UIWindow?
     var drawerController = KYDrawerController.init(drawerDirection: .left, drawerWidth: 300)
     
@@ -33,17 +35,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         super.init()
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = false
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().signOut()
+
+        let partyMusicHandler = PlayMusicHandler.shared
+        partyMusicHandler.stopSystemMusicPlayer()
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.sharedManager().enable = true
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-            try AVAudioSession.sharedInstance().setActive(false)
-        } catch {
-            print(error)
-        }
+//        do {
+//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+//            try AVAudioSession.sharedInstance().setActive(false)
+//        } catch {
+//            print(error)
+//        }
         
         return true
     }
@@ -56,10 +63,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        let partyMusicHandler = PlayMusicHandler.shared
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        //partyMusicHandler.applicationMusicPlayer.pause()
+        let party = JamSeshModel.shared.parties[JamSeshModel.shared.currentPartyIndex]
+        var trackIDsInPlaylist :[String] = []
+        for song in party.songs {
+            trackIDsInPlaylist.append(String(describing: song.songID))
+        }
+        print("did enter background: \(trackIDsInPlaylist)")
+        partyMusicHandler.applicationMusicPlayer.setQueue(with: trackIDsInPlaylist)
+        // partyMusicHandler.setupNowPlayingInfoCenter()
+        print("bye bye")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        let partyMusicHandler = PlayMusicHandler.shared
+        if partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.paused {
+            print("resuming upon entering foreground")
+            partyMusicHandler.applicationMusicPlayer.play()
+        }
+        //partyMusicHandler.clearQueue()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -69,103 +94,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         do {
-           // try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-            //try AVAudioSession.sharedInstance().setActive(false)
             let partyMusicHandler = PlayMusicHandler.shared
+            print("APP ENDING STOP PARTYMUSICHANDLER")
             partyMusicHandler.stop()
-            //let applicationMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
-            //applicationMusicPlayer.pause()
+            partyMusicHandler.stopSystemMusicPlayer()
             
         } catch {
             print(error)
         }
     }
-
-    /*
-    private var _drawerViewController: KGDrawerViewController?
-    var drawerViewController: KGDrawerViewController {
-        get {
-            if let viewController = _drawerViewController {
-                return viewController
-            }
-            return prepareDrawerViewController()
+    
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any])
+        -> Bool {
+            return GIDSignIn.sharedInstance().handle(url,
+                                                     sourceApplication:options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                                                     annotation: [:])
+    }
+    
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: sourceApplication,
+                                                 annotation: annotation)
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        // ...
+        if let error = error {
+            // ...
+            return
         }
-    }
-    
-    func prepareDrawerViewController() -> KGDrawerViewController {
-        let drawerViewController = KGDrawerViewController()
         
-        drawerViewController.centerViewController = drawerSettingsViewController()
-        drawerViewController.leftViewController = leftViewController()
-        // drawerViewController.rightViewController = rightViewController()
-        drawerViewController.backgroundImage = UIImage(named: "purpleBackground")
-        
-        _drawerViewController = drawerViewController
-        
-        return drawerViewController
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        // ...
     }
     
-    private func drawerStoryboard() -> UIStoryboard {
-        let storyboard = UIStoryboard(name: kKGDrawersStoryboardName, bundle: nil)
-        return storyboard
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
     }
-    
-    private func viewControllerForStoryboardId(storyboardId: String) -> UIViewController {
-        let viewController: UIViewController = drawerStoryboard().instantiateViewControllerWithIdentifier(storyboardId)
-        return viewController
-    }
-    
-    func drawerSettingsViewController() -> UIViewController {
-        let viewController = viewControllerForStoryboardId(kKGDrawerSettingsViewControllerStoryboardId)
-        return viewController
-    }
-    
-    func sourcePageViewController() -> UIViewController {
-        let viewController = viewControllerForStoryboardId(kKGDrawerWebViewViewControllerStoryboardId)
-        return viewController
-    }
-    
-    private func leftViewController() -> UIViewController {
-        let viewController = viewControllerForStoryboardId(kKGLeftDrawerStoryboardId)
-        return viewController
-    }
-    
-    private func rightViewController() -> UIViewController {
-        let viewController = viewControllerForStoryboardId(kKGRightDrawerStoryboardId)
-        return viewController
-    }
-    
-    func toggleLeftDrawer(sender:AnyObject, animated:Bool) {
-        _drawerViewController?.toggleDrawer(.Left, animated: true, complete: { (finished) -> Void in
-            // do nothing
-        })
-    }
-    
-    func toggleRightDrawer(sender:AnyObject, animated:Bool) {
-        _drawerViewController?.toggleDrawer(.Right, animated: true, complete: { (finished) -> Void in
-            // do nothing
-        })
-    }
-    
-    private var _centerViewController: UIViewController?
-    var centerViewController: UIViewController {
-        get {
-            if let viewController = _centerViewController {
-                return viewController
-            }
-            return drawerSettingsViewController()
-        }
-        set {
-            if let drawerViewController = _drawerViewController {
-                drawerViewController.closeDrawer(drawerViewController.currentlyOpenedSide, animated: true) { finished in }
-                if drawerViewController.centerViewController != newValue {
-                    drawerViewController.centerViewController = newValue
-                }
-            }
-            _centerViewController = newValue
-        }
-    }
-    */
-
 }
 

@@ -17,7 +17,9 @@ class Song {
     var songImageURL : String
     var upVotes: Int
     var songDuration: Int // in seconds
-    
+    var suggestedBy : String // username who suggested it
+    var upvotedBy : [String:Int] // user ids of those who have upvoted this todo change to bools
+    var downvotedBy : [String:Int] // user ids of those who have upvoted this todo change to bool
     init() {
         self.songName = ""
         self.songArtist = ""
@@ -26,6 +28,9 @@ class Song {
         self.songImage = UIImage(named:"party")!
         self.upVotes = 1
         self.songDuration = 0
+        self.suggestedBy = ""
+        self.upvotedBy = [:]
+        self.downvotedBy = [:]
     }
     
     convenience init(songName: String, songArtist : String, songID : Int, songImageURL : String, songDuration: Int, upVotes: Int) {
@@ -39,7 +44,7 @@ class Song {
         let url = URL(string: songImageURL)
         if(url != nil) {
             DispatchQueue.global(qos: .userInitiated).async {
-                if let data = try? Data(contentsOf: url!) { //make sure your image in this URL does exist, otherwise unwrap in a if let check / try-catch
+                if let data = try? Data(contentsOf: url!) { //make sure image in this URL does exist, otherwise unwrap in a if let check / try-catch
                     self.songImage = UIImage(data: data)!
                 }
             }
@@ -96,6 +101,15 @@ class Song {
         if dictionary["upVotes"] != nil {
             self.upVotes = dictionary["upVotes"] as! Int
         }
+        if dictionary["suggestedBy"] != nil {
+            self.suggestedBy = dictionary["suggestedBy"] as! String
+        }
+        if dictionary["upvotedBy"] != nil {
+            self.upvotedBy = dictionary["upvotedBy"] as! [String:Int]
+        }
+        if dictionary["downvotedBy"] != nil {
+            self.downvotedBy = dictionary["downvotedBy"] as! [String:Int]
+        }
     }
     
     // convert from dictionary but dont pull song image
@@ -120,6 +134,15 @@ class Song {
         if dictionary["upVotes"] != nil {
             self.upVotes = dictionary["upVotes"] as! Int
         }
+        if dictionary["suggestedBy"] != nil {
+            self.suggestedBy = dictionary["suggestedBy"] as! String
+        }
+        if dictionary["upvotedBy"] != nil {
+            self.upvotedBy = dictionary["upvotedBy"] as! [String:Int]
+        }
+        if dictionary["downvotedBy"] != nil {
+            self.downvotedBy = dictionary["downvotedBy"] as! [String:Int]
+        }
     }
 
     func toAnyObject() -> Any {
@@ -129,7 +152,10 @@ class Song {
             "songID": songID,
             "songImageURL": songImageURL,
             "upVotes": upVotes,
-            "songDuration": songDuration
+            "songDuration": songDuration,
+            "suggestedBy" : suggestedBy,
+            "upvotedBy" : upvotedBy,
+            "downvotedBy" : downvotedBy
         ]
     }
 

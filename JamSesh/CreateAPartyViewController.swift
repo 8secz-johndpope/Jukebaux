@@ -10,8 +10,8 @@ import UIKit
 import SCLAlertView
 import StoreKit
 
-class CreateAPartyViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-
+class CreateAPartyViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SKCloudServiceSetupViewControllerDelegate {
+    
     @IBOutlet var partyNameTextField: UITextField!
     @IBOutlet var cameraButton: UIButton!
     @IBOutlet var photoLibraryButton: UIButton!
@@ -20,7 +20,7 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     @IBOutlet var choosePasswordLabel: UILabel!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var createPartyButton: UIButton!
-    
+    var cloudServiceController = SKCloudServiceController()
     let imagePicker = UIImagePickerController()
     let SharedJamSeshModel = JamSeshModel.shared
     let playMusicHandler = PlayMusicHandler.shared
@@ -30,7 +30,7 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
         imagePicker.delegate = self
         self.appleMusicCheckIfDeviceCanPlayback()
     }
-
+    
     @IBAction func imageButtonTapped(_ sender: AnyObject) {
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
@@ -88,7 +88,7 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func createAParty(_ sender: Any) {
         if let partyName = partyNameTextField.text,
             let partyImage = partyImage.image,
@@ -96,6 +96,7 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
             var password1 = ""
             if password != nil { password1 = password }
             SharedJamSeshModel.newParty(name: partyName , partyImage: partyImage, privateParty: privatePartySwitch.isOn, password: password1, numberJoined: 1, hostName: SharedJamSeshModel.myUser.username, hostID: SharedJamSeshModel.myUser.userID)
+            SharedJamSeshModel.userIsHosting()
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -123,8 +124,11 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     
     // Check if the device is capable of playback
     func appleMusicCheckIfDeviceCanPlayback() {
-        let serviceController = SKCloudServiceController()
-            serviceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
+        cloudServiceController = SKCloudServiceController()
+        SKCloudServiceController.requestAuthorization { (status) in
+            if status != .authorized { return }
+            
+            self.cloudServiceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
                 if capability.contains(SKCloudServiceCapability.musicCatalogPlayback) {
                     print("The user has an Apple Music subscription and can playback music!")
                     
@@ -132,23 +136,74 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
                     print("The user has an Apple Music subscription, can playback music AND can add to the Cloud Music Library")
                     
                 } else {
-                    print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one?")
+                    print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one")
+                    if capability.contains(.musicCatalogSubscriptionEligible) &&
+                        !capability.contains(.musicCatalogPlayback) {
+                        print("you can use SKCloudServiceSetupViewController")
+                    }
                     self.promptAppleMusicPurchase()
                     // TOOO hunget got this error but he pays for apple music ...
                 }
+            }
         }
     }
     
     func promptAppleMusicPurchase() {
-        let alert = SCLAlertView()
-        alert.addButton("Purchase Apple Music Subscription") {
-            print("purchase apple music")
-            
+        DispatchQueue.main.async {
+            let appearance = SCLAlertView.SCLAppearance(
+                showCloseButton: false
+            )
+            let alert = SCLAlertView(appearance: appearance)
+            alert.addButton("Start free trial!") {
+                print("purchase apple music")
+                let controller = SKCloudServiceSetupViewController()
+                print(1)
+                controller.delegate = self
+                
+                controller.load(options: [.action : SKCloudServiceSetupAction.subscribe],
+                                completionHandler: { (result, error) in
+                                    print("loaded")
+                                    DispatchQueue.main.async {
+                                        print(4)
+                                        self.present(controller, animated: true, completion: {
+                                            print("presented1")
+                                        })
+                                    }
+                })
+                //                DispatchQueue.main.async {
+                //                    print(2)
+                //                    self.present(controller, animated: true, completion: {
+                //                        print("presented2")
+                //                    })
+                //                }
+                print(3)
+            }
+            alert.addButton("No thanks!") {
+                self.navigationController?.popViewController(animated: true)
+            }
+            alert.showInfo("Whoops! To Host a party you need an Apple Music subscription.", subTitle: "Start a free trial today?")
         }
-        alert.addButton("No thanks!") {
-            self.navigationController?.popViewController(animated: true)
-        }
-        alert.showInfo("Whoops! To Host a party you need an Apple Music subscription.", subTitle: "Start a free trial today?")
     }
-
+    
+    func cloudServiceSetupViewControllerDidDismiss(_ cloudServiceSetupViewController: SKCloudServiceSetupViewController) {
+        print(#function)
+    }
+    
+    func getTitle() {
+        let alert = SCLAlertView()
+        let name = alert.addTextField("Party name")
+        alert.addButton("Next") {
+            self.getImage(name: name.text!)
+        }
+        alert.showInfo("Choose a name for your party", subTitle: "No pressure just make it good")
+    }
+    
+    func getImage(name: String) {
+        let alert = SCLAlertView()
+        alert.addButton("Create Party") {
+            self.SharedJamSeshModel.newParty(name: name , partyImage: UIImage(named: "party")!, privateParty: false, password: "", numberJoined: 1, hostName: self.SharedJamSeshModel.myUser.username, hostID: self.SharedJamSeshModel.myUser.userID)
+            self.SharedJamSeshModel.userIsHosting()
+        }
+        alert.showInfo("Choose an image for your party!", subTitle: "")
+    }
 }

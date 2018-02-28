@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import SwiftyJSON
 
 class JamSeshModel {
     
@@ -20,6 +21,7 @@ class JamSeshModel {
     var storage : Storage
     var storageRef : StorageReference
     var myUser : User
+    var topTracks : [String:String] = [:]
     
     //singleton
     static var shared = JamSeshModel()
@@ -67,6 +69,21 @@ class JamSeshModel {
         }
     }
     
+    func deletePartyImage(imageName: String) {
+        // Create a reference to the file to delete
+        let desertRef = storageRef.child("\(imageName).png")
+        
+        // Delete the file
+        desertRef.delete { error in
+            if let error = error {
+                // Uh-oh, an error occurred!
+                print(error)
+            } else {
+                // File deleted successfully
+            }
+        }
+    }
+    
     func setPartySong(song: Song) {
         
         //set current song on firebase
@@ -104,6 +121,14 @@ class JamSeshModel {
         ref.child("users").child(newUser.userID).setValue(newUser.toAnyObject())
     }
     
+    func userDoneHosting() {
+         ref.child("users").child(self.myUser.userID).child("isHost").setValue(false)
+    }
+    
+    func userIsHosting() {
+        ref.child("users").child(self.myUser.userID).child("isHost").setValue(true)
+    }
+    
     //update the numberJoined and playlist of the party
     func updatePartyOnFirebase(party: Party, completionHandler: @escaping CompletionHandler) {
             ref.child("parties").child(party.partyID).child("numberJoined").setValue(party.numberJoined)
@@ -131,6 +156,42 @@ class JamSeshModel {
         string1 = string1.replacingOccurrences(of: "_C", with: "]")
         string1 = string1.replacingOccurrences(of: "_S", with: "/")
         return string1
+    }
+    
+    func getTopTracks(completion: @escaping ()->()) {
+        print("get top tracks")
+        let urlString = URL(string: "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=23ab27800668436c2cfcae1c18c9d369&format=json")
+        if let url = urlString {
+            print(url)
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print(data ?? "boo")
+                    if let usableData = data {
+                        print("*****************")
+                        let json = JSON(usableData)
+                        print(json)
+                        var trackArtistDictionary : [String:String] = [:]
+                        let tracksRoot = json["tracks"].dictionaryValue
+                        let tracks = JSON(tracksRoot["track"]?.array)
+                        for (index,subJson):(String, JSON) in tracks {
+                            if Int(index)! > 25 {
+                                break
+                            }
+                            let artist = subJson["artist"]["name"].stringValue
+                            let track = subJson["name"].stringValue
+                            trackArtistDictionary[track] = artist
+                            print(track)
+                            print(trackArtistDictionary[track]!)
+                        }
+                        self.topTracks = trackArtistDictionary
+                        completion()
+                    }
+                }
+            }
+            task.resume()
+        }
     }
 }
 

@@ -24,14 +24,18 @@ import UIKit
 import Photos
 import Firebase
 import JSQMessagesViewController
+import FLAnimatedImage
+import SCLAlertView
 
-final class FirebaseChatViewController: JSQMessagesViewController {
+final class FirebaseChatViewController: JSQMessagesViewController, AMGifPickerDelegate, AMGifViewModelDelegate, UISearchBarDelegate  {
+    
     
     // MARK: Properties
     private let imageURLNotSetKey = "NOTSET"
+    private let gifURLNotSetKey = "GIFNOTSET"
     
     var channelRef: DatabaseReference?
-    
+    //let g = Giphy(apiKey: Giphy.PublicBetaAPIKey)
     private lazy var messageRef: DatabaseReference = self.channelRef!.child("messages")
     fileprivate lazy var storageRef: StorageReference = Storage.storage().reference()
     private lazy var userIsTypingRef: DatabaseReference = self.channelRef!.child("typingIndicator").child(self.senderId)
@@ -58,10 +62,67 @@ final class FirebaseChatViewController: JSQMessagesViewController {
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
     
+    func gifPicker(_ picker: AMGifPicker, didSelected gif: AMGif) {
+        let newGif = gif.translate(preferred: .low)
+        print(newGif.gifUrl)
+        gifModel = AMGifViewModel.init(newGif)
+        gifModel?.delegate = self
+        gifModel?.fetchData()
+        
+        gifHeightConstr.constant = newGif.size.height
+        gifWidthConstr.constant = newGif.size.width
+        
+        prepareGIFForSend(gifURL: newGif.gifUrl, gifKey: newGif.key)
+    }
+    var gifView: AMGifPicker!
+    var gifHeightConstr: NSLayoutConstraint!
+    var gifWidthConstr: NSLayoutConstraint!
+    var imageView = FLAnimatedImageView()
+    var gifModel: AMGifViewModel?
+    var heightConstr: NSLayoutConstraint!
+    var widthConstr: NSLayoutConstraint!
+    var searchField: UITextField!
+    var searchBar : UISearchBar!
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let configuration = AMGifPickerConfiguration(apiKey: "64RLJtsFr7zEXrFbzsAetbduFJU3qpF6", direction: .horizontal)
+        print(configuration)
+        
+        gifView = AMGifPicker(configuration: configuration)
+        //self.inputToolbar.addGIFtoToolbar()
+        view.addSubview(gifView)
+        gifView.translatesAutoresizingMaskIntoConstraints = false
+        
+        gifView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        gifView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        gifView.bottomAnchor.constraint(equalTo: self.inputToolbar.topAnchor).isActive = true
+        gifView.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        
+        gifHeightConstr = imageView.heightAnchor.constraint(equalToConstant: 200)
+        gifWidthConstr = imageView.widthAnchor.constraint(equalToConstant: 200)
+        gifHeightConstr.isActive = true
+        gifWidthConstr.isActive = true
+        
+        let yPos = ((view.frame.height-self.inputToolbar.frame.height)-75)-30
+        searchBar = UISearchBar(frame: CGRect(x: 0, y: yPos, width: view.frame.width, height: 30))
+        searchBar.placeholder = "Search GIFs"
+        searchBar.showsSearchResultsButton = true
+        searchBar.showsCancelButton = true
+        searchBar.searchBarStyle = UISearchBarStyle.default
+        searchBar.delegate = self
+        searchBar.clipsToBounds = true
+        searchBar.layer.cornerRadius = 10
+        view.addSubview(searchBar)
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        searchBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        searchBar.bottomAnchor.constraint(equalTo: self.gifView.topAnchor).isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: 30).isActive = true
+
+        gifView.delegate = self
+        
         self.senderId = Auth.auth().currentUser?.uid
         observeMessages()
         
@@ -96,6 +157,7 @@ final class FirebaseChatViewController: JSQMessagesViewController {
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
+        print("1: \(indexPath.row): \(message.media)")
         if message.senderId == senderId { // 2
             return outgoingBubbleImageView
         } else { // 3
@@ -105,10 +167,15 @@ final class FirebaseChatViewController: JSQMessagesViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
-        
+        let red:CGFloat = CGFloat(drand48())
+        let green:CGFloat = CGFloat(drand48())
+        let blue:CGFloat = CGFloat(drand48())
+        cell.backgroundColor = UIColor(red:red, green: green, blue: blue, alpha: 1.0)
         let message = messages[indexPath.item]
-        
-        if message.senderId == senderId { // 1
+        print("2: \(indexPath.row): \(message.media)")
+        //let view = UIView(frame: x:0,y:0,)
+        //cell.setMediaView(UIImageView(image: (message.media as! JSQPhotoMediaItem).image))
+       if message.senderId == senderId { // 1
             cell.textView?.textColor = UIColor.white // 2
         } else {
             cell.textView?.textColor = UIColor.black // 3
@@ -148,6 +215,7 @@ final class FirebaseChatViewController: JSQMessagesViewController {
             // We can use the observe method to listen for new
             // messages being written to the Firebase DB
             newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+                print("child added")
                 let messageData = snapshot.value as! Dictionary<String, String>
                 
                 if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
@@ -161,8 +229,15 @@ final class FirebaseChatViewController: JSQMessagesViewController {
                             self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: nil)
                         }
                     }
-                } else {
-                    print("Error! Could not decode message data")
+                } else if let id = messageData["senderId"] as String!, let gifURL = messageData["gifURL"] as String! {
+                    print("found gif")
+                    if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
+                        print("1")
+                        self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem)
+                        print("2")
+                        self.fetchGIFDataAtURL(gifURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: nil)
+                        print("3")
+                    }
                 }
             })
             
@@ -179,10 +254,14 @@ final class FirebaseChatViewController: JSQMessagesViewController {
                     if let mediaItem = self.photoMessageMap[key] {
                         self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: key)
                     }
+                } else if let gifURL = messageData["gifURL"] as String! {
+                    // The photo has been updated.
+                    if let mediaItem = self.photoMessageMap[key] {
+                        self.fetchGIFDataAtURL(gifURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: key)
+                    }
                 }
             })
         }
-        print ("stupid face")
     }
     
     private func fetchImageDataAtURL(_ photoURL: String, forMediaItem mediaItem: JSQPhotoMediaItem, clearsPhotoMessageMapOnSuccessForKey key: String?) {
@@ -212,6 +291,52 @@ final class FirebaseChatViewController: JSQMessagesViewController {
                 self.photoMessageMap.removeValue(forKey: key!)
             })
         })
+    }
+    
+    private func fetchGIFDataAtURL(_ gifURL: String, forMediaItem mediaItem: JSQPhotoMediaItem, clearsPhotoMessageMapOnSuccessForKey key: String?) {
+        print ( "fetchGIFDataAtURL")
+//            let g = GPHMedia()
+//            let newGif = AMGif(g, preferred: .high)
+//            newGif.gifURL = gifURL
+//            print(newGif.gifUrl)
+//            gifModel = AMGifViewModel.init(newGif)
+//            gifModel?.delegate = self
+//            gifModel?.fetchData()
+//            mediaItem.image = UIImage.gifWithData(data!)
+        
+        guard let bundleURL = URL(string: gifURL)
+            else {
+                print("SwiftGif: This image named \"\(gifURL)\" does not exist")
+                return
+        }
+        
+        // Validate data
+        guard let imageData = try? Data(contentsOf: bundleURL) else {
+            print("SwiftGif: Cannot turn image named \"\(gifURL)\" into NSData")
+            return
+        }
+        
+        guard let source = CGImageSourceCreateWithData(imageData as CFData, nil) else {
+            print("SwiftGif: Source for the image does not exist")
+            return
+        }
+        
+        mediaItem.image = UIImage.animatedImageWithSource(source)
+        self.collectionView.reloadData()
+        guard key != nil else {
+            return
+        }
+        self.photoMessageMap.removeValue(forKey: key!)
+
+        //mediaItem.image = UIImage(named: "party")
+        /* UIImage.gifWithURL(gifURL, completion: {
+                print(" setting image for gif at \(gifURL)")
+                self.collectionView.reloadData()
+                guard key != nil else {
+                    return
+                }
+                //self.photoMessageMap.removeValue(forKey: key!)
+            }) */
     }
     
     private func observeTyping() {
@@ -271,6 +396,43 @@ final class FirebaseChatViewController: JSQMessagesViewController {
         return itemRef.key
     }
     
+    func sendGIFMessage() -> String? {
+        let itemRef = messageRef.childByAutoId()
+        
+        let messageItem = [
+            "gifURL": gifURLNotSetKey,
+            "senderId": senderId!,
+            "senderName": senderDisplayName!,
+            ]
+        
+        //itemRef.setValue(messageItem)
+        
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        
+        finishSendingMessage()
+        return itemRef.key
+    }
+    
+    func prepareGIFForSend(gifURL: String, gifKey: String) {
+        print("prepareGIFForSend")
+        let itemRef = messageRef.childByAutoId()
+        
+        let messageItem = [
+            "gifURL": gifURL,
+            "senderId": senderId!,
+            "senderName": senderDisplayName!,
+            ]
+        
+        itemRef.setValue(messageItem)
+        
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        
+        finishSendingMessage()
+//        if let key = sendGIFMessage() {
+//            self.setGIFURL(gifURL, forGIFMessageWithKey: key)
+//        }
+    }
+    
     func setImageURL(_ url: String, forPhotoMessageWithKey key: String) {
         let itemRef = messageRef.child(key)
         itemRef.updateChildValues(["photoURL": url])
@@ -289,15 +451,15 @@ final class FirebaseChatViewController: JSQMessagesViewController {
     }
     
     override func didPressAccessoryButton(_ sender: UIButton) {
-        let picker = UIImagePickerController()
-        picker.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
-        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
-            picker.sourceType = UIImagePickerControllerSourceType.camera
-        } else {
-            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        }
+                let picker = UIImagePickerController()
+                picker.delegate = self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate
+                if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
+                    picker.sourceType = UIImagePickerControllerSourceType.camera
+                } else {
+                    picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+                }
         
-        present(picker, animated: true, completion:nil)
+                present(picker, animated: true, completion:nil)
     }
     
     private func addMessage(withId id: String, name: String, text: String) {
@@ -341,7 +503,6 @@ extension FirebaseChatViewController: UIImagePickerControllerDelegate, UINavigat
             // 2
             let assets = PHAsset.fetchAssets(withALAssetURLs: [photoReferenceUrl], options: nil)
             let asset = assets.firstObject
-            
             // 3
             if let key = sendPhotoMessage() {
                 // 4
@@ -349,7 +510,7 @@ extension FirebaseChatViewController: UIImagePickerControllerDelegate, UINavigat
                     let imageFileURL = contentEditingInput?.fullSizeImageURL
                     
                     // 5
-                    let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
+                    let path = "\(String(describing: Auth.auth().currentUser?.uid))/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
                     
                     // 6
                     self.storageRef.child(path).putFile(from: imageFileURL!, metadata: nil) { (metadata, error) in
@@ -369,6 +530,61 @@ extension FirebaseChatViewController: UIImagePickerControllerDelegate, UINavigat
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion:nil)
+    }
+    
+    func giphyModelDidBeginLoadingThumbnail(_ item: AMGifViewModel?) {}
+    func giphyModelDidEndLoadingThumbnail(_ item: AMGifViewModel?) {}
+    func giphyModelDidBeginLoadingGif(_ item: AMGifViewModel?) {}
+    
+    func giphyModel(_ item: AMGifViewModel?, thumbnail data: Data?) {
+    }
+    
+    func giphyModel(_ item: AMGifViewModel?, gifData data: Data?) {
+//        let appearance = SCLAlertView.SCLAppearance (
+//            showCloseButton: true
+//        )
+//        let alert = SCLAlertView(appearance: appearance)
+//        let imageView = FLAnimatedImageView(frame: CGRect(x: 10, y: 0, width: alert.view.frame.width-20, height: 200))
+//        imageView.animatedImage = FLAnimatedImage(animatedGIFData: data)
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.leftAnchor.constraint(greaterThanOrEqualTo: alert.view.leftAnchor).isActive = true
+//        imageView.rightAnchor.constraint(lessThanOrEqualTo: alert.view.rightAnchor).isActive = true
+//        imageView.centerXAnchor.constraint(equalTo: alert.view.centerXAnchor).isActive = true
+//        imageView.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 100).isActive = true
+//        heightConstr = imageView.heightAnchor.constraint(equalToConstant: gifHeightConstr.constant)
+//        widthConstr = imageView.widthAnchor.constraint(equalToConstant: gifWidthConstr.constant)
+//
+//        alert.customSubview = imageView
+//        alert.addButton("Send") {
+//
+//        }
+//        alert.addButton("Cancel") {
+//            self.dismiss(animated: true)
+//        }
+//        alert.showSuccess("Send GIF?", subTitle: "")
+        
+        
+        
+    }
+    
+    func giphyModel(_ item: AMGifViewModel?, gifProgress progress: CGFloat) {}
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print("searchbar did end editing")
+        self.searchBar.endEditing(true)
+        self.searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextShouldEndEditing(_ searchBar: UISearchBar) {
+        print("searchbar did end editing")
+        self.searchBar.endEditing(true)
+        self.searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.endEditing(true)
+        self.searchBar.resignFirstResponder()
+        gifView.search(searchBar.text)
     }
 }
 

@@ -21,7 +21,7 @@ extension UIImage {
         return UIImage.animatedImageWithSource(source)
     }
     
-    public class func gifWithURL(_ gifUrl:String) -> UIImage? {
+    public class func gifWithURL(_ gifUrl:String, completion: ()->() ) -> UIImage? {
         // Validate URL
         guard let bundleURL = URL(string: gifUrl)
             else {
@@ -34,7 +34,7 @@ extension UIImage {
             print("SwiftGif: Cannot turn image named \"\(gifUrl)\" into NSData")
             return nil
         }
-        
+        print("got gif data")
         return gifWithData(imageData)
     }
     
