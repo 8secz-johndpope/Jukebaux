@@ -81,6 +81,9 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         print("view did load")
         self.becomeFirstResponder()
+//        self.edgesForExtendedLayout = []
+//        self.extendedLayoutIncludesOpaqueBars = false
+//       self.automaticallyAdjustsScrollViewInsets = false
         
         // Set up loading view animation
         loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
@@ -143,7 +146,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         dismissButton.titleLabel?.textColor = UIColor.purple
         dismissButton.addTarget(self, action:#selector(dismissEmptyPlaylistButtonPressed), for: .touchUpInside)
         //emptyPlaylistButton.addSubview(dismissButton)
-        chatBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat"), style: .done, target: self, action: #selector(chatBarButtonPressed))
+        //chatBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat"), style: .done, target: self, action: #selector(chatBarButtonPressed))
         // Check if the user is the host of the party. Being the host will allow them to perform functionalities like playing music etc.
         if SharedJamSeshModel.myUser.userID == currentParty.hostID { // User is Host
             isHostLabel.text = "You are the Host"
@@ -152,10 +155,11 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             nextButton.isHidden = false
             suggestedByLabel.isHidden = true
             endPartyBarButtonItem =  UIBarButtonItem(title: "End Party", style: UIBarButtonItemStyle.plain, target: self, action: #selector(endPartyButtonPressed))
-            self.navigationItem.rightBarButtonItems = [chatBarButtonItem, endPartyBarButtonItem]
+//            self.navigationItem.rightBarButtonItems = [chatBarButtonItem, endPartyBarButtonItem]
+            self.navigationItem.rightBarButtonItems = [endPartyBarButtonItem]
         } else { // user is not host
             isHost  = false
-            self.navigationItem.rightBarButtonItems = [chatBarButtonItem]
+            //self.navigationItem.rightBarButtonItems = [chatBarButtonItem]
             isHostLabel.text = "You are the not the Host"
             playPauseButton.isHidden = true
             nextButton.isHidden = true
@@ -533,7 +537,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             self.hideEmptyPlaylistButton()
             let currentParty = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex]
-            //self.showLoadingAnimation()
+            self.showLoadingAnimation()
             // The listener is passed a snapshot containing the new child's data.
             if let childSongSnapshot = snapshot as? DataSnapshot {
                 let newSong = Song(dictionary: childSongSnapshot.value as! NSDictionary)
@@ -547,6 +551,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     print("looks like no current song, so lets set the party song")
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].currentSong = newSong
                     self.SharedJamSeshModel.setPartySong(song: newSong)
+                    self.hideLoadingAnimation()
                     return
                 }
                 
@@ -589,7 +594,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     //if (self.songsTableView.numberOfRows(inSection: 0) > 0) {
                     self.songsTableView.beginUpdates()
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.remove(at: i)
-                    self.songsTableView.deleteSections(IndexSet(integer: i), with: UITableViewRowAnimation.top)
+                        self.songsTableView.deleteSections(IndexSet(integer: i), with: UITableViewRowAnimation.top)
                     self.songsTableView.endUpdates()
                     //}
                     
@@ -851,8 +856,9 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell.songArtist.text = song.songArtist
             cell.upvoteCounter = song.upVotes
             cell.upvoteCount.text = String(cell.upvoteCounter)
-            // cell.layer.cornerRadius = 20
-            // cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 20
+            cell.layer.masksToBounds = true
+//            cell.clipsToBounds = true
         }
         return cell
     }

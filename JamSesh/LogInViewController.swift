@@ -14,20 +14,13 @@ import Shimmer
 import NVActivityIndicatorView
 import GoogleSignIn
 
-class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate {
+class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate, GIDSignInDelegate {
     
-    var gSignInButton: GIDSignInButton!
+    @IBOutlet var gSignInButton: GIDSignInButton!
+    
     @IBOutlet var JamSeshLogo: UIImageView!
     
     @IBOutlet var tapToPartyButton: UIButton!
-    
-    @IBOutlet var usernameTextField: UITextField!
-    
-    @IBOutlet var passwordTextField: UITextField!
-    
-    @IBOutlet var logInButton: UIButton!
-    
-    @IBOutlet var createAccountButton: UIButton!
     
     @IBOutlet var joinAsGuestButton: UIButton!
     
@@ -43,13 +36,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
     override func viewDidLoad() {
         super.viewDidLoad()
         UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
-        usernameTextField.isHidden=true
-        passwordTextField.isHidden=true
-        logInButton.isHidden=true
-        createAccountButton.isHidden=true
         joinAsGuestButton.isHidden=true
-        usernameTextField.delegate = self
-        passwordTextField.delegate = self
         tapToPartyShimmeringView.contentView = tapToPartyButton
         tapToPartyShimmeringView.isShimmering = true
         
@@ -64,13 +51,20 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         self.view.addSubview(overlay!)
         self.view.addSubview(loadingIndicatorView!)
         
-        gSignInButton = GIDSignInButton(frame: CGRect(x: (self.view.frame.width/2)-25,y: 2*self.view.frame.height/3, width: 50,height: 100))
+//        gSignInButton = GIDSignInButton(frame: CGRect(x: (self.view.frame.width/2)-25,y: 2*self.view.frame.height/3, width: 50,height: 100))
         gSignInButton.isHidden = true
         gSignInButton.colorScheme = GIDSignInButtonColorScheme.dark
         self.view.addSubview(gSignInButton)
         
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().signIn()
+        GIDSignIn.sharedInstance().delegate = self
+        
+        if Auth.auth().currentUser != nil { // if user is already logged in, sign in with Google
+            print("user already logged in")
+            GIDSignIn.sharedInstance().signIn()
+            gSignInButton.isEnabled = false
+            loadingIndicatorView.startAnimating()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,55 +76,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
             loadUserFromFirebaseThenSegue()
         } else {
             print("hard auth")
-            if( userDefaults.string(forKey: "email") !=  nil ){
-                let email = userDefaults.string(forKey: "email")
-                let password = userDefaults.string(forKey: "password")
-                //logIn(email: email!, password: password!)
-            }
         }
     }
     
     @IBAction func TapToPartyPressed(_ sender: Any) {
         print("tap to party")
-        
+        GIDSignIn.sharedInstance().signIn()
         UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
             self.JamSeshLogo.alpha = 0.0
             self.tapToPartyButton.isHidden = true
         }, completion: {_ in
-            self.usernameTextField.isHidden=false
-            self.passwordTextField.isHidden=false
-            self.logInButton.isHidden=false
             self.gSignInButton.isHidden = false
-            self.createAccountButton.isHidden=false
             self.joinAsGuestButton.isHidden=false
         })
-        
-        /*
-         UIView.animate(withDuration: 0.5,delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
-         let frame = self.JamSeshLogo.frame
-         self.JamSeshLogo.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 100)
-         
-         /*
-         self.usernameTextField.isHidden=false
-         self.passwordTextField.isHidden=false
-         */
-         
-         self.tapToPartyButton.isHidden = true
-         }, completion: {_ in
-         self.usernameTextField.isHidden=false
-         self.passwordTextField.isHidden=false
-         self.logInButton.isHidden=false
-         self.createAccountButton.isHidden=false
-         self.joinAsGuestButton.isHidden=false
-         
-         /*
-         UIView.animate(withDuration: 0.5, animations: {
-         self.centerXAlignmentPassword.constant += self.view.bounds.width
-         self.centerXAlignmentUsername.constant += self.view.bounds.width
-         })*/
-         
-         }) */
-        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -138,34 +96,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         return false
     }
     
-    @IBAction func logInButtonPressed(_ sender: Any) {
-        
-        let email = self.usernameTextField.text
-        let password = self.passwordTextField.text
-        self.loadingIndicatorView.isHidden = false
-        self.loadingIndicatorView.startAnimating()
-        self.overlay?.isHidden = false
-        logIn(email: email!, password: password!)
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        // ...
-        if let error = error {
-            // ...
-            return
-        }
-        
-        guard let authentication = user.authentication else { return }
-        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                       accessToken: authentication.accessToken)
-        googleLogIn(credential: credential)
-    }
-    
     func googleLogIn(credential: AuthCredential) {
         print("google log in")
         Auth.auth().signIn(with: credential) { (user, error) in
             if let error = error {
-                self.dismissKeyboard()
                 self.loadingIndicatorView.stopAnimating()
                 self.loadingIndicatorView.isHidden = true
                 self.overlay?.isHidden = true
@@ -196,77 +130,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
                 self.overlay?.isHidden = true
                 self.segueToPartiesScreen()
                 print("should segue to parties")
-            }
+            } else { print("load user error" )}
         }, withCancel: nil)
         
-    }
-    func logIn(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password, completion: { (user, err) in
-            if(err != nil ){
-                self.dismissKeyboard()
-                self.loadingIndicatorView.stopAnimating()
-                self.loadingIndicatorView.isHidden = true
-                self.overlay?.isHidden = true
-                SCLAlertView().showError("Whoops!", subTitle: err!.localizedDescription)
-            }
-            else{
-                self.loadUserFromFirebaseThenSegue()
-            }
-        })
-    }
-    
-    @IBAction func createAccountButtonPressed(_ sender: Any) {
-        
-        dismissKeyboard()
-        
-        let appearance = SCLAlertView.SCLAppearance(
-            showCloseButton: true
-        )
-        let alert = SCLAlertView(appearance: appearance)
-        let username = alert.addTextField("Username: ")
-        let email = alert.addTextField("Email: ")
-        let password = alert.addTextField("Password: ")
-        alert.addButton("Let's Party!") {
-            //if textfields are both not empty, create new user (in firebase and model) and segway to parties
-            if(username.text != "" && password.text != "" && email.text != "") {
-                Auth.auth().createUser(withEmail: email.text!, password: password.text!) { (user, error) in
-                    if(error != nil ){
-                        self.dismissKeyboard()
-                        SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
-                    }
-                    else{
-                        let newUser = User(name: username.text!, email: email.text!, password: password.text!, id: (user?.uid)!)
-                        self.SharedJamSeshModel.addNewUser(newUser: newUser)
-                        self.SharedJamSeshModel.setMyUser(newUser: newUser)
-                        self.segueToPartiesScreen()
-                    }
-                }
-                
-            }
-        }
-        alert.showInfo("Create an Account", subTitle: "")
-        
-    }
-    
-    @IBAction func joinAsGuestButtonPressed(_ sender: Any) {
-        self.loadingIndicatorView.isHidden = false
-        self.loadingIndicatorView.startAnimating()
-        self.overlay?.isHidden = false
-        Auth.auth().signInAnonymously() { (user, error) in
-            if(error != nil ){
-                self.dismissKeyboard()
-                self.loadingIndicatorView.stopAnimating()
-                self.loadingIndicatorView.isHidden = true
-                self.overlay?.isHidden = true
-                SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
-            } else {
-                print(user)
-                let newUser = User(id: user!.uid, name: "Rando \(user!.uid.suffix(5))")
-                self.SharedJamSeshModel.addNewUser(newUser: newUser)
-                self.SharedJamSeshModel.setMyUser(newUser: newUser)
-                self.segueToPartiesScreen()
-            }
-        }
     }
     
     func segueToPartiesScreen() {
@@ -284,17 +150,35 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         appDel.window?.makeKeyAndVisible()
     }
     
-    @IBAction func dismissKeyboardButton(_ sender: Any) {
-        dismissKeyboard()
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any])
+        -> Bool {
+            return GIDSignIn.sharedInstance().handle(url,
+                                                     sourceApplication:options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                                                     annotation: [:])
     }
     
-    func dismissKeyboard() {
-        if self.usernameTextField.isFirstResponder {
-            self.usernameTextField.resignFirstResponder()
-        } else if self.passwordTextField.isFirstResponder {
-            self.passwordTextField.resignFirstResponder()
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: sourceApplication,
+                                                 annotation: annotation)
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        if let error = error {
+            print("error: \(error)")
+            return
         }
-        //self.dismissKeyboard()
+        print("google did sign in")
+        loadingIndicatorView.startAnimating()
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        googleLogIn(credential: credential)
     }
     
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
+    }
 }

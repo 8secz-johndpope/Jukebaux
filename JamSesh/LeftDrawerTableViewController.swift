@@ -14,7 +14,7 @@ import FirebaseInvites
 class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
     
     let backgroundImage = UIImage(named: "purpleBackground")
-    let menu = ["Invite Friends", "Logout"]
+    let menu = ["Parties", "Invite Friends", "Logout"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,25 +55,24 @@ class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
-        
-        cell.textLabel?.text = menu[indexPath.row] as! String
+        cell.backgroundColor = .clear
+        cell.textLabel?.text = menu[indexPath.row]
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // let elDrawer : KYDrawerController = self.navigationController!.parent as! KYDrawerController;
-        // let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as UIViewController
-        // self.present(viewController, animated: false, completion: nil)
-        
-        // let navController = viewController.navigationController
         
         let appDel = UIApplication.shared.delegate as! AppDelegate
         
         switch (indexPath.row) {
-        case 0: // invite
+        case 0:
+            let partiesVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
+            appDel.drawerController.mainViewController = partiesVC
+            appDel.drawerController.setDrawerState(.opened, animated: true)
+        case 1: // invite
             self.sendInvite()
-        case 1: // logout
+        case 2: // logout
             let userDefaults = UserDefaults.standard
             userDefaults.removeObject(forKey: "email")
             userDefaults.removeObject(forKey: "password")
@@ -119,6 +118,5 @@ class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
             print("\(invitationIds.count) invites sent")
         }
     }
-    
 }
 

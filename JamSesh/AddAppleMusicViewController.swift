@@ -40,6 +40,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         suggestedSongsTableView.emptyDataSetSource = self
         suggestedSongsTableView.emptyDataSetDelegate = self
         suggestedSongsTableView.reloadEmptyDataSet()
+        self.suggestedSongsTableView.tableFooterView = UIView()
         // Start loading view animation
         let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.height-self.searchView.frame.height)
             
@@ -219,7 +220,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         
         guard let attributes = [
             NSAttributedStringKey.font: font,
-            NSAttributedStringKey.foregroundColor: textColor
+            NSAttributedStringKey.foregroundColor: textColor,
             ] as? [NSAttributedStringKey : Any] else {
                 return NSAttributedString.init()
         }

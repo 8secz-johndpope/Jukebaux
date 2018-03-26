@@ -13,7 +13,7 @@ import AMWaveTransition
 import KYDrawerController
 import SCLAlertView
 
-class PartiesTableViewController: UITableViewController, UINavigationControllerDelegate {
+class PartiesTableViewController: UITableViewController {
     
     let SharedJamSeshModel = JamSeshModel.shared
     var parties : [Party] = []
@@ -25,32 +25,51 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let storyboard = UIStoryboard(name: "main", bundle: nil)
-//        self.leftViewController = storyboard().instantiateViewControllerWithIdentifier(storyboardId)
-//        return viewController
-        self.navigationController?.delegate = self
-        self.navigationController?.navigationBar.barTintColor = UIColor.purple
-        self.navigationItem.rightBarButtonItem?.style = UIBarButtonItemStyle.done
-        self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        //self.edgesForExtendedLayout = []
+//        self.extendedLayoutIncludesOpaqueBars = false
+//        self.automaticallyAdjustsScrollViewInsets = false
         
+//        self.navigationItem.rightBarButtonItem?.style = UIBarButtonItemStyle.done
+        //        self.navigationController?.delegate = self
+        //       self.navigationController?.navigationBar.barTintColor = UIColor.purple
+
+       self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        
+//        let appDel = UIApplication.shared.delegate as! AppDelegate
+//      appDel.drawerController.setDrawerState(.closed, animated: false) // TODO this is a sketchy way to fix issue of tableview going under nav bar and over status bar
         loadPartiesFromFirebase()
+        
+//        DispatchQueue.global(qos: .background).async {
+//            print("This is run on the background queue")
+//            sleep(5)
+//            DispatchQueue.main.async {
+//                print("This is run on the main queue, after the previous code in outer block")
+//                self.tableView.reloadData()
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tableView.reloadData()
+//        self.view.addConstraint(NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
     }
     
     deinit {
-//        if let refHandle = handle {
-//            SharedJamSeshModel.ref.removeObserver(withHandle: refHandle)
-//        }
+        print("deinit")
+        removeObservers()
+    }
+    
+    func removeObservers() {
         if let refHandleAdd = partyHandleAdd {
+            print("remove parties ref handle add")
             SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleAdd)
         }
         if let refHandleRemove = partyHandleRemove {
+            print("remove parties ref handle remove")
             SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleRemove)
         }
         if let refHandleObserve = partyHandleModify {
+            print("remove parties ref handle change")
             SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleObserve)
         }
     }
@@ -107,7 +126,6 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
 //
 //            self.tableView.reloadData()
 //        })
- 
     }
     
     func setPartiesFirebaseObservers() {
@@ -248,7 +266,9 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
         cell.numberJoined.text = String(describing: numberJoined)
         cell.partyImage.image = partyImage
         cell.partyImage.contentMode = UIViewContentMode.scaleAspectFill
-        
+//        cell.layer.cornerRadius = 30
+//        cell.layer.masksToBounds = true
+//        cell.clipsToBounds = true
         return cell
     }
     
@@ -257,7 +277,7 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
             let cell = sender as! UITableViewCell
             let indexPath = tableView.indexPath(for: cell)
             SharedJamSeshModel.currentPartyIndex = indexPath!.row
-            
+            removeObservers()
             //add user to joined in party
             SharedJamSeshModel.ref.child("parties").child(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].partyID).child("users").child(SharedJamSeshModel.myUser.username).setValue(SharedJamSeshModel.myUser.username)
             
@@ -276,18 +296,6 @@ class PartiesTableViewController: UITableViewController, UINavigationControllerD
                 if let error = error {
                     print(error.localizedDescription)
                 }
-            }
-            
-            //remove the parties observer so that observer is not duplicated in each individual party view controller
-            //SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: handle!)
-            if let refHandleAdd = partyHandleAdd {
-                SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleAdd)
-            }
-            if let refHandleRemove = partyHandleRemove {
-                SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleRemove)
-            }
-            if let refHandleObserve = partyHandleModify {
-                SharedJamSeshModel.ref.child("parties").removeObserver(withHandle: refHandleObserve)
             }
         } else if (segue.identifier == "hostPartySegue") {
             // TODO if user is already a host, dont let them host again
