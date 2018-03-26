@@ -218,10 +218,10 @@
             </objects>
             <point key="canvasLocation" x="2057.971014492754" y="-595.10869565217399"/>
         </scene>
-        <!--Parties-->
+        <!--PartiesVC-->
         <scene sceneID="3eM-Zi-fYj">
             <objects>
-                <tableViewController storyboardIdentifier="partiesVC" id="MIl-Wx-AA9" customClass="PartiesTableViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="partiesVC" title="PartiesVC" id="MIl-Wx-AA9" customClass="PartiesTableViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="231" sectionHeaderHeight="28" sectionFooterHeight="28" id="4ja-28-ngE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -316,10 +316,10 @@
             </objects>
             <point key="canvasLocation" x="4359" y="-926"/>
         </scene>
-        <!--Party View Controller-->
+        <!--PartyVC-->
         <scene sceneID="dbr-bz-B5n">
             <objects>
-                <viewController storyboardIdentifier="partyVC" id="o4Z-tU-Puh" customClass="PartyViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="partyVC" title="PartyVC" id="o4Z-tU-Puh" customClass="PartyViewController" customModule="JamSesh" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qwi-wF-got">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1214,10 +1214,10 @@
             </objects>
             <point key="canvasLocation" x="5942" y="190"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--PartiesNavVC-->
         <scene sceneID="liT-qc-IFq">
             <objects>
-                <navigationController storyboardIdentifier="partiesNavVC" id="cis-iL-pn2" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="partiesNavVC" title="PartiesNavVC" id="cis-iL-pn2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2yh-zB-vtv">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
