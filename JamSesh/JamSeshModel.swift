@@ -118,6 +118,7 @@ class JamSeshModel {
     }
     
     func addNewUser(newUser: User) {
+        print(newUser.toAnyObject())
         ref.child("users").child(newUser.userID).setValue(newUser.toAnyObject())
     }
     

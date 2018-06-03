@@ -30,6 +30,12 @@ class User: NSObject {
         isHost = false
     }
     
+    convenience init(name: String, email: String) {
+        self.init()
+        self.username = name
+        self.email = email
+    }
+    
     convenience init(name: String, email: String, password: String) {
         self.init()
         self.username = name

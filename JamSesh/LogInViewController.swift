@@ -107,30 +107,47 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
             }
             
             print("made it to here")
-            print (credential)
             self.loadUserFromFirebaseThenSegue()
         }
     }
     
     func loadUserFromFirebaseThenSegue() {
         let uid = Auth.auth().currentUser?.uid
+        print(uid!)
         Database.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dict = snapshot.value as? [String: AnyObject] {
-                let username = (dict["username"] as? String)!
-                let email = (dict["email"] as? String)!
-                let password = (dict["password"] as? String)!
-                self.userDefaults.setValue(email, forKey: "email")
-                self.userDefaults.setValue(password, forKey: "password")
-                let newUser = User(name: username, email:email, password:password)
-                newUser.userID = (dict["userID"] as? String)!
-                
+            if(snapshot.exists()) {
+                print("user is in database")
+                if let dict = snapshot.value as? [String: AnyObject] {
+                    let username = (dict["username"] as? String)!
+                    let email = (dict["email"] as? String)!
+                    let password = (dict["password"] as? String)!
+                    self.userDefaults.setValue(email, forKey: "email")
+                    self.userDefaults.setValue(password, forKey: "password")
+                    let newUser = User(name: username, email:email, password:password)
+                    newUser.userID = (dict["userID"] as? String)!
+                    
+                    self.SharedJamSeshModel.setMyUser(newUser:newUser)
+                    self.loadingIndicatorView.stopAnimating()
+                    self.loadingIndicatorView.isHidden = true
+                    self.overlay?.isHidden = true
+                    self.segueToPartiesScreen()
+                    print("should segue to parties")
+                }
+                else {
+                    print("load user error" )
+                    self.loadingIndicatorView.stopAnimating()
+                    self.loadingIndicatorView.isHidden = true
+                    self.overlay?.isHidden = true
+                    SCLAlertView().showError("Whoops!", subTitle: "Error while loading user")
+                }
+            } else {
+                let username = ((Auth.auth().currentUser?.displayName)!).replacingOccurrences(of: " ", with: "")
+                let email = (Auth.auth().currentUser?.email)!
+                let newUser = User(name: username, email: email)
+                newUser.userID = uid!
+                self.SharedJamSeshModel.addNewUser(newUser: newUser)
                 self.SharedJamSeshModel.setMyUser(newUser:newUser)
-                self.loadingIndicatorView.stopAnimating()
-                self.loadingIndicatorView.isHidden = true
-                self.overlay?.isHidden = true
-                self.segueToPartiesScreen()
-                print("should segue to parties")
-            } else { print("load user error" )}
+            }
         }, withCancel: nil)
         
     }
