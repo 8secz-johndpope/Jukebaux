@@ -41,7 +41,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         tapToPartyShimmeringView.isShimmering = true
         
         // Set up loading view animation
-        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         loadingIndicatorView.center = self.view.center
         overlay = UIView(frame: view.frame)
         overlay!.backgroundColor = UIColor.black
@@ -68,20 +68,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if Auth.auth().currentUser != nil {
-            print("easy auth")
-            self.loadingIndicatorView.isHidden = false
-            self.loadingIndicatorView.startAnimating()
-            self.overlay?.isHidden = false
-            loadUserFromFirebaseThenSegue()
-        } else {
-            print("hard auth")
-        }
+        
     }
     
     @IBAction func TapToPartyPressed(_ sender: Any) {
         print("tap to party")
-        GIDSignIn.sharedInstance().signIn()
         UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
             self.JamSeshLogo.alpha = 0.0
             self.tapToPartyButton.isHidden = true
@@ -130,8 +121,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
                     self.loadingIndicatorView.stopAnimating()
                     self.loadingIndicatorView.isHidden = true
                     self.overlay?.isHidden = true
-                    self.segueToPartiesScreen()
                     print("should segue to parties")
+                    self.segueToPartiesScreen()
                 }
                 else {
                     print("load user error" )
@@ -147,6 +138,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
                 newUser.userID = uid!
                 self.SharedJamSeshModel.addNewUser(newUser: newUser)
                 self.SharedJamSeshModel.setMyUser(newUser:newUser)
+                
+                // TODO: Onboarding questions
+                
+                self.loadingIndicatorView.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                self.overlay?.isHidden = true
+                self.segueToPartiesScreen()
             }
         }, withCancel: nil)
         

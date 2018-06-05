@@ -32,7 +32,7 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
 
     override func viewWillAppear(_ animated: Bool) {
         // Start loading view animation
-        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         loadingIndicatorView.center = self.view.center
         
         overlay = UIView(frame: view.frame)

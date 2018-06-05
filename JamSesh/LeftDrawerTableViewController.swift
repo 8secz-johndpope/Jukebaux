@@ -10,6 +10,7 @@ import UIKit
 import KYDrawerController
 import FirebaseAuth
 import FirebaseInvites
+import GoogleSignIn
 
 class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
     
@@ -66,10 +67,10 @@ class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
         let appDel = UIApplication.shared.delegate as! AppDelegate
         
         switch (indexPath.row) {
-        case 0:
+        case 0: // show parties
             let partiesVC = self.storyboard?.instantiateViewController(withIdentifier: "partiesNavVC")
             appDel.drawerController.mainViewController = partiesVC
-            appDel.drawerController.setDrawerState(.opened, animated: true)
+            appDel.drawerController.setDrawerState(.closed, animated: true)
         case 1: // invite
             self.sendInvite()
         case 2: // logout
@@ -82,15 +83,17 @@ class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
+            GIDSignIn.sharedInstance().signOut()
             let signInVC = self.storyboard?.instantiateViewController(withIdentifier: "signInVC") as! LogInViewController
             appDel.drawerController.mainViewController = signInVC
-            appDel.drawerController.setDrawerState(.opened, animated: true)
+            appDel.drawerController.setDrawerState(.closed, animated: true)
             break;
         default:
             break
         }
-        // elDrawer.mainViewController=navController;
-        // (elDrawer as KYDrawerController).setDrawerState(KYDrawerController.DrawerState.closed, animated: true)
+        
+        appDel.drawerController.setDrawerState(.closed, animated: true)
+        
     }
     
     func sendInvite() {

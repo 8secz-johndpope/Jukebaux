@@ -25,37 +25,41 @@ class PartiesTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.edgesForExtendedLayout = []
-//        self.extendedLayoutIncludesOpaqueBars = false
-//        self.automaticallyAdjustsScrollViewInsets = false
+        //        self.edgesForExtendedLayout = []
+        //        self.extendedLayoutIncludesOpaqueBars = false
+        //        self.automaticallyAdjustsScrollViewInsets = false
         
-//        self.navigationItem.rightBarButtonItem?.style = UIBarButtonItemStyle.done
+        //        self.navigationItem.rightBarButtonItem?.style = UIBarButtonItemStyle.done
         //        self.navigationController?.delegate = self
-        //       self.navigationController?.navigationBar.barTintColor = UIColor.purple
-
-       self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
         
-//        let appDel = UIApplication.shared.delegate as! AppDelegate
-//      appDel.drawerController.setDrawerState(.closed, animated: false) // TODO this is a sketchy way to fix issue of tableview going under nav bar and over status bar
+        self.navigationController?.navigationBar.barTintColor = SharedJamSeshModel.mainJamSeshColor
+        
+        self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        let hostButton = UIBarButtonItem(image: UIImage(named: "add"), style: .plain, target: self, action: #selector(hostParty))
+        self.navigationItem.rightBarButtonItem = hostButton
+        let menuButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(showMenu))
+        self.navigationItem.leftBarButtonItem = menuButton
+        //        let appDel = UIApplication.shared.delegate as! AppDelegate
+        //      appDel.drawerController.setDrawerState(.closed, animated: false) // TODO this is a sketchy way to fix issue of tableview going under nav bar and over status bar
         loadPartiesFromFirebase()
         
-//        DispatchQueue.global(qos: .background).async {
-//            print("This is run on the background queue")
-//            sleep(5)
-//            DispatchQueue.main.async {
-//                print("This is run on the main queue, after the previous code in outer block")
-//                self.tableView.reloadData()
-//            }
-//        }
+        //        DispatchQueue.global(qos: .background).async {
+        //            print("This is run on the background queue")
+        //            sleep(5)
+        //            DispatchQueue.main.async {
+        //                print("This is run on the main queue, after the previous code in outer block")
+        //                self.tableView.reloadData()
+        //            }
+        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tableView.reloadData()
-//        self.view.addConstraint(NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
+        //        self.view.addConstraint(NSLayoutConstraint(item: self.tableView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self.topLayoutGuide, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: 0))
     }
     
     deinit {
-        print("deinit")
+        print("deinit parties vc")
         removeObservers()
     }
     
@@ -76,56 +80,56 @@ class PartiesTableViewController: UITableViewController {
     
     @IBAction func leftDrawerButtonPressed(_ sender: Any) {
         print("left drawer pressed")
-        
+        showMenu()
+    }
+    
+    @objc func showMenu() {
         let appDel = UIApplication.shared.delegate as! AppDelegate
         appDel.drawerController.setDrawerState(.opened, animated: true)
-        
-        // let elDrawer = self.navigationController?.parent;
-        // (elDrawer as! KYDrawerController).setDrawerState(KYDrawerController.DrawerState.opened, animated: true);
     }
     
     func loadPartiesFromFirebase() {
         self.setPartiesFirebaseObservers()
-    
-//        handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
-//            if !snapshot.exists() {
-//                return
-//            }
-//
-//            var newParties : [Party] = []
-//            for child in (snapshot.children.allObjects as? [DataSnapshot])! {
-//                //*************************
-//                let party = Party(snapshot: child)
-//                newParties.append(party)
-//                //*************************
-//            }
-//
-//            self.SharedJamSeshModel.parties = newParties
-//
-//            for (index, party) in self.SharedJamSeshModel.parties.enumerated() {
-//                let FBSavedImageURL = party.savedImageURL
-//                if  let url = URL(string: FBSavedImageURL){
-//                    URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-//
-//                        //ran into some download error
-//                        if error != nil {
-//                            return
-//                        }
-//                        if let data1 = data {
-//                            DispatchQueue.main.async {
-//                                self.SharedJamSeshModel.parties[index].image = UIImage(data: data1)!
-//                                let rowToReload = IndexPath.init(row: index, section: 0)
-//                                let rowsToReload = Array.init(arrayLiteral: rowToReload)
-//                                self.tableView.reloadRows(at: rowsToReload, with: .automatic)
-//                                print("reload row: \(index)")
-//                            }
-//                        }
-//                    }).resume()
-//                }
-//            }
-//
-//            self.tableView.reloadData()
-//        })
+        
+        //        handle = SharedJamSeshModel.ref.child("parties").observe(DataEventType.value, with: { (snapshot) in
+        //            if !snapshot.exists() {
+        //                return
+        //            }
+        //
+        //            var newParties : [Party] = []
+        //            for child in (snapshot.children.allObjects as? [DataSnapshot])! {
+        //                //*************************
+        //                let party = Party(snapshot: child)
+        //                newParties.append(party)
+        //                //*************************
+        //            }
+        //
+        //            self.SharedJamSeshModel.parties = newParties
+        //
+        //            for (index, party) in self.SharedJamSeshModel.parties.enumerated() {
+        //                let FBSavedImageURL = party.savedImageURL
+        //                if  let url = URL(string: FBSavedImageURL){
+        //                    URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+        //
+        //                        //ran into some download error
+        //                        if error != nil {
+        //                            return
+        //                        }
+        //                        if let data1 = data {
+        //                            DispatchQueue.main.async {
+        //                                self.SharedJamSeshModel.parties[index].image = UIImage(data: data1)!
+        //                                let rowToReload = IndexPath.init(row: index, section: 0)
+        //                                let rowsToReload = Array.init(arrayLiteral: rowToReload)
+        //                                self.tableView.reloadRows(at: rowsToReload, with: .automatic)
+        //                                print("reload row: \(index)")
+        //                            }
+        //                        }
+        //                    }).resume()
+        //                }
+        //            }
+        //
+        //            self.tableView.reloadData()
+        //        })
     }
     
     func setPartiesFirebaseObservers() {
@@ -149,9 +153,9 @@ class PartiesTableViewController: UITableViewController {
                             }
                             if let data1 = data {
                                 DispatchQueue.main.async {
-//                                    for element in self.SharedJamSeshModel.parties {
-//                                        print(element.toAnyObject())
-//                                    }
+                                    //                                    for element in self.SharedJamSeshModel.parties {
+                                    //                                        print(element.toAnyObject())
+                                    //                                    }
                                     let index = self.SharedJamSeshModel.parties.index(where: {$0.partyID == newParty.partyID})
                                     self.SharedJamSeshModel.parties[index!].image = UIImage(data: data1)!
                                     indexPath = IndexPath(row: index! , section: 0)
@@ -199,22 +203,22 @@ class PartiesTableViewController: UITableViewController {
                 // Get changed song index in curent songs array
                 if let i = self.SharedJamSeshModel.parties.index(where: { $0.partyID == childPartyID }) {
                     if let partyDictionary = (childPartySnapshot.value as? NSDictionary) {
-                    if let nowPlayingSong = partyDictionary["currentSong"] as? NSDictionary {
-                        if let nowPlayingSongTitle = nowPlayingSong["songName"] as? String {
-                            // TODO now playing song label
-                            print(nowPlayingSongTitle)
+                        if let nowPlayingSong = partyDictionary["currentSong"] as? NSDictionary {
+                            if let nowPlayingSongTitle = nowPlayingSong["songName"] as? String {
+                                // TODO now playing song label
+                                print(nowPlayingSongTitle)
+                            }
                         }
+                        
+                        if let numberJoined = partyDictionary["numberJoined"] as? Int{
+                            self.SharedJamSeshModel.parties[i].numberJoined = numberJoined
+                        }
+                        
+                        print("reloading party \(i)")
+                        let rowToReload = IndexPath.init(row: i, section: 0)
+                        let rowsToReload = Array.init(arrayLiteral: rowToReload)
+                        self.tableView.reloadRows(at: rowsToReload, with: .automatic)
                     }
-                    
-                    if let numberJoined = partyDictionary["numberJoined"] as? Int{
-                        self.SharedJamSeshModel.parties[i].numberJoined = numberJoined
-                    }
-                    
-                    print("reloading party \(i)")
-                    let rowToReload = IndexPath.init(row: i, section: 0)
-                    let rowsToReload = Array.init(arrayLiteral: rowToReload)
-                    self.tableView.reloadRows(at: rowsToReload, with: .automatic)
-                }
                 }
             }
         })
@@ -224,8 +228,13 @@ class PartiesTableViewController: UITableViewController {
         // TODO
     }
     
+    @objc func hostParty() {
+        let hostPartyVC = HostPartyViewController()
+        self.navigationController?.pushViewController(hostPartyVC, animated: true)
+    }
+    
     func loadData() {
-        let activityIndicatorView = NVActivityIndicatorView(frame: self.view.frame, type: .lineScalePulseOut, color: UIColor.purple, padding: CGFloat(0))
+        let activityIndicatorView = NVActivityIndicatorView(frame: self.view.frame, type: .lineScalePulseOut, color: SharedJamSeshModel.mainJamSeshColor, padding: CGFloat(0))
         
         activityIndicatorView.startAnimating()
         SharedJamSeshModel.loadFromFirebase(completionHandler: {_ in
@@ -247,7 +256,7 @@ class PartiesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return SharedJamSeshModel.parties.count
+        return SharedJamSeshModel.parties.count
     }
     
     
@@ -266,9 +275,9 @@ class PartiesTableViewController: UITableViewController {
         cell.numberJoined.text = String(describing: numberJoined)
         cell.partyImage.image = partyImage
         cell.partyImage.contentMode = UIViewContentMode.scaleAspectFill
-//        cell.layer.cornerRadius = 30
-//        cell.layer.masksToBounds = true
-//        cell.clipsToBounds = true
+        //        cell.layer.cornerRadius = 30
+        //        cell.layer.masksToBounds = true
+        //        cell.clipsToBounds = true
         return cell
     }
     

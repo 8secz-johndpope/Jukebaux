@@ -6,6 +6,8 @@
 //  Copyright © 2017 Adam's Apps. All rights reserved.
 //
 
+//play by Kuber from the Noun Project
+
 import UIKit
 import MediaPlayer
 import SCLAlertView
@@ -86,7 +88,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //       self.automaticallyAdjustsScrollViewInsets = false
         
         // Set up loading view animation
-        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         loadingIndicatorView.center = self.view.center
         overlay = UIView(frame: view.frame)
         overlay.backgroundColor = UIColor.black
@@ -102,7 +104,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         loadPartyFromFirebase()
         
         suggestRandomSongsButton = UIButton(frame: CGRect(x:5, y:5, width: self.currentlyPlayingView.frame.width-10, height: currentlyPlayingView.frame.height-10))
-        suggestRandomSongsButton.backgroundColor = UIColor.lightGray
+        suggestRandomSongsButton.center = self.currentlyPlayingView.center
+        suggestRandomSongsButton.backgroundColor = SharedJamSeshModel.mainJamSeshColor
         suggestRandomSongsButton.addTarget(self, action: #selector(suggestSongs), for: .touchUpInside)
         suggestRandomSongsButton.setTitle("Out of song ideas? Let us help. Click to here automatically add some popular songs!", for: .normal)
         suggestRandomSongsButton.titleLabel?.numberOfLines = 0
@@ -118,8 +121,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         songsTableView.emptyDataSetSource = self
         songsTableView.emptyDataSetDelegate = self
         songsTableView.layer.borderWidth = 5.0;
-        songsTableView.layer.borderColor = UIColor.purple.cgColor
-        songsTableView.backgroundColor = UIColor(cgColor: UIColor.purple.cgColor)
+        songsTableView.layer.borderColor = SharedJamSeshModel.mainJamSeshColor.cgColor
+//        songsTableView.backgroundColor = UIColor(cgColor: SharedJamSeshModel.mainJamSeshColor.cgColor)
         songsTableView.tableFooterView = UIView()
         let px = 1 / UIScreen.main.scale
         let frame = CGRect(x:0, y:0, width:songsTableView.frame.size.width, height: px)
@@ -133,7 +136,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Button to prompt user to add songs when playlist is empty
         emptyPlaylistButton = UIButton(frame: CGRect(x: self.view.frame.minX + 10, y: self.view.frame.minY+100, width: self.view.frame.width-20, height: 400))
         emptyPlaylistButton.alpha = 0.8
-        emptyPlaylistButton.backgroundColor = UIColor.purple
+        emptyPlaylistButton.backgroundColor = SharedJamSeshModel.mainJamSeshColor
         emptyPlaylistButton.setTitle("The playlist for this party is empty! Click here to add some songs and keep the tunes rolling.",for: .normal)
         emptyPlaylistButton.titleLabel?.numberOfLines = 0
         emptyPlaylistButton.titleLabel?.textAlignment = NSTextAlignment.center
@@ -143,7 +146,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         dismissButton.backgroundColor = UIColor.black
         dismissButton.setTitle("Dismiss",for: .normal)
         dismissButton.titleLabel?.textAlignment = NSTextAlignment.center
-        dismissButton.titleLabel?.textColor = UIColor.purple
+        dismissButton.titleLabel?.textColor = SharedJamSeshModel.mainJamSeshColor
         dismissButton.addTarget(self, action:#selector(dismissEmptyPlaylistButtonPressed), for: .touchUpInside)
         //emptyPlaylistButton.addSubview(dismissButton)
         //chatBarButtonItem = UIBarButtonItem(image: UIImage(named: "chat"), style: .done, target: self, action: #selector(chatBarButtonPressed))
@@ -153,7 +156,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             isHost = true
             playPauseButton.isHidden = false
             nextButton.isHidden = false
-            suggestedByLabel.isHidden = true
             endPartyBarButtonItem =  UIBarButtonItem(title: "End Party", style: UIBarButtonItemStyle.plain, target: self, action: #selector(endPartyButtonPressed))
 //            self.navigationItem.rightBarButtonItems = [chatBarButtonItem, endPartyBarButtonItem]
             self.navigationItem.rightBarButtonItems = [endPartyBarButtonItem]
@@ -166,7 +168,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             currentlyPlayingSongTimeSlider.isHidden = true
             currentlyPlayingSongTimeElapsedLabel.isHidden = true
             currentlyPlayingSongDurationLabel.isHidden = true
-            suggestedByLabel.isHidden = false
         }
         
         print("call VWA")
@@ -556,24 +557,27 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
                 
                 if !currentParty.songs.contains(where: { $0.songID == newSong.songID}) { // if song isnt already in the playlist
-                    if let index = currentParty.songs.index(where: { // get index where new song should go
+                    if currentParty.songs.isEmpty { //if playlist is empty, insert at 0
+                        self.songsTableView.beginUpdates()
+                        currentParty.songs.insert(newSong, at: 0)
+                        self.songsTableView.insertSections(IndexSet(integer: 0), with: .automatic)
+                        self.songsTableView.endUpdates()
+                    }
+                    else if let index = currentParty.songs.index(where: { // get index where new song should go
                         return $0.upVotes < newSong.upVotes
                     }) {
+                        self.songsTableView.beginUpdates()
                         currentParty.songs.insert(newSong, at: index)
-                        //                        self.songsTableView.endUpdates()
+                        self.songsTableView.insertSections(IndexSet(integer: index), with: .automatic)
+                        self.songsTableView.endUpdates()
                         self.sortSongs()  // TODO does changing this break things? motivation is that if you are adding a song in the middle of the tableview, all the cellID's are going to be messed up
-                        self.songsTableView.reloadData()
-                    } else {
-                        //let indexPath:IndexPath = IndexPath(row: currentParty.songs.count-1, section: 0)
+                    } else { // insert at end of playlist
                         self.songsTableView.beginUpdates()
                         currentParty.songs.append(newSong)
                         self.songsTableView.insertSections(IndexSet(integer: currentParty.songs.count-1), with: .automatic)
-                        //self.songsTableView.insertRows(at: [indexPath], with: .automatic)
                         self.songsTableView.endUpdates()
                     }
                     self.hideLoadingAnimation()
-                    //                    self.sortSongs()
-                    //                    self.songsTableView.reloadData()
                 }
             }
         })
@@ -591,12 +595,12 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID == childSongID }) {
                     print("observed removed in playlist \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].songName) :: \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.count) :: \(i) :: \(self.songsTableView.numberOfSections)")
                     
-                    //if (self.songsTableView.numberOfRows(inSection: 0) > 0) {
+                    if (self.songsTableView.numberOfSections > 0) {
                     self.songsTableView.beginUpdates()
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.remove(at: i)
                         self.songsTableView.deleteSections(IndexSet(integer: i), with: UITableViewRowAnimation.top)
                     self.songsTableView.endUpdates()
-                    //}
+                    }
                     
                     self.sortSongs()
                     self.songsTableView.reloadData() // TODO maybe causing crash
@@ -759,7 +763,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     @IBAction func newSuggestSongButtonPressed(_ sender: Any) {
         print(" new suggest song button pressed")
-        emptyPlaylistButtonPressed()
+//        emptyPlaylistButtonPressed()
     }
     /*****************************************************************************/
     
@@ -832,6 +836,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 cell.addConstraint(NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: cell.songImage, attribute: .bottom, multiplier: 1, constant: 0))
                 cell.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .equal, toItem: cell.songImage, attribute: .height, multiplier: 1, constant: 0))
                 cell.addConstraint(NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: cell.songImage, attribute: .width, multiplier: 1, constant: 0))
+                v.centerXAnchor.constraint(equalTo: cell.songImage.centerXAnchor)
+                v.centerYAnchor.constraint(equalTo: cell.songImage.centerYAnchor)
                 
                 DispatchQueue.global(qos: .userInitiated).async {
                     let url1 = URL(string: song.songImageURL)
@@ -858,6 +864,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell.upvoteCount.text = String(cell.upvoteCounter)
             cell.layer.cornerRadius = 20
             cell.layer.masksToBounds = true
+            cell.backgroundColor = UIColor.clear
 //            cell.clipsToBounds = true
         }
         return cell
@@ -867,7 +874,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     func makeLoadingIndicatorView(tempView: UIView) -> UIView{
         // Set up loading view animation
-        let tempLoadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: tempView.frame.width, height: tempView.frame.height), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        let tempLoadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: tempView.frame.width, height: tempView.frame.height), type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         tempLoadingIndicatorView.center = tempView.center
         tempLoadingIndicatorView.startAnimating()
         
@@ -1127,7 +1134,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func loadingAnimation () {
-        let indicator = NVActivityIndicatorView(frame: CGRect(x:0, y:0, width:40, height:40), type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        let indicator = NVActivityIndicatorView(frame: CGRect(x:0, y:0, width:40, height:40), type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         indicator.center = self.view.center
         self.view.addSubview(indicator)
     }
@@ -1326,7 +1333,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         text = "Playlist is empty!"
         font = UIFont.init(name: "HelveticaNeue-Light", size: 22)!
-        textColor = UIColor.lightGray
+        textColor = SharedJamSeshModel.mainJamSeshColor
         
         let attributes = [
             NSAttributedStringKey.font: font!,
@@ -1403,7 +1410,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return 15
+        return 5
     }
     
     //MARK: - DZNEmptyDataSetDelegate Methods
@@ -1416,7 +1423,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
-        return true
+        return false
     }
     
     func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
@@ -1434,7 +1441,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return -150
+        return -190
     }
     
     func sendInvite() {
@@ -1496,7 +1503,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 self.searchSongs(track: song.key, artist: song.value, completionHandler: {_ in
                     i=i+1
                     print(i)
-                    if i >= 25 {
+                    if i >= 10 {
                         self.SharedJamSeshModel.updatePartyOnFirebase(party: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex], completionHandler: {_ in
                             self.hideLoadingAnimation()
                             print("got all songs now update firebase")
@@ -1507,8 +1514,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         })
     }
     
+    /* For auto suggest top 40 songs */
     typealias CompletionHandler = (_ success:Bool) -> Void
-    
     func searchSongs(track: String, artist:String,  completionHandler: @escaping CompletionHandler) {
         // Show loading screen
         DispatchQueue.global(qos: .background).async {
@@ -1532,10 +1539,10 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let task: URLSessionDataTask = session.dataTask(with: request as URLRequest,
                                                             completionHandler: { (dataOrNil, response, error) in
                                                                 if let data = dataOrNil {
-                                                                    if let responseDictionary = try! JSONSerialization.jsonObject(
+                                                                    if let responseDictionary = try? JSONSerialization.jsonObject(
                                                                         with: data, options:[]) as? NSDictionary {
                                                                         
-                                                                        let results = (responseDictionary["results"] as?[NSDictionary])!
+                                                                        let results = (responseDictionary!["results"] as?[NSDictionary])!
                                                                             if !results.isEmpty {
                                                                                 let suggestedSong = results[0] as NSDictionary
                                                                                 print("******* adding song \((suggestedSong["trackName"] as? String)!)")

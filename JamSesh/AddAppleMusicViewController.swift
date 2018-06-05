@@ -44,7 +44,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         // Start loading view animation
         let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.height-self.searchView.frame.height)
             
-        loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: UIColor.purple )
+        loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         
 //        overlay = UIView(frame: frame)
 //        overlay.backgroundColor = UIColor.black
