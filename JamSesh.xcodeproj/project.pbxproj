@@ -12,6 +12,7 @@
 		F510DC2A1ECCB8180088CE67 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F510DC291ECCB8180088CE67 /* StoreKit.framework */; };
 		F510DC2C1ECCB9C60088CE67 /* PlayMusicHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F510DC2B1ECCB9C60088CE67 /* PlayMusicHandler.swift */; };
 		F51A62DE1E78D66700C03FBD /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F51A62DD1E78D66700C03FBD /* LogInViewController.swift */; };
+		F5327CFC20CA554800BB1467 /* GradientImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5327CFB20CA554800BB1467 /* GradientImageView.swift */; };
 		F534C6131ED0AFC000242C0D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F534C6121ED0AFC000242C0D /* User.swift */; };
 		F5350FF71FEAD92000D9F56F /* ChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5350FF61FEAD92000D9F56F /* ChangeSet.swift */; };
 		F5466C8D1FEDC03A00242E1D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5466C8C1FEDC03A00242E1D /* Extensions.swift */; };
@@ -49,7 +50,6 @@
 		F5C7068C1E3BCA6B00524F34 /* PartyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */; };
 		F5C7068E1E3C37CB00524F34 /* CreateAPartyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */; };
 		F5D760D71ED669B400845803 /* AddMusicLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */; };
-		F5D760D91ED6A5BA00845803 /* GradientImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760D81ED6A5BA00845803 /* GradientImageView.swift */; };
 		F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D760DA1ED8A5C400845803 /* ChatViewController.swift */; };
 		F5DEB0471E432157001E1480 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0461E432157001E1480 /* Song.swift */; };
 		F5DEB0491E432177001E1480 /* Party.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0481E432177001E1480 /* Party.swift */; };
@@ -65,6 +65,7 @@
 		F510DC2B1ECCB9C60088CE67 /* PlayMusicHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayMusicHandler.swift; sourceTree = "<group>"; };
 		F51A62DD1E78D66700C03FBD /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		F51E230C1C0A3B8CA273D74D /* Pods-JamSesh.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JamSesh.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh.debug.xcconfig"; sourceTree = "<group>"; };
+		F5327CFB20CA554800BB1467 /* GradientImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GradientImageView.swift; path = "../../../Hedge/Fundu/Hedge Alpha/fundü/Supporting Files/GradientImageView.swift"; sourceTree = "<group>"; };
 		F534C6121ED0AFC000242C0D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F5350FF61FEAD92000D9F56F /* ChangeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSet.swift; sourceTree = "<group>"; };
 		F5466C8C1FEDC03A00242E1D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -105,7 +106,6 @@
 		F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAPartyViewController.swift; sourceTree = "<group>"; };
 		F5CB29DB1FC6618E00114518 /* Shimmer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shimmer-Bridging-Header.h"; sourceTree = "<group>"; };
 		F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMusicLibraryViewController.swift; sourceTree = "<group>"; };
-		F5D760D81ED6A5BA00845803 /* GradientImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GradientImageView.swift; path = ../../../../../Downloads/GradientView_Swift3/GradientView_Swift3/GradientImageView.swift; sourceTree = "<group>"; };
 		F5D760DA1ED8A5C400845803 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F5DEB0461E432157001E1480 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		F5DEB0481E432177001E1480 /* Party.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Party.swift; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				F57A635F1E37FAB600243461 /* Main.storyboard */,
-				F5D760D81ED6A5BA00845803 /* GradientImageView.swift */,
+				F5327CFB20CA554800BB1467 /* GradientImageView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -418,13 +418,13 @@
 				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
-				"${BUILT_PRODUCTS_DIR}/RQShineLabel/RQShineLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework",
 				"${BUILT_PRODUCTS_DIR}/SimpleAnimation/SimpleAnimation.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/iCarousel/iCarousel.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -449,13 +449,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RQShineLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shimmer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleAnimation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iCarousel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -541,13 +541,13 @@
 				F55F44C9203D2FBC00ACBC1D /* FileManager+Extension.swift in Sources */,
 				F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */,
 				F55F44CD203D2FBC00ACBC1D /* AMGifBaseLayout.swift in Sources */,
+				F5327CFC20CA554800BB1467 /* GradientImageView.swift in Sources */,
 				F55F44D3203D2FBC00ACBC1D /* AMGifQuality.swift in Sources */,
 				F57A635C1E37FAB600243461 /* AppDelegate.swift in Sources */,
 				F5C7068E1E3C37CB00524F34 /* CreateAPartyViewController.swift in Sources */,
 				F55F44D4203D2FBC00ACBC1D /* AMGifPickerModel.swift in Sources */,
 				F55F44CF203D2FBC00ACBC1D /* GPHMediaWrapper.swift in Sources */,
 				F510DC2C1ECCB9C60088CE67 /* PlayMusicHandler.swift in Sources */,
-				F5D760D91ED6A5BA00845803 /* GradientImageView.swift in Sources */,
 				F5C706881E3BCA2F00524F34 /* PartyViewController.swift in Sources */,
 				F55F44D2203D2FBC00ACBC1D /* AMGifViewModel.swift in Sources */,
 			);

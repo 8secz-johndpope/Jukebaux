@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '368473B3A37D0F2281038C29D57E7E67'
-               BlueprintName = 'RQShineLabel'
+               BlueprintIdentifier = 'B8D8C363B343A0778AE6633D70E11749'
+               BlueprintName = 'iCarousel'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'RQShineLabel.framework'>
+               BuildableName = 'iCarousel.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

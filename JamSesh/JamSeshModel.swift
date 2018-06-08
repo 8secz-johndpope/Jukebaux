@@ -24,7 +24,8 @@ class JamSeshModel {
     var topTracks : [String:String] = [:]
     
     // R: 149 G: 83 B: 207
-    var mainJamSeshColor = UIColor(red: 149.0, green: 83.0, blue: 207.0, alpha: 1)
+    var mainJamSeshColor = UIColor(red: 149.0/255.0, green: 83.0/255.0, blue: 207.0/255.0, alpha: 1)
+    var mainJamSeshColorInt = 9786319
     
     //singleton
     static var shared = JamSeshModel()

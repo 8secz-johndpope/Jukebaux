@@ -543,7 +543,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if let childSongSnapshot = snapshot as? DataSnapshot {
                 let newSong = Song(dictionary: childSongSnapshot.value as! NSDictionary)
                 print("observed add in playlist \(newSong.songName)")
-                print(newSong)
                 self.suggestRandomSongsButton.isHidden=true
                 self.isEmpty = false
                 // if is the host, and the current song is done playing, and there is no other songs, put right into current song
@@ -552,6 +551,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     print("looks like no current song, so lets set the party song")
                     self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].currentSong = newSong
                     self.SharedJamSeshModel.setPartySong(song: newSong)
+                    self.SharedJamSeshModel.removePartySong(song: newSong)
                     self.hideLoadingAnimation()
                     return
                 }
@@ -577,8 +577,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                         self.songsTableView.insertSections(IndexSet(integer: currentParty.songs.count-1), with: .automatic)
                         self.songsTableView.endUpdates()
                     }
-                    self.hideLoadingAnimation()
                 }
+                self.hideLoadingAnimation()
             }
         })
         
@@ -1441,7 +1441,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return -190
+        return -180
     }
     
     func sendInvite() {

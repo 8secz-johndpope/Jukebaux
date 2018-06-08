@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F7583A3FB246F48008AE1FF0771248B3"
+               BlueprintIdentifier = "466DEF1C385B2DB3B91BCE81F4B30975"
                BuildableName = "Pods_JamSesh.framework"
                BlueprintName = "Pods-JamSesh"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -37,7 +36,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -47,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F7583A3FB246F48008AE1FF0771248B3"
+            BlueprintIdentifier = "466DEF1C385B2DB3B91BCE81F4B30975"
             BuildableName = "Pods_JamSesh.framework"
             BlueprintName = "Pods-JamSesh"
             ReferencedContainer = "container:Pods.xcodeproj">

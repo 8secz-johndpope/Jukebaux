@@ -152,7 +152,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
                 alert.addButton("No thanks!") {
                     self.navigationController?.popViewController(animated: true)
                 }
-                alert.showInfo("Uh-oh!", subTitle: "To host a party you need an Apple Music subscription. Would you like to start a 3 month free trial today?")
+                alert.showInfo("Uh-oh!", subTitle: "To host a party you need an Apple Music subscription. Would you like to start a 3 month free trial today?", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), colorTextButton: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
             }
         }
         
@@ -169,7 +169,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
                     self.getPublicOrPrivate()
                 }
             }
-            alert.showInfo("Party name?", subTitle: "No pressure just make it good")
+            alert.showInfo("Party name?", subTitle: "No pressure just make it good", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), colorTextButton: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
         }
     
     func getPublicOrPrivate() {
@@ -180,7 +180,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
         alert.addButton("Private (Need password to join)") {
             self.getPassword()
         }
-        alert.showInfo("Party name?", subTitle: "No pressure just make it good")
+        alert.showInfo("Party name?", subTitle: "No pressure just make it good", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), colorTextButton: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
     }
     
     func getPassword() {
@@ -193,7 +193,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
                 self.getImage()
             }
         }
-        alert.showInfo("Party password?", subTitle: "Users will need to enter this password to join your party")
+        alert.showInfo("Party password?", subTitle: "Users will need to enter this password to join your party", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), colorTextButton: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
     }
     
     func getImage() {
@@ -204,7 +204,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
             alert.addButton("Camera") {
                 self.getImageFromCamera()
             }
-            alert.showInfo("Choose Party Image", subTitle: "")
+            alert.showInfo("Choose Party Image", subTitle: "", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), colorTextButton: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
         }
     
     func getCreateParty() {
@@ -212,7 +212,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
         alert.addButton("Create Party") {
             self.createAParty(name: self.partyName , partyImage: self.partyImage!, privateParty: self.privateParty, password: self.partyPassword)
         }
-        alert.showInfo("Ready?", subTitle: "")
+        alert.showInfo("Ready?", subTitle: "", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), colorTextButton: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
 
     }
     
