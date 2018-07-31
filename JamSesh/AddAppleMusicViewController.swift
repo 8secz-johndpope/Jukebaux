@@ -42,16 +42,16 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         suggestedSongsTableView.reloadEmptyDataSet()
         self.suggestedSongsTableView.tableFooterView = UIView()
         // Start loading view animation
-        let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.height-self.searchView.frame.height)
+        let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.maxY-self.suggestedSongsTableView.frame.minY)
             
         loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         
-//        overlay = UIView(frame: frame)
-//        overlay.backgroundColor = UIColor.black
-//        overlay.alpha = 0.7
+        overlay = UIView(frame: frame)
+        overlay.backgroundColor = UIColor.black
+        overlay.alpha = 0.7
         
-        //loadingIndicatorView.addSubview(overlay)
-//        self.overlay.isHidden = false
+        loadingIndicatorView.addSubview(overlay)
+        self.overlay.isHidden = false
         self.loadingIndicatorView.isHidden = true
         self.view.addSubview(loadingIndicatorView)
         
@@ -125,7 +125,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         DispatchQueue.global(qos: .background).async {
             var term = string.replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
-            let url = NSURL(string: "https://geo.itunes.apple.com/search?term=\(term)&media=music")
+            let url = NSURL(string: "https://geo.itunes.apple.com/search?term=\(term)&media=music&limit=20")
             let request = NSMutableURLRequest(
                 url: url! as URL,
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
@@ -145,6 +145,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
                                                                         with: data, options:[]) as? NSDictionary {
                                                                         
                                                                         self.results = (responseDictionary["results"] as?[NSDictionary])!
+                                                                        // TODO load images here to make tableview not sticky self.loadImages()
                                                                     }
                                                                     DispatchQueue.main.async {
                                                                         self.suggestedSongsTableView.reloadData()
@@ -189,11 +190,17 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     func hideLoadingAnimation() {
         self.loadingIndicatorView.stopAnimating()
         self.loadingIndicatorView.isHidden = true
+        self.overlay.isHidden = true
     }
     
     func showLoadingAnimation() {
         self.loadingIndicatorView.startAnimating()
         self.loadingIndicatorView.isHidden = false
+        self.overlay.isHidden = false
+    }
+    
+    func loadImages() {
+        //TODO
     }
     
     //MARK: - DZNEmptyDataSetSource
@@ -261,10 +268,10 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         var imageName = "button_background_addSongs"
         
         if state == .normal {
-            imageName = imageName + "_normal"
+            imageName = imageName + "_highlight"
         }
         if state == .highlighted {
-            imageName = imageName + "_highlight"
+            imageName = imageName + "_normal"
         }
         
         var capInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)

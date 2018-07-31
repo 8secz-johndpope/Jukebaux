@@ -76,13 +76,16 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
             var i = 0 // TODO this all breaks for very large playlists
             for element in selectedSongs.items {
                 if #available(iOS 10.3, *) {
+                    print(element)
                         if let name = element.title,
                             let artist = element.artist,
                             let storeID = Int(element.playbackStoreID),
                             let artwork = element.artwork,
                             let image = artwork.image(at: CGSize(width: artwork.bounds.width, height: artwork.bounds.height)) {
-                                let songDuration = element.playbackDuration
-                            self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].getTrackImageURLandThenAddSong(songName: name, songArtist : artist, songID : storeID, songImage: image, songDuration: Int(songDuration*1000), completionHandler: {_ in
+                            
+                            // if storeID is 0 then song wasnt found on itunes. Need to search the song with itunes api using song title and artist and then get storeID to add song
+                            if storeID == 0 {
+                            self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].searchTrackAndGetTrackImageURLandThenAddSong(songName: name, songArtist : artist, songImage: image, completionHandler: {_ in
                                     i+=1
                                     print("added: \(name) : \(i)/\(selectedSongs.count)")
                                     // If all the songs have been added
@@ -98,8 +101,28 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                                         })
                                         self.navigationController?.popViewController(animated: true)
                                     }
-                            })
-                        } else {
+                                })
+                            } else { // storeID was found in MPMediaItemElement and not 0
+                               let songDuration = element.playbackDuration
+                                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].getTrackImageURLandThenAddSong(songName: name, songArtist : artist, songID : storeID, songImage: image, songDuration: Int(songDuration*1000), completionHandler: {_ in
+                                        i+=1
+                                        print("added: \(name) : \(i)/\(selectedSongs.count)")
+                                        // If all the songs have been added
+                                        let minimumDoneSongs = Int(Double(selectedSongs.count) * 1)
+                                        if ( i >= minimumDoneSongs ) { // At least 90% of songs have been created and added to queue (TODO solve problem well some songs cant be added. For now, 90% is good enough)
+                                            print("All songs have been created and added to queue")
+                                            self.SharedJamSeshModel.updatePartyOnFirebase(party: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex], completionHandler: {_ in
+                                                
+                                                self.loadingIndicatorView.stopAnimating()
+                                                self.loadingIndicatorView.isHidden = true
+                                                self.overlay?.isHidden = true
+                                                self.view.willRemoveSubview(self.overlay!)
+                                            })
+                                            self.navigationController?.popViewController(animated: true)
+                                        }
+                                })
+                            }
+                        }else {
                             print("item failed to load") // Element didnt have all fields hmmm
                             i+=1
                     }

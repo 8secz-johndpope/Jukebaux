@@ -63,7 +63,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
             print("user already logged in")
             GIDSignIn.sharedInstance().signIn()
             gSignInButton.isEnabled = false
-            loadingIndicatorView.startAnimating()
+            showLoadingAnimation()
         }
     }
     
@@ -91,9 +91,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         print("google log in")
         Auth.auth().signIn(with: credential) { (user, error) in
             if let error = error {
-                self.loadingIndicatorView.stopAnimating()
-                self.loadingIndicatorView.isHidden = true
-                self.overlay?.isHidden = true
+                self.hideLoadingAnimation()
                 SCLAlertView().showError("Whoops!", subTitle: error.localizedDescription)
             }
             
@@ -118,17 +116,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
                     newUser.userID = (dict["userID"] as? String)!
                     
                     self.SharedJamSeshModel.setMyUser(newUser:newUser)
-                    self.loadingIndicatorView.stopAnimating()
-                    self.loadingIndicatorView.isHidden = true
-                    self.overlay?.isHidden = true
+                    self.hideLoadingAnimation()
                     print("should segue to parties")
                     self.segueToPartiesScreen()
                 }
                 else {
                     print("load user error" )
-                    self.loadingIndicatorView.stopAnimating()
-                    self.loadingIndicatorView.isHidden = true
-                    self.overlay?.isHidden = true
+                    self.hideLoadingAnimation()
                     SCLAlertView().showError("Whoops!", subTitle: "Error while loading user")
                 }
             } else {
@@ -141,14 +135,34 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
                 
                 // TODO: Onboarding questions
                 
-                self.loadingIndicatorView.stopAnimating()
-                self.loadingIndicatorView.isHidden = true
-                self.overlay?.isHidden = true
+                self.hideLoadingAnimation()
                 self.segueToPartiesScreen()
             }
         }, withCancel: nil)
         
     }
+    
+    @IBAction func joinAsGuestButtonPressed(_ sender: Any) {
+        print("Join as guest button pressed")
+        self.loadingIndicatorView.isHidden = false
+        self.loadingIndicatorView.startAnimating()
+        self.overlay?.isHidden = false
+        Auth.auth().signInAnonymously() { (user, error) in
+            if(error != nil ){
+                self.loadingIndicatorView.stopAnimating()
+                self.loadingIndicatorView.isHidden = true
+                self.overlay?.isHidden = true
+                SCLAlertView().showError("Whoops!", subTitle: error!.localizedDescription)
+            } else {
+                print(user)
+                let newUser = User(id: user!.uid, name: "Rando \(user!.uid.suffix(5))")
+                self.SharedJamSeshModel.addNewUser(newUser: newUser)
+                self.SharedJamSeshModel.setMyUser(newUser: newUser)
+                self.segueToPartiesScreen()
+            }
+        }
+    }
+    
     
     func segueToPartiesScreen() {
         print("segue to parties screen")
@@ -185,7 +199,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
             return
         }
         print("google did sign in")
-        loadingIndicatorView.startAnimating()
+        showLoadingAnimation()
         guard let authentication = user.authentication else { return }
         let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
                                                        accessToken: authentication.accessToken)
@@ -195,5 +209,23 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         // Perform any operations when the user disconnects from app here.
         // ...
+        print("google disconnect")
     }
+    
+    /*****************************************************************************/
+    
+    func hideLoadingAnimation() {
+        self.loadingIndicatorView.stopAnimating()
+        self.loadingIndicatorView.isHidden = true
+        self.overlay?.isHidden = true
+//        self.view.willRemoveSubview(self.overlay!)
+    }
+    
+    func showLoadingAnimation() {
+        self.loadingIndicatorView.startAnimating()
+        self.loadingIndicatorView.isHidden = false
+        self.overlay?.isHidden = false
+//        self.view.addSubview(self.overlay!)
+    }
+    /*****************************************************************************/
 }

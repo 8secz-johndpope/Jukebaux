@@ -27,6 +27,9 @@ class JamSeshModel {
     var mainJamSeshColor = UIColor(red: 149.0/255.0, green: 83.0/255.0, blue: 207.0/255.0, alpha: 1)
     var mainJamSeshColorInt = 9786319
     
+    //87 115 227
+    var secondaryJamSeshColor = UIColor(red: 87.0/255.0, green: 115.0/255.0, blue: 227.0/255.0, alpha: 1)
+    
     //singleton
     static var shared = JamSeshModel()
     

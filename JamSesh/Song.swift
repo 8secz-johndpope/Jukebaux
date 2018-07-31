@@ -20,6 +20,8 @@ class Song {
     var suggestedBy : String // username who suggested it
     var upvotedBy : [String:Int] // user ids of those who have upvoted this todo change to bools
     var downvotedBy : [String:Int] // user ids of those who have upvoted this todo change to bool
+    var addedDate: Date // used to sort songs with same number of upvotes by time added
+    
     init() {
         self.songName = ""
         self.songArtist = ""
@@ -31,6 +33,7 @@ class Song {
         self.suggestedBy = ""
         self.upvotedBy = [:]
         self.downvotedBy = [:]
+        self.addedDate = Date()
     }
     
     convenience init(songName: String, songArtist : String, songID : Int, songImageURL : String, songDuration: Int, upVotes: Int) {
@@ -143,9 +146,18 @@ class Song {
         if dictionary["downvotedBy"] != nil {
             self.downvotedBy = dictionary["downvotedBy"] as! [String:Int]
         }
+        if dictionary["addedDate"] != nil {
+            let dateString = dictionary["addedDate"] as! String
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            self.addedDate = dateFormatter.date(from:dateString)!
+        }
     }
 
     func toAnyObject() -> Any {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormatter.string(from: addedDate as Date)
         return [
             "songName": songName,
             "songArtist": songArtist,
@@ -155,7 +167,8 @@ class Song {
             "songDuration": songDuration,
             "suggestedBy" : suggestedBy,
             "upvotedBy" : upvotedBy,
-            "downvotedBy" : downvotedBy
+            "downvotedBy" : downvotedBy,
+            "addedDate" : dateString
         ]
     }
 

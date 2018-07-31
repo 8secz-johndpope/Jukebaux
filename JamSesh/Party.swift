@@ -27,7 +27,8 @@ class Party {
     var songHistory : [Song]
     var key: String
     var ref: DatabaseReference?
-    
+    typealias CompletionHandler = (_ success:Bool) -> Void
+
     init() {
         partyID = ""
         hostName = ""
@@ -153,7 +154,58 @@ class Party {
         }
     }
     
-    typealias CompletionHandler = (_ success:Bool) -> Void
+    func searchTrackAndGetTrackImageURLandThenAddSong(songName: String, songArtist : String, songImage : UIImage, completionHandler: @escaping CompletionHandler) {
+        var string = "\(songName) \(songArtist)"
+        DispatchQueue.global(qos: .background).async {
+            var term = string.replacingOccurrences(of: " ", with: "-")
+            term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
+            let url = NSURL(string: "https://geo.itunes.apple.com/search?term=\(term)&media=music&limit=1")
+            let request = NSMutableURLRequest(
+                url: url! as URL,
+                cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
+                timeoutInterval: 10)
+            request.httpMethod = "GET"
+            
+            let session = URLSession(
+                configuration: URLSessionConfiguration.default,
+                delegate: nil,
+                delegateQueue: OperationQueue.main
+            )
+            
+            let task: URLSessionDataTask = session.dataTask(with: request as URLRequest,
+                                                            completionHandler: { (dataOrNil, response, error) in
+                                                                if let data = dataOrNil {
+                                                                    if let responseDictionary = try! JSONSerialization.jsonObject(
+                                                                        with: data, options:[]) as? NSDictionary {
+                                                                        
+                                                                        var tempResults = (responseDictionary["results"] as?[NSDictionary])!
+                                                                        if (!tempResults.isEmpty && tempResults[0]["artworkUrl100"] != nil) {
+                                                                            let trackImageURL = tempResults[0]["artworkUrl100"] as! String
+                                                                            let songID = tempResults[0]["trackId"] as! Int
+                                                                            let songDuration = tempResults[0]["trackTimeMillis"] as! Int
+                                                                            //now that we got the imageURL, add the song
+                                                                            if (!self.songs.contains(where: { $0.songID == songID })) { //check for not duplicate
+                                                                                let s = Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : trackImageURL, songImage: songImage, songDuration: songDuration, upVotes: 1)
+                                                                                s.suggestedBy = JamSeshModel.shared.myUser.username
+                                                                                print("set suggested by: \(s.suggestedBy)")
+                                                                                self.songs.append(s)
+                                                                            }
+                                                                            completionHandler(true)
+                                                                        } else {
+                                                                            print ("uh oh \(songName)")
+                                                                            completionHandler(true)
+                                                                        }
+                                                                    }
+                                                                }
+                                                                if error != nil {
+                                                                    print(error ?? "error")
+                                                                    completionHandler(true)
+                                                                }
+            })
+            task.resume()
+        }
+    }
+    
     func getTrackImageURLandThenAddSong(songName: String, songArtist : String, songID : Int, songImage : UIImage, songDuration: Int, completionHandler: @escaping CompletionHandler) {
         
         DispatchQueue.global(qos: .userInitiated).sync {
@@ -161,6 +213,7 @@ class Party {
             var term = String(songID).replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
             let url = NSURL(string: "https://itunes.apple.com/lookup?id=\(term)&entity=song")
+            print(url)
             let request = NSMutableURLRequest(
                 url: url! as URL,
                 cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
