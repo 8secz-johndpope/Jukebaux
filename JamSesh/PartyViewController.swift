@@ -100,7 +100,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.becomeFirstResponder()
 //        self.edgesForExtendedLayout = []
 //        self.extendedLayoutIncludesOpaqueBars = false
-//       self.automaticallyAdjustsScrollViewInsets = false
+//        self.automaticallyAdjustsScrollViewInsets = false
         
         // Set up loading view animation
         loadingIndicatorView = NVActivityIndicatorView(frame: CGRect(x:0,y:0,width:100,height:100), type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
@@ -1197,6 +1197,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        // TODO THIS ISNT BEING CALLED, WANT TO STOP HOST FROM LEAVING PARTY AND IF THEY DO, TOTALLY LOG THEM OUT OF PARTY IN A WAY THAT LETS THEM SAFELY REJOIN THE PARTY
         if(self.isMovingFromParentViewController){
             let appearance = SCLAlertView.SCLAppearance(
                 showCloseButton: false
@@ -1671,7 +1672,7 @@ public class CustomCell : LiquidFloatingCell {
     
     public override func setupView(_ view: UIView) {
         super.setupView(view)
-        let label = UILabel()
+        let label = UILabel(frame: CGRect(x:5, y:2, width: 40, height: 20))
         label.text = name
         label.textColor = UIColor.white
         label.font = UIFont(name: "Helvetica-Neue", size: 12)
@@ -1682,8 +1683,8 @@ public class CustomCell : LiquidFloatingCell {
         label.backgroundColor = UIColor(red: 82 / 255.0, green: 112 / 255.0, blue: 235 / 255.0, alpha: 1.0)
         addSubview(label)
         label.snp.makeConstraints { make in
-            make.left.equalTo(self).offset(-85)
-            make.width.equalTo(80)
+            make.left.equalTo(self).offset(-95)
+            make.width.equalTo(90)
             make.top.height.equalTo(self)
         }
         /*self.addConstraints([
