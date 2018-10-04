@@ -17,21 +17,15 @@ import GoogleSignIn
 class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate, GIDSignInDelegate {
     
     @IBOutlet var gSignInButton: GIDSignInButton!
-    
     @IBOutlet var JamSeshLogo: UIImageView!
-    
     @IBOutlet var tapToPartyButton: UIButton!
-    
     @IBOutlet var joinAsGuestButton: UIButton!
-    
     @IBOutlet var tapToPartyShimmeringView: FBShimmeringView!
     
-    var loadingIndicatorView : NVActivityIndicatorView!
-    var overlay : UIView?
-    
-    //singleton
     let SharedJamSeshModel = JamSeshModel.shared
     let userDefaults = UserDefaults.standard
+    var loadingIndicatorView : NVActivityIndicatorView!
+    var overlay : UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +68,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
     @IBAction func TapToPartyPressed(_ sender: Any) {
         print("tap to party")
         UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
-            self.JamSeshLogo.alpha = 0.0
+//            self.JamSeshLogo.alpha = 0.0
             self.tapToPartyButton.isHidden = true
         }, completion: {_ in
             self.gSignInButton.isHidden = false

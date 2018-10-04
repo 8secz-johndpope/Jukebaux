@@ -305,6 +305,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="f5T-EY-e5N"/>
                     </view>
                 </viewController>
@@ -658,6 +659,7 @@
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ZhU-fW-8Bl" firstAttribute="trailing" secondItem="TOx-02-oJT" secondAttribute="trailing" id="0fI-vd-gO3"/>
                             <constraint firstItem="vav-pv-Hoa" firstAttribute="width" secondItem="qwi-wF-got" secondAttribute="width" id="7Li-j5-zfV"/>
@@ -932,11 +934,26 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7wW-ZS-hJk" customClass="FBShimmeringView">
-                                <rect key="frame" x="0.0" y="447" width="375" height="220"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoO-io-bnZ">
+                                <rect key="frame" x="88" y="589" width="198" height="58"/>
+                                <state key="normal" title="Join as Guest"/>
+                                <connections>
+                                    <action selector="joinAsGuestButtonPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="dl8-un-rju"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afS-zM-Rln" customClass="GIDSignInButton">
+                                <rect key="frame" x="77" y="546" width="220" height="36"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="R6m-ea-NR4"/>
+                                    <constraint firstAttribute="width" constant="220" id="uqf-ga-pHR"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7wW-ZS-hJk" customClass="FBShimmeringView">
+                                <rect key="frame" x="0.0" y="454" width="375" height="220"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bVp-i5-OmT">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="220"/>
+                                        <rect key="frame" x="0.0" y="-8" width="375" height="220"/>
                                         <fontDescription key="fontDescription" name="HiraMaruProN-W4" family="Hiragino Maru Gothic ProN" pointSize="32"/>
                                         <state key="normal" title="Tap to Party">
                                             <color key="titleColor" red="0.58431372549019611" green="0.32549019607843138" blue="0.81176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -949,45 +966,32 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="220" id="1UD-sw-Oav"/>
-                                    <constraint firstItem="bVp-i5-OmT" firstAttribute="top" secondItem="7wW-ZS-hJk" secondAttribute="top" id="4l4-D7-Io9"/>
-                                    <constraint firstItem="bVp-i5-OmT" firstAttribute="leading" secondItem="7wW-ZS-hJk" secondAttribute="leading" id="AuB-15-W4s"/>
-                                    <constraint firstAttribute="trailing" secondItem="bVp-i5-OmT" secondAttribute="trailing" id="qEV-yW-Mpn"/>
-                                    <constraint firstAttribute="bottom" secondItem="bVp-i5-OmT" secondAttribute="bottom" id="v8n-1G-d0Q"/>
+                                    <constraint firstItem="bVp-i5-OmT" firstAttribute="top" secondItem="7wW-ZS-hJk" secondAttribute="top" constant="-8" id="IDK-2V-t9Z"/>
+                                    <constraint firstItem="bVp-i5-OmT" firstAttribute="leading" secondItem="7wW-ZS-hJk" secondAttribute="leading" id="Pni-SG-fWr"/>
+                                    <constraint firstAttribute="bottom" secondItem="bVp-i5-OmT" secondAttribute="bottom" constant="8" id="WQ9-rb-QgQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="bVp-i5-OmT" secondAttribute="trailing" id="lnV-cp-PdE"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afS-zM-Rln" customClass="GIDSignInButton">
-                                <rect key="frame" x="78" y="237" width="220" height="0.0"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoO-io-bnZ">
-                                <rect key="frame" x="88" y="342" width="198" height="62"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="62" id="CvB-J8-rTq"/>
-                                    <constraint firstAttribute="width" constant="198" id="SF1-oA-RHl"/>
-                                </constraints>
-                                <state key="normal" title="Join as Guest"/>
-                                <connections>
-                                    <action selector="joinAsGuestButtonPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="dl8-un-rju"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.50196081400000003" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="afS-zM-Rln" firstAttribute="top" secondItem="OR4-yS-VaF" secondAttribute="top" constant="526" id="2jP-yT-WH9"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="m4l-sz-0gN" secondAttribute="trailing" id="44E-Cg-Isf"/>
-                            <constraint firstItem="afS-zM-Rln" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" constant="78" id="8ds-B8-8Cu"/>
+                            <constraint firstItem="OoO-io-bnZ" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" constant="88" id="8XJ-Rd-nFt"/>
+                            <constraint firstItem="afS-zM-Rln" firstAttribute="centerX" secondItem="OR4-yS-VaF" secondAttribute="centerX" id="FPj-11-p8m"/>
                             <constraint firstItem="m4l-sz-0gN" firstAttribute="top" secondItem="GtG-pX-pYR" secondAttribute="top" id="G77-G5-yVn"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="7wW-ZS-hJk" secondAttribute="trailing" id="IM3-Bi-hOt"/>
+                            <constraint firstItem="OR4-yS-VaF" firstAttribute="bottom" secondItem="OoO-io-bnZ" secondAttribute="bottom" constant="20" id="JGR-0a-LjQ"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="bottom" secondItem="7wW-ZS-hJk" secondAttribute="bottom" id="LUq-rO-Chb"/>
-                            <constraint firstItem="7wW-ZS-hJk" firstAttribute="top" secondItem="OoO-io-bnZ" secondAttribute="bottom" constant="43" id="XQP-ia-QOD"/>
+                            <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="afS-zM-Rln" secondAttribute="trailing" constant="78" id="U1G-ag-fC3"/>
+                            <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="OoO-io-bnZ" secondAttribute="trailing" constant="89" id="UkY-Gq-cng"/>
+                            <constraint firstItem="afS-zM-Rln" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" constant="77" id="WmU-PZ-4oj"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="bottom" secondItem="m4l-sz-0gN" secondAttribute="bottom" id="YJE-km-2SC"/>
+                            <constraint firstItem="OoO-io-bnZ" firstAttribute="centerX" secondItem="OR4-yS-VaF" secondAttribute="centerX" id="Zsa-Hu-c7B"/>
+                            <constraint firstItem="OoO-io-bnZ" firstAttribute="top" secondItem="afS-zM-Rln" secondAttribute="bottom" constant="7" id="eRY-gJ-6pL"/>
                             <constraint firstItem="7wW-ZS-hJk" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" id="eVj-tZ-5TS"/>
-                            <constraint firstItem="afS-zM-Rln" firstAttribute="top" secondItem="OR4-yS-VaF" secondAttribute="top" constant="217" id="gif-3A-hGQ"/>
-                            <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="OoO-io-bnZ" secondAttribute="trailing" constant="89" id="hwx-y0-ack"/>
-                            <constraint firstItem="OoO-io-bnZ" firstAttribute="top" secondItem="afS-zM-Rln" secondAttribute="bottom" constant="105" id="ot9-R0-QgR"/>
-                            <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="afS-zM-Rln" secondAttribute="trailing" constant="77" id="sHa-uu-Y9U"/>
                             <constraint firstItem="m4l-sz-0gN" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" id="xLc-cy-qAP"/>
-                            <constraint firstItem="OoO-io-bnZ" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" constant="88" id="yWo-hs-qSK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OR4-yS-VaF"/>
                     </view>

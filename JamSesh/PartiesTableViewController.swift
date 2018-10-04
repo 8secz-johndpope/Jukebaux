@@ -33,7 +33,8 @@ class PartiesTableViewController: UITableViewController {
         //        self.navigationController?.delegate = self
         
         self.navigationController?.navigationBar.barTintColor = SharedJamSeshModel.mainJamSeshColor
-        
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+
         self.refreshControl?.addTarget(self, action: #selector(PartiesTableViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
         let hostButton = UIBarButtonItem(image: UIImage(named: "add"), style: .plain, target: self, action: #selector(hostParty))
         self.navigationItem.rightBarButtonItem = hostButton

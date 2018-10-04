@@ -190,10 +190,14 @@ class CreateAPartyViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     func getTitle() {
-        let alert = SCLAlertView()
+        let appearance = SCLAlertView.SCLAppearance (showCloseButton: false)
+        let alert = SCLAlertView(appearance: appearance)
         let name = alert.addTextField("Party name")
         alert.addButton("Next") {
             self.getImage(name: name.text!)
+        }
+        alert.addButton("Cancel") {
+                self.navigationController?.popViewController(animated: true)
         }
         alert.showInfo("Choose a name for your party", subTitle: "No pressure just make it good")
     }

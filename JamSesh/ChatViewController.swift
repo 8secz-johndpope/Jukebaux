@@ -12,7 +12,6 @@ import JSQMessagesViewController
 
 class ChatViewController: JSQMessagesViewController {
 
-   
     let SharedJamSeshModel = JamSeshModel.shared
     var chatRef : DatabaseReference?
     

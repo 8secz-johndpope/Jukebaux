@@ -162,13 +162,19 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
         }
         
         func getTitle() {
-            let alert = SCLAlertView(appearance: appearance)
+            let appearanceSettings = SCLAlertView.SCLAppearance (kCircleIconHeight: 45.0, showCloseButton: false, showCircularIcon: true)
+
+            let alert = SCLAlertView(appearance: appearanceSettings)
+            
             let name = alert.addTextField("Party name")
             alert.addButton("Next") {
                 if name.text != nil {
                     self.partyName = name.text!
                     self.getPublicOrPrivate()
                 }
+            }
+            alert.addButton("Cancel") {
+                self.navigationController?.popViewController(animated: true)
             }
             alert.showInfo("Party name?", subTitle: "No pressure just make it good", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt), circleIconImage: UIImage(named: "AppIcon"))
         }
