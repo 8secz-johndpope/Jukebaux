@@ -16,6 +16,7 @@ class SongTableViewCell: UITableViewCell {
     var upvoteCounter : Int = 0
     var alreadyUpvoted = false
     var alreadyDownvoted = false
+    var songID: String = ""
     //cellId is so that the cell knows where in the party.songs array it is, so that it can send that id with the delegate in order to change the song upvote counter at that index in the array
     var cellId: Int = 0
     let SharedJamSeshModel = JamSeshModel.shared
@@ -33,11 +34,11 @@ class SongTableViewCell: UITableViewCell {
 
     @IBAction func downvoteButtonPressed(_ sender: Any) {
         
-        delegate?.downvoteButtonPressed(cellId: cellId)
+        delegate?.downvoteButtonPressed(cellId: cellId, songID: songID)
     }
     
     @IBAction func upvoteButton(_ sender: Any) {
-        delegate?.upvoteButtonPressed(cellId: cellId)
+        delegate?.upvoteButtonPressed(cellId: cellId, songID: songID)
 
     }
 }

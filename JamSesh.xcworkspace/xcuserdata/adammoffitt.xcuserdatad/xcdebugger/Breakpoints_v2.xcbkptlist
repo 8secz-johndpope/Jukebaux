@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.8136671"
+            timestampString = "561534478.349982"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "638"
-            endingLineNumber = "638"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
             landmarkName = "setPlaylistFBObservers(partyID:)"
             landmarkType = "7">
             <Locations>
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/AddAppleMusicViewController.swift"
-            timestampString = "554705162.004024"
+            timestampString = "561534478.35079"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "262"
@@ -74,28 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/AddAppleMusicViewController.swift"
-            timestampString = "554705162.004213"
+            timestampString = "561534478.350893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "232"
             endingLineNumber = "232"
             landmarkName = "description(forEmptyDataSet:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JamSesh/AddAppleMusicViewController.swift"
-            timestampString = "554705162.004356"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
-            landmarkName = "title(forEmptyDataSet:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -394,7 +378,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/JamSeshModel.swift"
-            timestampString = "558511306.577481"
+            timestampString = "561534478.3512681"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "128"
@@ -426,11 +410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.814476"
+            timestampString = "561534478.3513629"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1646"
-            endingLineNumber = "1646"
+            startingLineNumber = "1659"
+            endingLineNumber = "1659"
             landmarkName = "searchSongs(track:artist:completionHandler:)"
             landmarkType = "7">
             <Locations>
@@ -474,11 +458,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.815015"
+            timestampString = "561534478.352115"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "moveToNextSong()"
             landmarkType = "7">
          </BreakpointContent>
@@ -490,11 +474,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.815393"
+            timestampString = "561534478.352735"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "655"
-            endingLineNumber = "655"
+            startingLineNumber = "662"
+            endingLineNumber = "662"
             landmarkName = "setPlaylistFBObservers(partyID:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -506,11 +490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.815697"
+            timestampString = "561534478.3533421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "653"
-            endingLineNumber = "653"
+            startingLineNumber = "660"
+            endingLineNumber = "660"
             landmarkName = "setPlaylistFBObservers(partyID:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -522,11 +506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.816118"
+            timestampString = "561534478.353959"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "658"
-            endingLineNumber = "658"
+            startingLineNumber = "631"
+            endingLineNumber = "631"
             landmarkName = "setPlaylistFBObservers(partyID:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -538,27 +522,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.816612"
+            timestampString = "561534478.354561"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "622"
-            endingLineNumber = "622"
-            landmarkName = "setPlaylistFBObservers(partyID:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.816913"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "moveToNextSong()"
             landmarkType = "7">
          </BreakpointContent>
@@ -570,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.817346"
+            timestampString = "561534478.3551331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
+            startingLineNumber = "380"
+            endingLineNumber = "380"
             landmarkName = "playCurrentSong()"
             landmarkType = "7">
          </BreakpointContent>
@@ -586,11 +554,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.817721"
+            timestampString = "561534478.355708"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "497"
-            endingLineNumber = "497"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "loadPartyFromFirebase()"
             landmarkType = "7">
          </BreakpointContent>
@@ -602,11 +570,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.818103"
+            timestampString = "561534478.356258"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "681"
-            endingLineNumber = "681"
+            startingLineNumber = "687"
+            endingLineNumber = "687"
             landmarkName = "setPlaylistFBObservers(partyID:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -618,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.818445"
+            timestampString = "561534478.356856"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
             landmarkName = "PartyViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -634,11 +602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.818724"
+            timestampString = "561534478.357432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "moveToNextSong()"
             landmarkType = "7">
          </BreakpointContent>
@@ -650,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.818993"
+            timestampString = "561534478.357985"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
             landmarkName = "showEmptyPlaylistAlert()"
             landmarkType = "7">
          </BreakpointContent>
@@ -666,11 +634,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.819247"
+            timestampString = "561534478.358514"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
+            startingLineNumber = "291"
+            endingLineNumber = "291"
             landmarkName = "checkFirebasePartyPlaylistEmpty(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -698,11 +666,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/AddMusicLibraryViewController.swift"
-            timestampString = "554712146.480731"
+            timestampString = "561532644.402071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "mediaPicker(_:didPickMediaItems:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -714,7 +682,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/Party.swift"
-            timestampString = "554710852.521032"
+            timestampString = "561364725.6981879"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "187"
@@ -758,11 +726,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/Party.swift"
-            timestampString = "554710852.521261"
+            timestampString = "561364725.69831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "188"
@@ -778,12 +746,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "JamSesh/PartyViewController.swift"
-            timestampString = "559882618.819539"
+            timestampString = "561534478.359108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1158"
-            endingLineNumber = "1158"
+            startingLineNumber = "1173"
+            endingLineNumber = "1173"
             landmarkName = "moveSongFromTo(fromIndex:toIndex:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "JamSesh/AddAppleMusicViewController.swift"
+            timestampString = "561534478.3596539"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "searchSongButton(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

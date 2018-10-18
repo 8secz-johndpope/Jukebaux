@@ -21,8 +21,8 @@ import LiquidFloatingActionButton
 import SnapKit
 
 protocol SongTableViewCellDelegate {
-    func upvoteButtonPressed(cellId: Int)
-    func downvoteButtonPressed(cellId: Int)
+    func upvoteButtonPressed(cellId: Int, songID: String)
+    func downvoteButtonPressed(cellId: Int, songID: String)
 }
 
 // The current party is referred to as SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex] throughout this view controller code
@@ -72,6 +72,8 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             songsTableView.reloadEmptyDataSet()
         }
     }
+    let refreshControl = UIRefreshControl()
+
     var isLoading = 0 {
         didSet {
             print("is loading: \(isLoading)")
@@ -184,8 +186,16 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cells.append(customCellFactory("music-player", "Apple Music"))
         
         self.view.addSubview(floatingActionButton!)
+        
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
+        self.scrollView.addSubview(refreshControl)
     }
     /*****************************************************************************/
+    
+    @objc func refresh() {
+        self.songsTableView.reloadData()
+        self.refreshControl.endRefreshing()
+    }
     
     /*****************************************************************************/
     override func viewWillAppear(_ animated: Bool) {
@@ -268,7 +278,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func checkFirebasePartyPlaylistEmpty(completion: @escaping (Bool)->()) {
         let partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
         SharedJamSeshModel.ref.child("parties").child(partyID).child("playlist").observeSingleEvent(of: DataEventType.value, with: { (snapshot) in
-            print(snapshot)
+            print("check firebase party playlist empty \(snapshot)")
                 if !snapshot.exists() {
                     completion(true)
                     return
@@ -354,10 +364,9 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             // Play next song
             SharedJamSeshModel.setPartySong(song: currentParty.songs[0])
             partyMusicHandler.setCurrentPlaybackTime(time: 0)
-            partyMusicHandler.appleMusicPlayTrackId(ids: [String(describing: currentParty.songs[0].songID)])
+            partyMusicHandler.appleMusicPlayTrackId(ids: [currentParty.songs[0].songID])
             partyMusicHandler.setCurrentPlaybackTime(time: 0)
             SharedJamSeshModel.removePartySong(song: currentParty.songs[0])
-            updateSongCellIds()
         }
         updateNowPlayingInfo()
     }
@@ -380,7 +389,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         //        ]
         
         // Play current song
-        partyMusicHandler.appleMusicPlayTrackId(ids: [String(describing: currentParty.currentSong.songID)])
+        partyMusicHandler.appleMusicPlayTrackId(ids: [currentParty.currentSong.songID])
         partyMusicHandler.setCurrentPlaybackTime(time: 0)
         updateNowPlayingInfo()
         
@@ -638,7 +647,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                         currentParty.songs.insert(newSong, at: 0)
                         self.songsTableView.insertSections(IndexSet(integer: 0), with: .automatic)
                         self.songsTableView.endUpdates()
-                        self.updateSongCellIds()
                     }
                     else if let index = currentParty.songs.index(where: { // get index where new song should go
                         return $0.upVotes < newSong.upVotes
@@ -647,14 +655,12 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                         currentParty.songs.insert(newSong, at: index)
                         self.songsTableView.insertSections(IndexSet(integer: index), with: .automatic)
                         self.songsTableView.endUpdates()
-                        self.updateSongCellIds()
 //                        self.sortSongs()  // TODO does changing this break things? motivation is that if you are adding a song in the middle of the tableview, all the cellID's are going to be messed up
                     } else { // insert at end of playlist
                         self.songsTableView.beginUpdates()
                         currentParty.songs.append(newSong)
                         self.songsTableView.insertSections(IndexSet(integer: currentParty.songs.count-1), with: .automatic)
                         self.songsTableView.endUpdates()
-                        self.updateSongCellIds()
                     }
                 }
 //                self.hideLoadingAnimation()
@@ -671,7 +677,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             // The snapshot passed to the callback block contains the data for the removed child.
             if let childSongSnapshot = snapshot as? DataSnapshot {
                 // print("observed removed in playlist childSongsnapshot: \(snapshot)")
-                let childSongID = (childSongSnapshot.value as! NSDictionary)["songID"] as! Int
+                let childSongID = (childSongSnapshot.value as! NSDictionary)["songID"] as! String
                 if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID == childSongID }) {
                     print("observed removed in playlist \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].songName) :: \(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.count) :: \(i) :: \(self.songsTableView.numberOfSections)")
                     
@@ -681,7 +687,9 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                         self.songsTableView.deleteSections(IndexSet(integer: i), with: UITableViewRowAnimation.top)
                         self.songsTableView.endUpdates()
                     }
-                    self.updateSongCellIds()
+                    
+                    // self.updateSongCellIds()
+                    self.sortSongs()
                     
                     // check if playlist is now empty and then prompt user to add more songs if so
                     if(self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.isEmpty) {
@@ -700,7 +708,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             // Find which child was changed, and update that row
             // The snapshot passed to the event listener contains the updated data for the child.
-            let childSongID = (snapshot.value as! NSDictionary)["songID"] as! Int
+            let childSongID = (snapshot.value as! NSDictionary)["songID"] as! String
             // Get changed song index in curent songs array
             if let i = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs.index(where: { $0.songID == childSongID }) {
                 let snapshotDictionary = (snapshot.value as! NSDictionary)
@@ -708,14 +716,16 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 print("reloading \(i)")
                 
+                // Check if was upvote or downvote
+                let isUpVote = (self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes <= newUpVotes)
+                
                 self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes = newUpVotes
                 self.songsTableView.beginUpdates()
                 //self.songsTableView.reloadRows(at: rowsToReload, with: .automatic)
                 self.songsTableView.reloadSections(IndexSet(integer: i), with: .automatic)
                 self.songsTableView.endUpdates()
                 
-                // Check if was upvote or downvote
-                let isUpVote = (self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].songs[i].upVotes <= newUpVotes) // if true, then change is upvote, if false, then downvote
+                // if true, then change is upvote, if false, then downvote
                 /* Animate moving song rows */
                 if (isUpVote) {
                     self.moveUpVote(rowToMove: i)
@@ -924,6 +934,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 v.centerXAnchor.constraint(equalTo: cell.songImage.centerXAnchor).isActive = true
                 v.centerYAnchor.constraint(equalTo: cell.songImage.centerYAnchor).isActive = true
                 
+                //TODO optimize this to not be always loading song images. Dictionary of songID to songImage?
                 DispatchQueue.global(qos: .userInitiated).async {
                     let url1 = URL(string: song.songImageURL)
                     if let data = try? Data(contentsOf: url1!)  {
@@ -943,7 +954,9 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             cell.cellId = indexPath.section
             // cell.partyID = self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].partyID
+            cell.songID = song.songID
             cell.songName.text = song.songName
+            print(song.songName)
             cell.songArtist.text = song.songArtist
             cell.upvoteCounter = song.upVotes
             cell.upvoteCount.text = String(cell.upvoteCounter)
@@ -1001,13 +1014,14 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     // SongTableViewCell Delegate Function
     // If there are less than 0 downvotes, prompt user to remove song from queue
-    func downvoteButtonPressed(cellId: Int) {
+    func downvoteButtonPressed(cellId: Int, songID: String) {
         let currentParty = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex]
         
         // Send change to firebase, change will be handled upon receiving the data changed event from firebase
         if( cellId < currentParty.songs.count) {
-            let songName = SharedJamSeshModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
-            let songRef =  SharedJamSeshModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(songName)
+//            let songName = SharedJamSeshModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
+            let songName = currentParty.songs.first(where: {$0.songID == songID})
+            let songRef =  SharedJamSeshModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(String(songID)) // TODO: REFACTOR TO USE SONG ID, SONG NAME NOT UNIQUE
             songRef.child("upvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 if snapshot.hasChild(self.SharedJamSeshModel.myUser.userID){
@@ -1074,13 +1088,14 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     // SongTableViewCell Delegate Function
-    func upvoteButtonPressed(cellId: Int) {
+    func upvoteButtonPressed(cellId: Int, songID: String) {
         let currentParty = SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex]
         
         // Send change to firebase, change will be handled upon receiving the data changed event from firebase
-        let songName = SharedJamSeshModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
+//        let songName = SharedJamSeshModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
+        let songName = currentParty.songs.first(where: {$0.songID == songID})?.songName
         print("upvote pressed :: \(songName) :: \(cellId)")
-        let songRef = SharedJamSeshModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(songName)
+        let songRef = SharedJamSeshModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(String(songID))
         
         songRef.child("downvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -1164,7 +1179,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     func updateSongCellIds() {
-        sortSongs()
         // change all cell IDs after the toIndex (increment them all by one
         // Iterate over all the rows of a section
         print("change cell ids")
@@ -1186,7 +1200,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
         for i in stride(from: 0, to: self.songsTableView.numberOfSections, by: 1) {
             //let cell = self.songsTableView.cellForRow(at: NSIndexPath(row: i, section: 0) as IndexPath) as? SongTableViewCell
             let cell = self.songsTableView.cellForRow(at: NSIndexPath(row: 0, section: i) as IndexPath) as? SongTableViewCell
-            print(" order: \(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[i].songName) - \(cell?.cellId)")
+            print(" order: \(SharedJamSeshModel.parties[SharedJamSeshModel.currentPartyIndex].songs[i].songName) - \(String(describing: cell?.cellId))")
         }
     }
     /*****************************************************************************/
@@ -1331,6 +1345,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /*****************************************************************************/
     @IBAction func playPauseButtonPressed(_ sender: Any) {
+        printSongCellIds()
         if(partyMusicHandler.getPlaybackState() == MPMusicPlaybackState.paused){
             print("play")
 //            playPauseButton.titleLabel?.text = "Play"
@@ -1344,8 +1359,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
             partyMusicHandler.applicationMusicPlayer.pause()
             return
         }
-        
-        ()
     }
     /*****************************************************************************/
     
@@ -1661,7 +1674,7 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                                                                             if !results.isEmpty {
                                                                                 let suggestedSong = results[0] as NSDictionary
                                                                                 print("******* adding song \((suggestedSong["trackName"] as? String)!)")
-                                                                                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].addSong(songName: (suggestedSong["trackName"] as? String)!, songArtist : (suggestedSong["artistName"] as? String)!, songID : (suggestedSong["trackId"] as? Int)!, songImageUrl : (suggestedSong["artworkUrl100"] as? String)!, songDuration: (suggestedSong["trackTimeMillis"] as? Int)!)
+                                                                                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].addSong(songName: (suggestedSong["trackName"] as? String)!, songArtist : (suggestedSong["artistName"] as? String)!, songID : String((suggestedSong["trackId"] as? Int)!), songImageUrl : (suggestedSong["artworkUrl100"] as? String)!, songDuration: (suggestedSong["trackTimeMillis"] as? Int)!)
                                                                                 
                                                                                 completionHandler(true)
                                                                             }

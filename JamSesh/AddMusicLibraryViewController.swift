@@ -57,7 +57,6 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
         for element in selectedSongs.items {
             //this is only available in 10.3
             if #available(iOS 10.3, *) {
-                tempSongs.append(String(element.playbackStoreID))
                 tempString += "\(String(describing: element.title!))\n"
             } else {
                 // Fallback on earlier versions
@@ -104,7 +103,7 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
                                 })
                             } else { // storeID was found in MPMediaItemElement and not 0
                                let songDuration = element.playbackDuration
-                                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].getTrackImageURLandThenAddSong(songName: name, songArtist : artist, songID : storeID, songImage: image, songDuration: Int(songDuration*1000), completionHandler: {_ in
+                                self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].getTrackImageURLandThenAddSong(songName: name, songArtist : artist, songID : String(storeID), songImage: image, songDuration: Int(songDuration*1000), completionHandler: {_ in
                                         i+=1
                                         print("added: \(name) : \(i)/\(selectedSongs.count)")
                                         // If all the songs have been added

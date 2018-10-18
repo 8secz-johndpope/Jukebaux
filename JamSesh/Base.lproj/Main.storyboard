@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="76T-Bg-EST">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="76T-Bg-EST">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -102,7 +101,7 @@
                                 </constraints>
                             </view>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gch-pY-DJV" userLabel="View4">
-                                <rect key="frame" x="0.0" y="496" width="375" height="91.5"/>
+                                <rect key="frame" x="0.0" y="496.5" width="375" height="91.5"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private Party?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sd2-21-07j">
                                         <rect key="frame" x="8" y="15" width="150" height="20.5"/>
@@ -153,7 +152,7 @@
                                 <rect key="frame" x="0.0" y="588" width="375" height="79"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgg-qd-mW6">
-                                        <rect key="frame" x="56.5" y="17" width="263" height="44"/>
+                                        <rect key="frame" x="56" y="17" width="263" height="44"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="263" id="Edh-U6-GXC"/>
@@ -430,7 +429,7 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hau-rO-EnA">
-                                                                <rect key="frame" x="146" y="56" width="27" height="21"/>
+                                                                <rect key="frame" x="146" y="55.5" width="27" height="21"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="21" id="9YW-xl-N6f"/>
                                                                     <constraint firstAttribute="width" constant="27" id="TLU-7l-zZy"/>
@@ -494,7 +493,7 @@
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested by: " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NSF-pj-JId" userLabel="suggestedByLabel">
-                                                        <rect key="frame" x="8" y="107" width="304" height="13.5"/>
+                                                        <rect key="frame" x="8" y="107" width="304" height="14"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -553,7 +552,7 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Artist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="32v-OE-7FN" customClass="MarqueeLabel" customModule="MarqueeLabel">
-                                                                    <rect key="frame" x="114" y="32" width="191" height="19"/>
+                                                                    <rect key="frame" x="114" y="32" width="191" height="19.5"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="191" id="wN9-IY-Fl3"/>
                                                                     </constraints>
@@ -565,7 +564,7 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AeE-Rf-ZcJ" userLabel="UPVote">
-                                                                    <rect key="frame" x="145" y="55" width="41" height="35"/>
+                                                                    <rect key="frame" x="145" y="55.5" width="41" height="35"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="35" id="aoK-ap-2aY"/>
                                                                         <constraint firstAttribute="width" constant="41" id="sZf-DB-1Bc"/>
@@ -577,7 +576,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mZg-m8-4a8" userLabel="DownVote">
-                                                                    <rect key="frame" x="238" y="55" width="42" height="31"/>
+                                                                    <rect key="frame" x="238" y="55.5" width="42" height="31"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="42" id="BlR-04-UIT"/>
                                                                         <constraint firstAttribute="height" constant="31" id="M5j-xp-laH"/>
@@ -589,7 +588,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="T4g-LD-ggo" userLabel="#Upvotes">
-                                                                    <rect key="frame" x="188" y="55" width="51" height="20"/>
+                                                                    <rect key="frame" x="188" y="55.5" width="51" height="20"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="20" id="nr3-p2-AZM"/>
                                                                     </constraints>
@@ -840,7 +839,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gNm-8V-1vJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="Jrz-Ud-jQG" customClass="RAMTransitionItemAnimations" customModule="RAMAnimatedTabBarController"/>
             </objects>
-            <point key="canvasLocation" x="5502" y="475"/>
+            <point key="canvasLocation" x="5638" y="1174"/>
         </scene>
         <!--Jukebaux!-->
         <scene sceneID="IzS-wR-2p7">
@@ -934,15 +933,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoO-io-bnZ">
-                                <rect key="frame" x="88" y="589" width="198" height="58"/>
-                                <state key="normal" title="Join as Guest"/>
-                                <connections>
-                                    <action selector="joinAsGuestButtonPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="dl8-un-rju"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afS-zM-Rln" customClass="GIDSignInButton">
-                                <rect key="frame" x="77" y="546" width="220" height="36"/>
+                                <rect key="frame" x="77.5" y="546" width="220" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="R6m-ea-NR4"/>
@@ -972,21 +964,28 @@
                                     <constraint firstAttribute="trailing" secondItem="bVp-i5-OmT" secondAttribute="trailing" id="lnV-cp-PdE"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoO-io-bnZ">
+                                <rect key="frame" x="88.5" y="589" width="198" height="58"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="58" id="7J9-gY-2c3"/>
+                                    <constraint firstAttribute="width" constant="198" id="dDr-9w-YNy"/>
+                                </constraints>
+                                <state key="normal" title="Join as Guest"/>
+                                <connections>
+                                    <action selector="joinAsGuestButtonPressed:" destination="76T-Bg-EST" eventType="touchUpInside" id="dl8-un-rju"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.50196081400000003" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="afS-zM-Rln" firstAttribute="top" secondItem="OR4-yS-VaF" secondAttribute="top" constant="526" id="2jP-yT-WH9"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="m4l-sz-0gN" secondAttribute="trailing" id="44E-Cg-Isf"/>
-                            <constraint firstItem="OoO-io-bnZ" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" constant="88" id="8XJ-Rd-nFt"/>
                             <constraint firstItem="afS-zM-Rln" firstAttribute="centerX" secondItem="OR4-yS-VaF" secondAttribute="centerX" id="FPj-11-p8m"/>
                             <constraint firstItem="m4l-sz-0gN" firstAttribute="top" secondItem="GtG-pX-pYR" secondAttribute="top" id="G77-G5-yVn"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="7wW-ZS-hJk" secondAttribute="trailing" id="IM3-Bi-hOt"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="bottom" secondItem="OoO-io-bnZ" secondAttribute="bottom" constant="20" id="JGR-0a-LjQ"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="bottom" secondItem="7wW-ZS-hJk" secondAttribute="bottom" id="LUq-rO-Chb"/>
-                            <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="afS-zM-Rln" secondAttribute="trailing" constant="78" id="U1G-ag-fC3"/>
-                            <constraint firstItem="OR4-yS-VaF" firstAttribute="trailing" secondItem="OoO-io-bnZ" secondAttribute="trailing" constant="89" id="UkY-Gq-cng"/>
-                            <constraint firstItem="afS-zM-Rln" firstAttribute="leading" secondItem="OR4-yS-VaF" secondAttribute="leading" constant="77" id="WmU-PZ-4oj"/>
                             <constraint firstItem="OR4-yS-VaF" firstAttribute="bottom" secondItem="m4l-sz-0gN" secondAttribute="bottom" id="YJE-km-2SC"/>
                             <constraint firstItem="OoO-io-bnZ" firstAttribute="centerX" secondItem="OR4-yS-VaF" secondAttribute="centerX" id="Zsa-Hu-c7B"/>
                             <constraint firstItem="OoO-io-bnZ" firstAttribute="top" secondItem="afS-zM-Rln" secondAttribute="bottom" constant="7" id="eRY-gJ-6pL"/>
@@ -1238,7 +1237,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F80-kq-Nho" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="YWn-8C-LFM" customClass="RAMBounceAnimation" customModule="RAMAnimatedTabBarController"/>
             </objects>
-            <point key="canvasLocation" x="5502" y="1244"/>
+            <point key="canvasLocation" x="5638" y="448"/>
         </scene>
         <!--PartiesNavVC-->
         <scene sceneID="liT-qc-IFq">

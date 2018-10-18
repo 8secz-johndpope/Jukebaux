@@ -98,7 +98,7 @@ class JamSeshModel {
     }
     
     func removePartySong(song: Song) {
-        ref.child("parties").child(parties[currentPartyIndex].partyID).child("playlist").child(encodeForFirebaseKey(string: song.songName)).removeValue()
+        ref.child("parties").child(parties[currentPartyIndex].partyID).child("playlist").child(encodeForFirebaseKey(string: song.songID)).removeValue()
     }
     
     typealias CompletionHandler = (_ success:Bool) -> Void

@@ -145,7 +145,7 @@ class Party {
         self.users = users
     }
     
-    func addSong(songName: String, songArtist : String, songID : Int, songImageUrl : String, songDuration: Int) {
+    func addSong(songName: String, songArtist : String, songID : String, songImageUrl : String, songDuration: Int) {
         if (!songs.contains(where: { $0.songID == songID })) { // check for not duplicate
             let s = Song(songName: songName, songArtist : songArtist, songID : songID, songImageURL : songImageUrl, songDuration: songDuration, upVotes: 1)
             s.suggestedBy = JamSeshModel.shared.myUser.username
@@ -181,7 +181,7 @@ class Party {
                                                                         var tempResults = (responseDictionary["results"] as?[NSDictionary])!
                                                                         if (!tempResults.isEmpty && tempResults[0]["artworkUrl100"] != nil) {
                                                                             let trackImageURL = tempResults[0]["artworkUrl100"] as! String
-                                                                            let songID = tempResults[0]["trackId"] as! Int
+                                                                            let songID = String(tempResults[0]["trackId"] as! Int)
                                                                             let songDuration = tempResults[0]["trackTimeMillis"] as! Int
                                                                             //now that we got the imageURL, add the song
                                                                             if (!self.songs.contains(where: { $0.songID == songID })) { //check for not duplicate
@@ -206,7 +206,7 @@ class Party {
         }
     }
     
-    func getTrackImageURLandThenAddSong(songName: String, songArtist : String, songID : Int, songImage : UIImage, songDuration: Int, completionHandler: @escaping CompletionHandler) {
+    func getTrackImageURLandThenAddSong(songName: String, songArtist : String, songID : String, songImage : UIImage, songDuration: Int, completionHandler: @escaping CompletionHandler) {
         
         DispatchQueue.global(qos: .userInitiated).sync {
             var trackImageURL = ""
@@ -313,7 +313,7 @@ class Party {
         
         var songsDict = [String : AnyObject]()
         for element in songs {
-            songsDict[encodeForFirebaseKey(string: element.songName)] = element.toAnyObject() as AnyObject
+            songsDict[element.songID] = element.toAnyObject() as AnyObject
         }
         return [
             "playlist": songsDict

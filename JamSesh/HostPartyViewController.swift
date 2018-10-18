@@ -187,7 +187,7 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
         alert.addButton("Private (Need password to join)") {
             self.getPassword()
         }
-        alert.showInfo("Party name?", subTitle: "No pressure just make it good", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt),  circleIconImage: UIImage(named: "AppIcon"))
+        alert.showInfo("Public or Private?", subTitle: "If you make your party private, users will need to enter a password to join", colorStyle: UInt(self.SharedJamSeshModel.mainJamSeshColorInt),  circleIconImage: UIImage(named: "AppIcon"))
     }
     
     func getPassword() {

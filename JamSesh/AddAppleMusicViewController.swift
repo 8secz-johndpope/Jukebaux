@@ -30,6 +30,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     var searchTerm : String = ""
     var loadingIndicatorView : NVActivityIndicatorView!
     var overlay : UIView!
+    var indicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,21 +42,24 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         suggestedSongsTableView.emptyDataSetDelegate = self
         suggestedSongsTableView.reloadEmptyDataSet()
         self.suggestedSongsTableView.tableFooterView = UIView()
-        // Start loading view animation
-        let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.maxY-self.suggestedSongsTableView.frame.minY)
-            
-        loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
         
-        overlay = UIView(frame: frame)
-        overlay.backgroundColor = UIColor.black
-        overlay.alpha = 0.7
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
+        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        indicator.center = self.view.center
+        self.view.addSubview(indicator)
         
-        loadingIndicatorView.addSubview(overlay)
-        self.overlay.isHidden = false
-        self.loadingIndicatorView.isHidden = true
-        self.view.addSubview(loadingIndicatorView)
+        // Start loading view animation - TODO had to comment this out because causing bad access errors heaven knows why
+//        let frame = CGRect(x: suggestedSongsTableView.frame.minX, y: suggestedSongsTableView.frame.minY, width: self.view.frame.width, height: self.view.frame.maxY-self.suggestedSongsTableView.frame.minY)
+//        loadingIndicatorView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 31), color: SharedJamSeshModel.mainJamSeshColor )
+//        overlay = UIView(frame: frame)
+//        overlay.backgroundColor = UIColor.red
+//        overlay.alpha = 0.7
+//        loadingIndicatorView.addSubview(overlay)
+//        loadingIndicatorView.backgroundColor = UIColor.blue
+////        self.overlay.isHidden = false
+////        self.loadingIndicatorView.isHidden = false
+//        self.view.addSubview(loadingIndicatorView)
         
-    
     }
     @IBAction func searchSongButton(_ sender: Any) {
         if(self.searchSongTextField.text != "") {
@@ -100,19 +104,11 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedSongCell", for: indexPath) as! SuggestedSongTableViewCell
-            print(1)
             let suggestedSong = results[indexPath.row] as NSDictionary
-            print(2)
             cell.suggestedSongName.text = suggestedSong["trackName"] as? String
-        print(3)
             cell.suggestedSongArtist.text = suggestedSong["artistName"] as? String
-        print(4)
-            
-            
             if let data = try? Data(contentsOf: URL(string: suggestedSong["artworkUrl60"] as! String)!)  {
-                print(5)
                 cell.suggestedSongImageView.image = UIImage(data: data)!
-                print(6)
             }
         return cell
     }
@@ -121,7 +117,9 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     func searchSongs(string: String, completionHandler: @escaping CompletionHandler) {
         // Show loading screen
-        showLoadingAnimation()
+//        showLoadingAnimation()
+        indicator.startAnimating()
+//        indicator.backgroundColor = SharedJamSeshModel.mainJamSeshColor
         DispatchQueue.global(qos: .background).async {
             var term = string.replacingOccurrences(of: " ", with: "-")
             term = term.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
@@ -149,11 +147,15 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
                                                                     }
                                                                     DispatchQueue.main.async {
                                                                         self.suggestedSongsTableView.reloadData()
-                                                                        self.hideLoadingAnimation()
+//                                                                        self.hideLoadingAnimation()
+                                                                        self.indicator.stopAnimating()
+                                                                        self.indicator.hidesWhenStopped = true
                                                                     }
                                                                 }
                                                                 if error != nil {
-                                                                    self.hideLoadingAnimation()
+//                                                                    self.hideLoadingAnimation()
+                                                                    self.indicator.stopAnimating()
+                                                                    self.indicator.hidesWhenStopped = true
                                                                     print("Error \(error?.localizedDescription)")
                                                                 }
             })
@@ -171,7 +173,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
             preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add to Queue", style: .default)  { _ in
-            self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].addSong(songName: (suggestedSong["trackName"] as? String)!, songArtist : (suggestedSong["artistName"] as? String)!, songID : (suggestedSong["trackId"] as? Int)!, songImageUrl : (suggestedSong["artworkUrl100"] as? String)!, songDuration: (suggestedSong["trackTimeMillis"] as? Int)!)
+            self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex].addSong(songName: (suggestedSong["trackName"] as? String)!, songArtist : (suggestedSong["artistName"] as? String)!, songID : String((suggestedSong["trackId"] as? Int)!), songImageUrl : (suggestedSong["artworkUrl100"] as? String)!, songDuration: (suggestedSong["trackTimeMillis"] as? Int)!)
             self.SharedJamSeshModel.updatePartyOnFirebase(party: self.SharedJamSeshModel.parties[self.SharedJamSeshModel.currentPartyIndex], completionHandler: {_ in
                 //TODO need a completion handler here?
             })
@@ -189,14 +191,14 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     
     func hideLoadingAnimation() {
         self.loadingIndicatorView.stopAnimating()
-        self.loadingIndicatorView.isHidden = true
-        self.overlay.isHidden = true
+//        self.loadingIndicatorView.isHidden = true
+//        self.overlay.isHidden = true
     }
     
     func showLoadingAnimation() {
         self.loadingIndicatorView.startAnimating()
-        self.loadingIndicatorView.isHidden = false
-        self.overlay.isHidden = false
+//        self.loadingIndicatorView.isHidden = false
+//        self.overlay.isHidden = false //TODO: WHY IS THIS CAUSING BAD INSTRUCTION ERROR CRASH?????
     }
     
     func loadImages() {
@@ -210,12 +212,10 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         let textColor = UIColor.lightGray
         let a = NSAttributedStringKey.font
         let b = NSAttributedStringKey.foregroundColor
-        guard let attributes = [
+        let attributes = [
             a: font,
             b: textColor
-            ] as? [NSAttributedStringKey : Any] else {
-                return NSAttributedString.init()
-        }
+            ] as? [NSAttributedStringKey : Any]
         return NSAttributedString.init(string: text, attributes: attributes)
     }
     

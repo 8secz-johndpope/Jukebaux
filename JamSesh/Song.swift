@@ -12,7 +12,7 @@ import UIKit
 class Song {
     var songName : String
     var songArtist : String
-    var songID : Int // apple track ID
+    var songID : String // apple track ID, needs to be string to be key for firebase
     var songImage : UIImage
     var songImageURL : String
     var upVotes: Int
@@ -21,11 +21,12 @@ class Song {
     var upvotedBy : [String:Int] // user ids of those who have upvoted this todo change to bools
     var downvotedBy : [String:Int] // user ids of those who have upvoted this todo change to bool
     var addedDate: Date // used to sort songs with same number of upvotes by time added
+    var playlistOrderIndex: Int //used to hold song's order in playlist. negative if not set
     
     init() {
         self.songName = ""
         self.songArtist = ""
-        self.songID = 0
+        self.songID = ""
         self.songImageURL = ""
         self.songImage = UIImage(named:"party")!
         self.upVotes = 1
@@ -34,9 +35,10 @@ class Song {
         self.upvotedBy = [:]
         self.downvotedBy = [:]
         self.addedDate = Date()
+        self.playlistOrderIndex = -1
     }
     
-    convenience init(songName: String, songArtist : String, songID : Int, songImageURL : String, songDuration: Int, upVotes: Int) {
+    convenience init(songName: String, songArtist : String, songID : String, songImageURL : String, songDuration: Int, upVotes: Int) {
         self.init()
         self.songName = songName
         self.songArtist = songArtist
@@ -54,7 +56,7 @@ class Song {
         }
     }
 
-    convenience init(songName: String, songArtist : String, songID : Int, songImage : UIImage, songDuration: Int, upVotes: Int) {
+    convenience init(songName: String, songArtist : String, songID : String, songImage : UIImage, songDuration: Int, upVotes: Int) {
         self.init()
         self.songName = songName
         self.songArtist = songArtist
@@ -64,7 +66,7 @@ class Song {
         self.upVotes = upVotes
     }
     
-    convenience init(songName: String, songArtist : String, songID : Int, songImageURL: String, songImage : UIImage, songDuration: Int, upVotes: Int) {
+    convenience init(songName: String, songArtist : String, songID : String, songImageURL: String, songImage : UIImage, songDuration: Int, upVotes: Int) {
         self.init()
         self.songName = songName
         self.songImageURL = songImageURL
@@ -85,7 +87,7 @@ class Song {
             self.songArtist = dictionary["songArtist"] as! String
         }
         if dictionary["songID"] != nil {
-            self.songID = dictionary["songID"] as! Int
+            self.songID = dictionary["songID"] as! String
         }
         if dictionary["songImageURL"] != nil {
             self.songImageURL = dictionary["songImageURL"] as! String
@@ -126,7 +128,7 @@ class Song {
             self.songArtist = dictionary["songArtist"] as! String
         }
         if dictionary["songID"] != nil {
-            self.songID = dictionary["songID"] as! Int
+            self.songID = dictionary["songID"] as! String
         }
         if dictionary["songImageURL"] != nil {
             self.songImageURL = dictionary["songImageURL"] as! String
