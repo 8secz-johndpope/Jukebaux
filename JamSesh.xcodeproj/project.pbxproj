@@ -16,24 +16,6 @@
 		F534C6131ED0AFC000242C0D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F534C6121ED0AFC000242C0D /* User.swift */; };
 		F5350FF71FEAD92000D9F56F /* ChangeSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5350FF61FEAD92000D9F56F /* ChangeSet.swift */; };
 		F5466C8D1FEDC03A00242E1D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5466C8C1FEDC03A00242E1D /* Extensions.swift */; };
-		F55F44C9203D2FBC00ACBC1D /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B1203D2FBB00ACBC1D /* FileManager+Extension.swift */; };
-		F55F44CA203D2FBC00ACBC1D /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B2203D2FBB00ACBC1D /* String+Extension.swift */; };
-		F55F44CB203D2FBC00ACBC1D /* NSSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B3203D2FBB00ACBC1D /* NSSet+Extension.swift */; };
-		F55F44CC203D2FBC00ACBC1D /* AMGifHorizontalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B5203D2FBB00ACBC1D /* AMGifHorizontalLayout.swift */; };
-		F55F44CD203D2FBC00ACBC1D /* AMGifBaseLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B6203D2FBB00ACBC1D /* AMGifBaseLayout.swift */; };
-		F55F44CE203D2FBC00ACBC1D /* AMGifVerticalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B7203D2FBB00ACBC1D /* AMGifVerticalLayout.swift */; };
-		F55F44CF203D2FBC00ACBC1D /* GPHMediaWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44B9203D2FBB00ACBC1D /* GPHMediaWrapper.swift */; };
-		F55F44D0203D2FBC00ACBC1D /* AMGif.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44BA203D2FBB00ACBC1D /* AMGif.swift */; };
-		F55F44D1203D2FBC00ACBC1D /* AMGifWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44BB203D2FBB00ACBC1D /* AMGifWrapper.swift */; };
-		F55F44D2203D2FBC00ACBC1D /* AMGifViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44BC203D2FBB00ACBC1D /* AMGifViewModel.swift */; };
-		F55F44D3203D2FBC00ACBC1D /* AMGifQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44BD203D2FBB00ACBC1D /* AMGifQuality.swift */; };
-		F55F44D4203D2FBC00ACBC1D /* AMGifPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44BE203D2FBB00ACBC1D /* AMGifPickerModel.swift */; };
-		F55F44D5203D2FBC00ACBC1D /* AMGifProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44C1203D2FBB00ACBC1D /* AMGifProgress.swift */; };
-		F55F44D6203D2FBC00ACBC1D /* AMGifPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44C2203D2FBB00ACBC1D /* AMGifPickerConfiguration.swift */; };
-		F55F44D7203D2FBC00ACBC1D /* AMGifPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44C3203D2FBB00ACBC1D /* AMGifPicker.swift */; };
-		F55F44D8203D2FBC00ACBC1D /* AMGifCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44C5203D2FBB00ACBC1D /* AMGifCell.swift */; };
-		F55F44D9203D2FBC00ACBC1D /* AMGifCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44C7203D2FBB00ACBC1D /* AMGifCache.swift */; };
-		F55F44DA203D2FBC00ACBC1D /* AMGifDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F44C8203D2FBB00ACBC1D /* AMGifDataService.swift */; };
 		F567D3B61E8FA97A00615E91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */; };
 		F57A635C1E37FAB600243461 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57A635B1E37FAB600243461 /* AppDelegate.swift */; };
 		F57A63611E37FAB600243461 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F57A635F1E37FAB600243461 /* Main.storyboard */; };
@@ -54,7 +36,6 @@
 		F5DEB0471E432157001E1480 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0461E432157001E1480 /* Song.swift */; };
 		F5DEB0491E432177001E1480 /* Party.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DEB0481E432177001E1480 /* Party.swift */; };
 		F5FF0ECA2023F9A500BA616F /* FirebaseChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FF0EC92023F9A500BA616F /* FirebaseChatViewController.swift */; };
-		F5FF0ECC2023FD3D00BA616F /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FF0ECB2023FD3D00BA616F /* UIImage+Gif.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,24 +50,6 @@
 		F534C6121ED0AFC000242C0D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F5350FF61FEAD92000D9F56F /* ChangeSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSet.swift; sourceTree = "<group>"; };
 		F5466C8C1FEDC03A00242E1D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		F55F44B1203D2FBB00ACBC1D /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
-		F55F44B2203D2FBB00ACBC1D /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		F55F44B3203D2FBB00ACBC1D /* NSSet+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSSet+Extension.swift"; sourceTree = "<group>"; };
-		F55F44B5203D2FBB00ACBC1D /* AMGifHorizontalLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifHorizontalLayout.swift; sourceTree = "<group>"; };
-		F55F44B6203D2FBB00ACBC1D /* AMGifBaseLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifBaseLayout.swift; sourceTree = "<group>"; };
-		F55F44B7203D2FBB00ACBC1D /* AMGifVerticalLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifVerticalLayout.swift; sourceTree = "<group>"; };
-		F55F44B9203D2FBB00ACBC1D /* GPHMediaWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPHMediaWrapper.swift; sourceTree = "<group>"; };
-		F55F44BA203D2FBB00ACBC1D /* AMGif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGif.swift; sourceTree = "<group>"; };
-		F55F44BB203D2FBB00ACBC1D /* AMGifWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifWrapper.swift; sourceTree = "<group>"; };
-		F55F44BC203D2FBB00ACBC1D /* AMGifViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifViewModel.swift; sourceTree = "<group>"; };
-		F55F44BD203D2FBB00ACBC1D /* AMGifQuality.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifQuality.swift; sourceTree = "<group>"; };
-		F55F44BE203D2FBB00ACBC1D /* AMGifPickerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifPickerModel.swift; sourceTree = "<group>"; };
-		F55F44C1203D2FBB00ACBC1D /* AMGifProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifProgress.swift; sourceTree = "<group>"; };
-		F55F44C2203D2FBB00ACBC1D /* AMGifPickerConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifPickerConfiguration.swift; sourceTree = "<group>"; };
-		F55F44C3203D2FBB00ACBC1D /* AMGifPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifPicker.swift; sourceTree = "<group>"; };
-		F55F44C5203D2FBB00ACBC1D /* AMGifCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifCell.swift; sourceTree = "<group>"; };
-		F55F44C7203D2FBB00ACBC1D /* AMGifCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifCache.swift; sourceTree = "<group>"; };
-		F55F44C8203D2FBB00ACBC1D /* AMGifDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMGifDataService.swift; sourceTree = "<group>"; };
 		F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F57A63581E37FAB600243461 /* JamSesh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JamSesh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F57A635B1E37FAB600243461 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -96,6 +59,7 @@
 		F57A63671E37FAB600243461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartiesTableViewController.swift; sourceTree = "<group>"; };
 		F57A636F1E37FECA00243461 /* JamSeshModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JamSeshModel.swift; sourceTree = "<group>"; };
+		F58F0EAF2315F189002E82E2 /* BYU_Idaho.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BYU_Idaho.gpx; sourceTree = "<group>"; };
 		F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAppleMusicViewController.swift; sourceTree = "<group>"; };
 		F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedSongTableViewCell.swift; sourceTree = "<group>"; };
 		F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftDrawerTableViewController.swift; sourceTree = "<group>"; };
@@ -110,7 +74,6 @@
 		F5DEB0461E432157001E1480 /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		F5DEB0481E432177001E1480 /* Party.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Party.swift; sourceTree = "<group>"; };
 		F5FF0EC92023F9A500BA616F /* FirebaseChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseChatViewController.swift; sourceTree = "<group>"; };
-		F5FF0ECB2023FD3D00BA616F /* UIImage+Gif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,90 +141,10 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		F55F44AF203D2FBB00ACBC1D /* AMGif */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44B0203D2FBB00ACBC1D /* Extension */,
-				F55F44B4203D2FBB00ACBC1D /* Layout */,
-				F55F44B8203D2FBB00ACBC1D /* Model */,
-				F55F44BF203D2FBB00ACBC1D /* View */,
-				F55F44C6203D2FBB00ACBC1D /* Service */,
-			);
-			path = AMGif;
-			sourceTree = "<group>";
-		};
-		F55F44B0203D2FBB00ACBC1D /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44B1203D2FBB00ACBC1D /* FileManager+Extension.swift */,
-				F55F44B2203D2FBB00ACBC1D /* String+Extension.swift */,
-				F55F44B3203D2FBB00ACBC1D /* NSSet+Extension.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
-		F55F44B4203D2FBB00ACBC1D /* Layout */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44B5203D2FBB00ACBC1D /* AMGifHorizontalLayout.swift */,
-				F55F44B6203D2FBB00ACBC1D /* AMGifBaseLayout.swift */,
-				F55F44B7203D2FBB00ACBC1D /* AMGifVerticalLayout.swift */,
-			);
-			path = Layout;
-			sourceTree = "<group>";
-		};
-		F55F44B8203D2FBB00ACBC1D /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44B9203D2FBB00ACBC1D /* GPHMediaWrapper.swift */,
-				F55F44BA203D2FBB00ACBC1D /* AMGif.swift */,
-				F55F44BB203D2FBB00ACBC1D /* AMGifWrapper.swift */,
-				F55F44BC203D2FBB00ACBC1D /* AMGifViewModel.swift */,
-				F55F44BD203D2FBB00ACBC1D /* AMGifQuality.swift */,
-				F55F44BE203D2FBB00ACBC1D /* AMGifPickerModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		F55F44BF203D2FBB00ACBC1D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44C0203D2FBB00ACBC1D /* Progress */,
-				F55F44C2203D2FBB00ACBC1D /* AMGifPickerConfiguration.swift */,
-				F55F44C3203D2FBB00ACBC1D /* AMGifPicker.swift */,
-				F55F44C4203D2FBB00ACBC1D /* Cell */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F55F44C0203D2FBB00ACBC1D /* Progress */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44C1203D2FBB00ACBC1D /* AMGifProgress.swift */,
-			);
-			path = Progress;
-			sourceTree = "<group>";
-		};
-		F55F44C4203D2FBB00ACBC1D /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44C5203D2FBB00ACBC1D /* AMGifCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		F55F44C6203D2FBB00ACBC1D /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44C7203D2FBB00ACBC1D /* AMGifCache.swift */,
-				F55F44C8203D2FBB00ACBC1D /* AMGifDataService.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
 		F57A634F1E37FAB600243461 = {
 			isa = PBXGroup;
 			children = (
+				F58F0EAF2315F189002E82E2 /* BYU_Idaho.gpx */,
 				F5CB29DB1FC6618E00114518 /* Shimmer-Bridging-Header.h */,
 				F57A635A1E37FAB600243461 /* JamSesh */,
 				F57A63591E37FAB600243461 /* Products */,
@@ -283,7 +166,6 @@
 			children = (
 				F567D3B51E8FA97A00615E91 /* GoogleService-Info.plist */,
 				F57A635B1E37FAB600243461 /* AppDelegate.swift */,
-				F5FF0ECD2023FD5000BA616F /* Supporting Files */,
 				F55379231E45645900252B78 /* View */,
 				F55379221E45645100252B78 /* Model */,
 				F55379241E45646D00252B78 /* Controller */,
@@ -302,15 +184,6 @@
 				F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */,
 			);
 			name = "Not in Use View Controllers";
-			sourceTree = "<group>";
-		};
-		F5FF0ECD2023FD5000BA616F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F55F44AF203D2FBB00ACBC1D /* AMGif */,
-				F5FF0ECB2023FD3D00BA616F /* UIImage+Gif.swift */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		FC83A6AFEDA00CDEF83C6655 /* Pods */ = {
@@ -372,6 +245,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -406,16 +280,14 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-JamSesh/Pods-JamSesh-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AMWaveTransition/AMWaveTransition.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
 				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GiphyCoreSDK/GiphyCoreSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
@@ -424,29 +296,23 @@
 				"${BUILT_PRODUCTS_DIR}/LiquidFloatingActionButton/LiquidFloatingActionButton.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
 				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework",
 				"${BUILT_PRODUCTS_DIR}/SimpleAnimation/SimpleAnimation.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/iCarousel/iCarousel.framework",
-				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMWaveTransition.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GiphyCoreSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
@@ -455,21 +321,17 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiquidFloatingActionButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shimmer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleAnimation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iCarousel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JamSesh/Pods-JamSesh-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		845D469DFE1B8575AF9AA719 /* [CP] Copy Pods Resources */ = {
@@ -478,18 +340,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-resources.sh",
-				"${PODS_ROOT}/FirebaseInvites/Resources/GINInviteResources.bundle",
-				"${PODS_ROOT}/FirebaseInvites/Resources/GPPACLPickerResources.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-JamSesh/Pods-JamSesh-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JamSesh/Pods-JamSesh-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JamSesh/Pods-JamSesh-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E91D8A31EC5E4854A3FD51D /* [CP] Check Pods Manifest.lock */ = {
@@ -517,47 +377,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F55F44DA203D2FBC00ACBC1D /* AMGifDataService.swift in Sources */,
 				F5C7068A1E3BCA5800524F34 /* SongTableViewCell.swift in Sources */,
 				F5DEB0491E432177001E1480 /* Party.swift in Sources */,
-				F55F44D7203D2FBC00ACBC1D /* AMGifPicker.swift in Sources */,
 				F57A636E1E37FCE500243461 /* PartiesTableViewController.swift in Sources */,
 				F5A8CF3F1E45106700FE17D7 /* SuggestedSongTableViewCell.swift in Sources */,
 				F5A8CF3D1E4500ED00FE17D7 /* AddAppleMusicViewController.swift in Sources */,
-				F55F44D1203D2FBC00ACBC1D /* AMGifWrapper.swift in Sources */,
 				F5AA587B200FD8120067C6E5 /* LeftDrawerTableViewController.swift in Sources */,
-				F55F44D0203D2FBC00ACBC1D /* AMGif.swift in Sources */,
 				F57A63701E37FECA00243461 /* JamSeshModel.swift in Sources */,
 				F534C6131ED0AFC000242C0D /* User.swift in Sources */,
-				F55F44CC203D2FBC00ACBC1D /* AMGifHorizontalLayout.swift in Sources */,
 				F5466C8D1FEDC03A00242E1D /* Extensions.swift in Sources */,
-				F55F44CB203D2FBC00ACBC1D /* NSSet+Extension.swift in Sources */,
 				F5D760D71ED669B400845803 /* AddMusicLibraryViewController.swift in Sources */,
-				F55F44CE203D2FBC00ACBC1D /* AMGifVerticalLayout.swift in Sources */,
 				F5AE37D420C4B75600CC81C0 /* HostPartyViewController.swift in Sources */,
-				F55F44D5203D2FBC00ACBC1D /* AMGifProgress.swift in Sources */,
 				F5C7068C1E3BCA6B00524F34 /* PartyTableViewCell.swift in Sources */,
 				F5DEB0471E432157001E1480 /* Song.swift in Sources */,
 				F5350FF71FEAD92000D9F56F /* ChangeSet.swift in Sources */,
-				F55F44D9203D2FBC00ACBC1D /* AMGifCache.swift in Sources */,
 				F51A62DE1E78D66700C03FBD /* LogInViewController.swift in Sources */,
-				F5FF0ECC2023FD3D00BA616F /* UIImage+Gif.swift in Sources */,
-				F55F44D8203D2FBC00ACBC1D /* AMGifCell.swift in Sources */,
 				F5FF0ECA2023F9A500BA616F /* FirebaseChatViewController.swift in Sources */,
-				F55F44CA203D2FBC00ACBC1D /* String+Extension.swift in Sources */,
-				F55F44D6203D2FBC00ACBC1D /* AMGifPickerConfiguration.swift in Sources */,
-				F55F44C9203D2FBC00ACBC1D /* FileManager+Extension.swift in Sources */,
 				F5D760DB1ED8A5C400845803 /* ChatViewController.swift in Sources */,
-				F55F44CD203D2FBC00ACBC1D /* AMGifBaseLayout.swift in Sources */,
 				F5327CFC20CA554800BB1467 /* GradientImageView.swift in Sources */,
-				F55F44D3203D2FBC00ACBC1D /* AMGifQuality.swift in Sources */,
 				F57A635C1E37FAB600243461 /* AppDelegate.swift in Sources */,
 				F5C7068E1E3C37CB00524F34 /* CreateAPartyViewController.swift in Sources */,
-				F55F44D4203D2FBC00ACBC1D /* AMGifPickerModel.swift in Sources */,
-				F55F44CF203D2FBC00ACBC1D /* GPHMediaWrapper.swift in Sources */,
 				F510DC2C1ECCB9C60088CE67 /* PlayMusicHandler.swift in Sources */,
 				F5C706881E3BCA2F00524F34 /* PartyViewController.swift in Sources */,
-				F55F44D2203D2FBC00ACBC1D /* AMGifViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
