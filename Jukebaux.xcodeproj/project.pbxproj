@@ -57,7 +57,6 @@
 		F57A63671E37FAB600243461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartiesTableViewController.swift; sourceTree = "<group>"; };
 		F57A636F1E37FECA00243461 /* JukebauxModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JukebauxModel.swift; sourceTree = "<group>"; };
-		F58F0EAF2315F189002E82E2 /* BYU_Idaho.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = BYU_Idaho.gpx; sourceTree = "<group>"; };
 		F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAppleMusicViewController.swift; sourceTree = "<group>"; };
 		F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedSongTableViewCell.swift; sourceTree = "<group>"; };
 		F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftDrawerTableViewController.swift; sourceTree = "<group>"; };
@@ -95,7 +94,6 @@
 				95FAAB416B053CF379D80622 /* Pods-Jukebaux.debug.xcconfig */,
 				D834A194916BC18287DEA398 /* Pods-Jukebaux.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -153,7 +151,6 @@
 		F57A634F1E37FAB600243461 = {
 			isa = PBXGroup;
 			children = (
-				F58F0EAF2315F189002E82E2 /* BYU_Idaho.gpx */,
 				F5CB29DB1FC6618E00114518 /* Shimmer-Bridging-Header.h */,
 				F57A635A1E37FAB600243461 /* Jukebaux */,
 				F57A63591E37FAB600243461 /* Products */,

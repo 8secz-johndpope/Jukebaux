@@ -323,8 +323,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "58"
             endingLineNumber = "58"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -357,8 +357,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "205"
             endingLineNumber = "205"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "setPartiesFirebaseObservers()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -833,8 +833,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "144"
             endingLineNumber = "144"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "setPartiesFirebaseObservers()"
+            landmarkType = "7">
             <Locations>
                <Location
                   uuid = "995F2056-9E23-46A5-883F-E2BAB0F08720 - e9d708733259fa97"
