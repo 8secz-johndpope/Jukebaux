@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '62BDD710F761A9FAA74F4010A24BF66D'
-               BlueprintName = 'LiquidFloatingActionButton'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'LiquidFloatingActionButton.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E76DDF79D71069F58B3AF25702161428"
+               BuildableName = "libLiquidFloatingActionButton.a"
+               BlueprintName = "LiquidFloatingActionButton"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

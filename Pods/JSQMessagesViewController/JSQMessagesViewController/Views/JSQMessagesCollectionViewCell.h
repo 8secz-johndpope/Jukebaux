@@ -203,6 +203,4 @@
  */
 + (void)registerMenuAction:(SEL)action;
 
-- (void)setMediaView:(UIView *)mediaView;
-
 @end

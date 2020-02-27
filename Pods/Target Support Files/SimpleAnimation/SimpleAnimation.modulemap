@@ -1,4 +1,4 @@
-framework module SimpleAnimation {
+module SimpleAnimation {
   umbrella header "SimpleAnimation-umbrella.h"
 
   export *

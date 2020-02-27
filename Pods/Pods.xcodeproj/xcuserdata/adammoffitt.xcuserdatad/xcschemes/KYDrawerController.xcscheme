@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '7AF8670FDECF80EFCAA3D04318C4B4D1'
-               BlueprintName = 'KYDrawerController'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'KYDrawerController.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0BBCBDAFBA68F76840AC5B2B6F9A9628"
+               BuildableName = "libKYDrawerController.a"
+               BlueprintName = "KYDrawerController"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

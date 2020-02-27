@@ -1,4 +1,4 @@
-framework module RAMAnimatedTabBarController {
+module RAMAnimatedTabBarController {
   umbrella header "RAMAnimatedTabBarController-umbrella.h"
 
   export *

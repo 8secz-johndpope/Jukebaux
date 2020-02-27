@@ -1,4 +1,4 @@
-framework module SCLAlertView {
+module SCLAlertView {
   umbrella header "SCLAlertView-umbrella.h"
 
   export *

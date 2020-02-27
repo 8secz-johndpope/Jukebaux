@@ -1,0 +1,6 @@
+module Pods_Jukebaux {
+  umbrella header "Pods-Jukebaux-umbrella.h"
+
+  export *
+  module * { export * }
+}

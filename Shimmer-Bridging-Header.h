@@ -1,6 +1,6 @@
 //
 //  Shimmer-Bridging-Header.h
-//  JamSesh
+//  Jukebaux
 //
 
 #import "FBShimmering.h"

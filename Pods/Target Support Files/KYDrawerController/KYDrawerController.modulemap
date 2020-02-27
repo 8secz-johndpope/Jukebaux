@@ -1,4 +1,4 @@
-framework module KYDrawerController {
+module KYDrawerController {
   umbrella header "KYDrawerController-umbrella.h"
 
   export *
