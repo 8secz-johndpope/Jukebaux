@@ -4,11 +4,11 @@ Jukebaux: Collaborative DJ App, realtime playlist updates where the next song is
 
 Jukebaux Demo Part 1
 
-<img src="images/jukebauxDemoGif1.gif?raw=true" width="400px">
+<img src="demo/jukebauxDemoPart1.gif?raw=true" width="400px">
 
 Jukebaux Demo Part 2
 
-<img src="images/jukebauxDemoGif2.gif?raw=true" width="400px">
+<img src="demo/jukebauxDemoPart2.gif?raw=true" width="400px">
 
 
 
