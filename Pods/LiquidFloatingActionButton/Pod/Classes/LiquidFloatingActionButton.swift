@@ -433,7 +433,7 @@ class CircleLiquidBaseView : ActionBarBaseView {
         return -1 * t * (t - 2)
     }
     
-    func didDisplayRefresh(_ displayLink: CADisplayLink) {
+    @objc func didDisplayRefresh(_ displayLink: CADisplayLink) {
         if opening {
             keyDuration += CGFloat(displayLink.duration)
             updateOpen()
