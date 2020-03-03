@@ -24,6 +24,8 @@ __Technologies:__
  - Realtime updates on client side
  - Multi-threading
  - Concurrency
+ - Apple Music API
+ - MusicKit Integration
  - Party Chat - Realtime group messaging - including sending GIFS
  - MVC Architecture
  - Cocoapods
