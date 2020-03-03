@@ -14,28 +14,17 @@ Jukebaux Demo Part 2
 
 Full Demo video here: https://vimeo.com/393218181
 
-Technologies:
+__Technologies:__  
 
-Firebase Authentication
-
-Google Authentication
-
-Firebase Storage
-
-Firebase Realtime Database
-
-Server-Client Observer framework - maintaining several observers across controllers
-
-Realtime updates on client side
-
-Multi-threading
-
-Concurrency
-
-Party Chat - Realtime group messaging - including sending GIFS
-
-MVC Architecture
-
-Cocoapods
-
-Deployed app with approval process - Apple App Store
+ - Firebase Authentication
+ - Google Authentication
+ - Firebase Storage
+ - Firebase Realtime Database
+ - Server-Client Observer framework - maintaining several observers across controllers
+ - Realtime updates on client side
+ - Multi-threading
+ - Concurrency
+ - Party Chat - Realtime group messaging - including sending GIFS
+ - MVC Architecture
+ - Cocoapods
+ - Deployed app with approval process - Apple App Store
