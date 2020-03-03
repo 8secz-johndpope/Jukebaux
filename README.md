@@ -30,3 +30,5 @@ __Technologies:__
  - MVC Architecture
  - Cocoapods
  - Deployed app with approval process - Apple App Store
+
+### Team: Adam Moffitt
