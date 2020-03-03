@@ -14,7 +14,7 @@ Jukebaux Demo Part 2
 
 Full Demo video here: https://vimeo.com/393218181
 
-__Technologies:__  
+### Technologies:
 
  - Firebase Authentication
  - Google Authentication
