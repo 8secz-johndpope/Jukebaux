@@ -68,8 +68,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "262"
             endingLineNumber = "262"
-            landmarkName = "buttonTitle(forEmptyDataSet:for:)"
-            landmarkType = "7">
+            landmarkName = "AddAppleMusicViewController"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -85,7 +85,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "232"
             endingLineNumber = "232"
-            landmarkName = "description(forEmptyDataSet:)"
+            landmarkName = "buttonBackgroundImage(forEmptyDataSet:for:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -364,40 +364,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "22BAAE98-9337-41E0-B8CC-1379C8DAEA7E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Jukebaux/LogInViewController.swift"
-            timestampString = "558514681.819"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "joinAsGuestButtonPressed(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2F7EFDF4-D658-40CF-8073-49C36AA7180F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Jukebaux/LogInViewController.swift"
-            timestampString = "558514681.819065"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
-            landmarkName = "loadUserFromFirebaseThenSegue()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "E400B7C2-287F-49DA-B6C5-E97C369F91A1"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -415,23 +381,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8F6F9C07-D190-4F7D-8DA3-063E48D470CA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Jukebaux/LogInViewController.swift"
-            timestampString = "558514681.8191561"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "loadUserFromFirebaseThenSegue()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8A2BA3D5-D477-4532-BF73-95A767A18915"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -442,7 +391,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1659"
             endingLineNumber = "1659"
-            landmarkName = "searchSongs(track:artist:completionHandler:)"
+            landmarkName = "buttonBackgroundImage(forEmptyDataSet:for:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -687,40 +636,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5003B8F4-32A5-4204-8346-13983FC384FE"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Jukebaux/LogInViewController.swift"
-            timestampString = "558514681.82534"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "joinAsGuestButtonPressed(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1A9E3807-CD13-47B3-B6D7-C0165B1EFAA6"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Jukebaux/AddMusicLibraryViewController.swift"
-            timestampString = "561532644.402071"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "mediaPicker(_:didPickMediaItems:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "9E6B16C9-F07F-4520-8605-A9438D39AAAB"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -784,23 +699,6 @@
             endingLineNumber = "188"
             landmarkName = "unknown"
             landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "803D3267-D7A7-4EE5-8A78-C01A59E17BA1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Jukebaux/PartyViewController.swift"
-            timestampString = "588640017.979979"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1173"
-            endingLineNumber = "1173"
-            landmarkName = "moveSongFromTo(fromIndex:toIndex:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

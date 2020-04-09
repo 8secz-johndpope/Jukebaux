@@ -252,36 +252,6 @@ class PartiesTableViewController: UITableViewController {
         refreshControl.endRefreshing()
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SharedJukebauxModel.parties.count
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PartyCell", for: indexPath) as! PartyTableViewCell
-        
-        let party = SharedJukebauxModel.parties[indexPath.row]
-        
-        let partyImage = party.image
-        let partyName = party.partyName
-        let hostName = party.hostName //TODO add host functionality
-        let numberJoined = party.numberJoined
-        
-        cell.hostName.text = hostName
-        cell.partyName.text = partyName
-        cell.numberJoined.text = String(describing: numberJoined)
-        cell.partyImage.image = partyImage
-        cell.partyImage.contentMode = UIViewContentMode.scaleAspectFill
-        //        cell.layer.cornerRadius = 30
-        //        cell.layer.masksToBounds = true
-        //        cell.clipsToBounds = true
-        return cell
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "ShowPartySegue") {
             let cell = sender as! UITableViewCell
@@ -350,5 +320,39 @@ class PartiesTableViewController: UITableViewController {
         )
         let alertView = SCLAlertView(appearance: appearance)
         alertView.showInfo("Your current party ended", subTitle: "Looks like the host ended the party. Join another party and keep the tunes coming!")
+    }
+}
+
+//MARK: - TableView Delegate and Data Source
+extension PartiesTableViewController {
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return SharedJukebauxModel.parties.count
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PartyCell", for: indexPath) as! PartyTableViewCell
+        
+        let party = SharedJukebauxModel.parties[indexPath.row]
+        
+        let partyImage = party.image
+        let partyName = party.partyName
+        let hostName = party.hostName //TODO add host functionality
+        let numberJoined = party.numberJoined
+        
+        cell.hostName.text = hostName
+        cell.partyName.text = partyName
+        cell.numberJoined.text = String(describing: numberJoined)
+        cell.partyImage.image = partyImage
+        cell.partyImage.contentMode = UIViewContentMode.scaleAspectFill
+        //        cell.layer.cornerRadius = 30
+        //        cell.layer.masksToBounds = true
+        //        cell.clipsToBounds = true
+        return cell
     }
 }

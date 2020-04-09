@@ -12,7 +12,7 @@ import MobileCoreServices
 import NVActivityIndicatorView
 import EmptyDataSet_Swift
 
-class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDelegate, EmptyDataSetSource, EmptyDataSetDelegate {
+class AddMusicLibraryViewController : UIViewController {
 
     var mediaPicker: MPMediaPickerController!
     let SharedJukebauxModel = JukebauxModel.shared
@@ -46,6 +46,10 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController){
         //self.present(mediaPicker, animated: true, completion: nil)
     }
+}
+
+//MARK: - MPMediaPickerControllerDelegate
+extension AddMusicLibraryViewController : MPMediaPickerControllerDelegate {
     
     func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
         print("picked")
@@ -146,10 +150,11 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
         self.dismiss(animated: true, completion: nil)
         print("cancel")
         self.navigationController?.popViewController(animated: true)
-
     }
-    
-    //MARK: - DZNEmptyDataSetSource
+}
+
+//MARK: - DZNEmptyDataSetSource
+extension AddMusicLibraryViewController : EmptyDataSetSource {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         var text: String?
         var font: UIFont?
@@ -240,7 +245,10 @@ class AddMusicLibraryViewController: UIViewController, MPMediaPickerControllerDe
         return 0.0
     }
     
-    //MARK: - DZNEmptyDataSetDelegate Methods
+}
+//MARK: - EmptyDataSetDelegate Methods
+extension AddMusicLibraryViewController : EmptyDataSetDelegate {
+    
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
         return true
     }

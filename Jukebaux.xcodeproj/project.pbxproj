@@ -134,15 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				F51A62DD1E78D66700C03FBD /* LogInViewController.swift */,
-				F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */,
-				F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */,
-				F5AE37D320C4B75500CC81C0 /* HostPartyViewController.swift */,
-				F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */,
-				F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */,
-				F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */,
-				F5C706871E3BCA2F00524F34 /* PartyViewController.swift */,
-				F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */,
-				F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */,
+				F5BF2059243EDD9F001718DB /* Parties */,
+				F5BF2058243EDD6F001718DB /* Party */,
 				F5879D83214F6B0B003EF74D /* Not in Use View Controllers */,
 			);
 			name = Controller;
@@ -190,6 +183,29 @@
 				F5C7068D1E3C37CB00524F34 /* CreateAPartyViewController.swift */,
 			);
 			name = "Not in Use View Controllers";
+			sourceTree = "<group>";
+		};
+		F5BF2058243EDD6F001718DB /* Party */ = {
+			isa = PBXGroup;
+			children = (
+				F5AE37D320C4B75500CC81C0 /* HostPartyViewController.swift */,
+				F5D760D61ED669B400845803 /* AddMusicLibraryViewController.swift */,
+				F5A8CF3C1E4500ED00FE17D7 /* AddAppleMusicViewController.swift */,
+				F5A8CF3E1E45106700FE17D7 /* SuggestedSongTableViewCell.swift */,
+				F5C706871E3BCA2F00524F34 /* PartyViewController.swift */,
+				F5C706891E3BCA5800524F34 /* SongTableViewCell.swift */,
+			);
+			name = Party;
+			sourceTree = "<group>";
+		};
+		F5BF2059243EDD9F001718DB /* Parties */ = {
+			isa = PBXGroup;
+			children = (
+				F5AA587A200FD8120067C6E5 /* LeftDrawerTableViewController.swift */,
+				F57A636D1E37FCE500243461 /* PartiesTableViewController.swift */,
+				F5C7068B1E3BCA6B00524F34 /* PartyTableViewCell.swift */,
+			);
+			name = Parties;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -12,7 +12,7 @@ import MobileCoreServices
 import NVActivityIndicatorView
 import EmptyDataSet_Swift
 
-class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, EmptyDataSetSource, EmptyDataSetDelegate {
+class AddAppleMusicViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDelegate {
     
     @IBAction func keyboardDismissButton(_ sender: Any) {
         self.view.endEditing(true)
@@ -89,30 +89,6 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            if(results.count < 1){
-                return 0
-            }
-            else {
-                return results.count
-            }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedSongCell", for: indexPath) as! SuggestedSongTableViewCell
-            let suggestedSong = results[indexPath.row] as NSDictionary
-            cell.suggestedSongName.text = suggestedSong["trackName"] as? String
-            cell.suggestedSongArtist.text = suggestedSong["artistName"] as? String
-            if let data = try? Data(contentsOf: URL(string: suggestedSong["artworkUrl60"] as! String)!)  {
-                cell.suggestedSongImageView.image = UIImage(data: data)!
-            }
-        return cell
-    }
-    
     typealias CompletionHandler = (_ success:Bool) -> Void
     
     func searchSongs(string: String, completionHandler: @escaping CompletionHandler) {
@@ -164,30 +140,7 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let suggestedSong = results[indexPath.row] as NSDictionary
-        
-        let alert = UIAlertController(title: "Suggest \(suggestedSong["trackName"]! as! String)?",
-            message: "by \(suggestedSong["artistName"]! as! String)?",
-            preferredStyle: .alert)
-        
-        let addAction = UIAlertAction(title: "Add to Queue", style: .default)  { _ in
-            self.SharedJukebauxModel.parties[self.SharedJukebauxModel.currentPartyIndex].addSong(songName: (suggestedSong["trackName"] as? String)!, songArtist : (suggestedSong["artistName"] as? String)!, songID : String((suggestedSong["trackId"] as? Int)!), songImageUrl : (suggestedSong["artworkUrl100"] as? String)!, songDuration: (suggestedSong["trackTimeMillis"] as? Int)!)
-            self.SharedJukebauxModel.updatePartyOnFirebase(party: self.SharedJukebauxModel.parties[self.SharedJukebauxModel.currentPartyIndex], completionHandler: {_ in
-                //TODO need a completion handler here?
-            })
-            self.navigationController?.popViewController(animated: true)
-        }
-        
-        let cancelAction = UIAlertAction(title: "Nevermind", style: .default)
-        
-        alert.addAction(cancelAction)
-        alert.addAction(addAction)
-        
-        
-        present(alert, animated: true, completion: nil)
-    }
+    
     
     func hideLoadingAnimation() {
         self.loadingIndicatorView.stopAnimating()
@@ -204,8 +157,10 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     func loadImages() {
         //TODO
     }
-    
-    //MARK: - DZNEmptyDataSetSource
+}
+
+    //MARK: - EmptyDataSetSource
+extension AddAppleMusicViewController : EmptyDataSetSource {
     func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
         let text = "Hey Mr. DJ,"
         let font = UIFont.systemFont(ofSize: 22)
@@ -289,8 +244,10 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
         return 0.0
     }
-    
-    //MARK: - DZNEmptyDataSetDelegate Methods
+}
+
+//MARK: - EmptyDataSetDelegate
+extension AddAppleMusicViewController : UITableViewDelegate, UITableViewDataSource {
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
         return true
     }
@@ -320,3 +277,58 @@ class AddAppleMusicViewController: UIViewController, UITableViewDelegate, UITabl
     }
 }
 
+//MARK: - UITableViewDataSource
+extension AddAppleMusicViewController : UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            if(results.count < 1){
+                return 0
+            }
+            else {
+                return results.count
+            }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedSongCell", for: indexPath) as! SuggestedSongTableViewCell
+            let suggestedSong = results[indexPath.row] as NSDictionary
+            cell.suggestedSongName.text = suggestedSong["trackName"] as? String
+            cell.suggestedSongArtist.text = suggestedSong["artistName"] as? String
+            if let data = try? Data(contentsOf: URL(string: suggestedSong["artworkUrl60"] as! String)!)  {
+                cell.suggestedSongImageView.image = UIImage(data: data)!
+            }
+        return cell
+    }
+}
+
+//MARK: - UITableViewDelegate
+extension AddAppleMusicViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let suggestedSong = results[indexPath.row] as NSDictionary
+        
+        let alert = UIAlertController(title: "Suggest \(suggestedSong["trackName"]! as! String)?",
+            message: "by \(suggestedSong["artistName"]! as! String)?",
+            preferredStyle: .alert)
+        
+        let addAction = UIAlertAction(title: "Add to Queue", style: .default)  { _ in
+            self.SharedJukebauxModel.parties[self.SharedJukebauxModel.currentPartyIndex].addSong(songName: (suggestedSong["trackName"] as? String)!, songArtist : (suggestedSong["artistName"] as? String)!, songID : String((suggestedSong["trackId"] as? Int)!), songImageUrl : (suggestedSong["artworkUrl100"] as? String)!, songDuration: (suggestedSong["trackTimeMillis"] as? Int)!)
+            self.SharedJukebauxModel.updatePartyOnFirebase(party: self.SharedJukebauxModel.parties[self.SharedJukebauxModel.currentPartyIndex], completionHandler: {_ in
+                //TODO need a completion handler here?
+            })
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Nevermind", style: .default)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(addAction)
+        
+        
+        present(alert, animated: true, completion: nil)
+    }
+}

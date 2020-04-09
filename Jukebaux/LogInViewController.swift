@@ -14,7 +14,7 @@ import Shimmer
 import NVActivityIndicatorView
 import GoogleSignIn
 
-class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDelegate, GIDSignInDelegate {
+class LogInViewController: UIViewController {
     
     @IBOutlet var gSignInButton: GIDSignInButton!
     @IBOutlet var JukebauxLogo: UIImageView!
@@ -45,7 +45,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         self.view.addSubview(overlay!)
         self.view.addSubview(loadingIndicatorView!)
         
-//        gSignInButton = GIDSignInButton(frame: CGRect(x: (self.view.frame.width/2)-25,y: 2*self.view.frame.height/3, width: 50,height: 100))
+        //        gSignInButton = GIDSignInButton(frame: CGRect(x: (self.view.frame.width/2)-25,y: 2*self.view.frame.height/3, width: 50,height: 100))
         gSignInButton.isHidden = true
         gSignInButton.colorScheme = GIDSignInButtonColorScheme.dark
         self.view.addSubview(gSignInButton)
@@ -61,24 +61,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
-    
     @IBAction func TapToPartyPressed(_ sender: Any) {
         print("tap to party")
         UIView.animate(withDuration: 0.5, delay: 0.5, options: .curveEaseOut, animations: {
-//            self.JukebauxLogo.alpha = 0.0
+            //            self.JukebauxLogo.alpha = 0.0
             self.tapToPartyButton.isHidden = true
         }, completion: {_ in
             self.gSignInButton.isHidden = false
             self.joinAsGuestButton.isHidden=false
         })
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
     }
     
     func googleLogIn(credential: AuthCredential) {
@@ -173,6 +164,34 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         appDel.window?.makeKeyAndVisible()
     }
     
+    /*****************************************************************************/
+    
+    func hideLoadingAnimation() {
+        self.loadingIndicatorView.stopAnimating()
+        self.loadingIndicatorView.isHidden = true
+        self.overlay?.isHidden = true
+        //        self.view.willRemoveSubview(self.overlay!)
+    }
+    
+    func showLoadingAnimation() {
+        self.loadingIndicatorView.startAnimating()
+        self.loadingIndicatorView.isHidden = false
+        self.overlay?.isHidden = false
+        //        self.view.addSubview(self.overlay!)
+    }
+    /*****************************************************************************/
+}
+
+// MARK: - UITextFieldDelegate
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+}
+
+// MARK: - GIDSignInDelegate, GIDSignInUIDelegate
+extension LoginViewController: GIDSignInDelegate, GIDSignInUIDelegate {
     @available(iOS 9.0, *)
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any])
         -> Bool {
@@ -205,21 +224,5 @@ class LogInViewController: UIViewController, UITextFieldDelegate, GIDSignInUIDel
         // ...
         print("google disconnect")
     }
-    
-    /*****************************************************************************/
-    
-    func hideLoadingAnimation() {
-        self.loadingIndicatorView.stopAnimating()
-        self.loadingIndicatorView.isHidden = true
-        self.overlay?.isHidden = true
-//        self.view.willRemoveSubview(self.overlay!)
-    }
-    
-    func showLoadingAnimation() {
-        self.loadingIndicatorView.startAnimating()
-        self.loadingIndicatorView.isHidden = false
-        self.overlay?.isHidden = false
-//        self.view.addSubview(self.overlay!)
-    }
-    /*****************************************************************************/
 }
+

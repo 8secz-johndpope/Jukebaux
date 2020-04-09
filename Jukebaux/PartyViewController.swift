@@ -26,7 +26,7 @@ protocol SongTableViewCellDelegate {
 }
 
 // The current party is referred to as SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex] throughout this view controller code
-class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SongTableViewCellDelegate, EmptyDataSetSource, EmptyDataSetDelegate, InviteDelegate, LiquidFloatingActionButtonDataSource, LiquidFloatingActionButtonDelegate, UIScrollViewDelegate {
+class PartyViewController: UIViewController {
     
     /***************** Outlets ********************/
     @IBOutlet var suggestSongButton: UIButton!
@@ -750,6 +750,22 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     /*****************************************************************************/
     
+    /*****************************************************************************/
+           func moveSongFromTo(fromIndex: Int, toIndex: Int) {
+               
+               // switch songs at the indices
+               if ( fromIndex != toIndex ) {
+                   self.songsTableView.beginUpdates()
+                   self.songsTableView.moveSection(fromIndex, toSection: toIndex)
+                   //self.songsTableView.moveRow(at: NSIndexPath(row: fromIndex, section: 0) as IndexPath, to: NSIndexPath(row: toIndex, section: 0) as IndexPath)
+                   SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs.rearrange(from: fromIndex, to: toIndex)
+                   self.songsTableView.endUpdates()
+                   print( "Moved \(fromIndex) to \(toIndex)")
+               }
+               
+               updateSongCellIds()
+           }
+           /*****************************************************************************/
     
     /****************************************************************************/
     // Upvote rearrangement logic - go to row where row upvotes are less than new song's upvotes, and put it there.
@@ -884,92 +900,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /*****************************************************************************/
     
     /*****************************************************************************/
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs.count
-    }
-    /*****************************************************************************/
-    // Set the spacing between sections
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 10
-    }
-    
-    // Make the background color show through
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
-    }
-    /*****************************************************************************/
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    /*****************************************************************************/
-    
-    /*****************************************************************************/
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongTableViewCell
-        cell.delegate = self
-        if indexPath.section < SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs.count {
-            let song = SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs[indexPath.section]
-            
-            cell.upvoteButton.isEnabled = !song.upvotedBy.keys.contains(SharedJukebauxModel.myUser.userID)
-            cell.downvoteButton.isEnabled = !song.downvotedBy.keys.contains(SharedJukebauxModel.myUser.userID)
-            
-            var songImage = UIImage(named: "party")
-            if song.songImage != nil  && song.songImage != UIImage(named:"party")! {
-                //print("NOT null song image\(song.songName)")
-                songImage = song.songImage
-                cell.songImage.image = songImage
-            } else if song.songImageURL != "" {
-                let v = makeLoadingIndicatorView(tempView: cell.songImage)
-                
-                cell.songImage.addSubview(v)
-                
-                cell.addConstraint(NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: cell.songImage, attribute: .trailing, multiplier: 1, constant: 0))
-                cell.addConstraint(NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: cell.songImage, attribute: .leading, multiplier: 1, constant: 0))
-                cell.addConstraint(NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: cell.songImage, attribute: .top, multiplier: 1, constant: 0))
-                cell.addConstraint(NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: cell.songImage, attribute: .bottom, multiplier: 1, constant: 0))
-                cell.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .equal, toItem: cell.songImage, attribute: .height, multiplier: 1, constant: 0))
-                cell.addConstraint(NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: cell.songImage, attribute: .width, multiplier: 1, constant: 0))
-                v.centerXAnchor.constraint(equalTo: cell.songImage.centerXAnchor).isActive = true
-                v.centerYAnchor.constraint(equalTo: cell.songImage.centerYAnchor).isActive = true
-                
-                //TODO optimize this to not be always loading song images. Dictionary of songID to songImage?
-                DispatchQueue.global(qos: .userInitiated).async {
-                    let url1 = URL(string: song.songImageURL)
-                    if let data = try? Data(contentsOf: url1!)  {
-                        songImage = UIImage(data: data)!
-                        DispatchQueue.main.async {
-                            cell.songImage.image = songImage
-                            cell.reloadInputViews()
-                            for view in cell.songImage.subviews {
-                                if let indicatorView = view as? NVActivityIndicatorView { // if the view is an activity indicator view
-                                    indicatorView.stopAnimating()
-                                }
-                                view.removeFromSuperview()
-                            }
-                        }
-                    }
-                }
-            }
-            cell.cellId = indexPath.section
-            // cell.partyID = self.SharedJukebauxModel.parties[self.SharedJukebauxModel.currentPartyIndex].partyID
-            cell.songID = song.songID
-            cell.songName.text = song.songName
-            print(song.songName)
-            cell.songArtist.text = song.songArtist
-            cell.upvoteCounter = song.upVotes
-            cell.upvoteCount.text = String(cell.upvoteCounter)
-            cell.layer.cornerRadius = 20
-            cell.layer.masksToBounds = true
-            cell.backgroundColor = UIColor.clear
-//            cell.clipsToBounds = true
-        }
-        return cell
-    }
-    /*****************************************************************************/
-    
-    /*****************************************************************************/
     func makeLoadingIndicatorView(tempView: UIView) -> UIView{
         // Set up loading view animation
         let dimension = CGFloat.minimum(tempView.frame.width, tempView.frame.height)
@@ -1008,172 +938,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("error: \(error.localizedDescription)")
             }
         }
-    }
-    /*****************************************************************************/
-    
-    /*****************************************************************************/
-    // SongTableViewCell Delegate Function
-    // If there are less than 0 downvotes, prompt user to remove song from queue
-    func downvoteButtonPressed(cellId: Int, songID: String) {
-        let currentParty = SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex]
-        
-        // Send change to firebase, change will be handled upon receiving the data changed event from firebase
-        if( cellId < currentParty.songs.count) {
-//            let songName = SharedJukebauxModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
-            let songName = currentParty.songs.first(where: {$0.songID == songID})
-            let songRef =  SharedJukebauxModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(String(songID)) // TODO: REFACTOR TO USE SONG ID, SONG NAME NOT UNIQUE
-            songRef.child("upvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
-                    // then user already upvoted this, down vote it first
-                    print("then user already upvoted this, down vote it first")
-                    songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
-                        if var post = currentData.value as? [String : Any] {
-                            // Increment the number joined by 1
-                            let upVotes = post["upVotes"] as? Int ?? 0
-                            post["upVotes"] = upVotes - 1 as AnyObject?
-                            post["upvotedBy"] = nil
-                            // Set value and report transaction success
-                            currentData.value = post
-                            return TransactionResult.success(withValue: currentData)
-                        }
-                        return TransactionResult.success(withValue: currentData)
-                    }) { (error, committed, snapshot) in
-                        if let error = error {
-                            print("error: \(error.localizedDescription)")
-                        }
-                    }
-                    //                    songRef.child("upvotedBy").child(self.SharedJukebauxModel.myUser.userID).removeValue { error in
-                    //                            if error != nil {
-                    //                                print("error \(error)")
-                    //                            }
-                    //                          }
-                } else {
-                    songRef.child("downvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
-                        
-                        if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
-                            // then user already upvoted this
-                            print("user has already downvoted, do nothign")
-                        }else{
-                            print("user has NOT already downvoted, downvote")
-                            songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
-                                if var post = currentData.value as? [String : Any] {
-                                    let upVotes = post["upVotes"] as? Int ?? 0
-                                    post["upVotes"] = upVotes - 1 as AnyObject?
-                                    if post["downvotedBy"] == nil {
-                                        post["downvotedBy"] = [self.SharedJukebauxModel.myUser.userID : 1]
-                                    } else {
-                                        var dict = post["downvotedBy"] as! Dictionary<String,Int>
-                                        dict.updateValue(1, forKey: self.SharedJukebauxModel.myUser.userID)
-                                        post["downvotedBy"] = dict
-                                    }
-                                    // Set value and report transaction success
-                                    currentData.value = post
-                                    return TransactionResult.success(withValue: currentData)
-                                }
-                                return TransactionResult.success(withValue: currentData)
-                            }) { (error, committed, snapshot) in
-                                if let error = error {
-                                    print(error.localizedDescription)
-                                }
-                            }
-                        }
-                    })
-                }
-            })
-            
-        }
-    }
-    /*****************************************************************************/
-    
-    /*****************************************************************************/
-    // SongTableViewCell Delegate Function
-    func upvoteButtonPressed(cellId: Int, songID: String) {
-        let currentParty = SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex]
-        
-        // Send change to firebase, change will be handled upon receiving the data changed event from firebase
-//        let songName = SharedJukebauxModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
-        let songName = currentParty.songs.first(where: {$0.songID == songID})?.songName
-        print("upvote pressed :: \(songName) :: \(cellId)")
-        let songRef = SharedJukebauxModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(String(songID))
-        
-        songRef.child("downvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
-                print("song was downvoted by him, upvote")
-                // then user already dwownvoted this, up vote it first
-                songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
-                    if var post = currentData.value as? [String : Any] {
-                        // Increment the number joined by 1
-                        let upVotes = post["upVotes"] as? Int ?? 0
-                        post["upVotes"] = upVotes + 1 as AnyObject?
-                        post["downvotedBy"] = nil
-                        // Set value and report transaction success
-                        currentData.value = post
-                        return TransactionResult.success(withValue: currentData)
-                    }
-                    return TransactionResult.success(withValue: currentData)
-                }) { (error, committed, snapshot) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                    }
-                }
-                //                songRef.child("downvotedBy").child(self.SharedJukebauxModel.myUser.userID).removeValue { error in
-                //                    if error != nil {
-                //                        print("error \(error)")
-                //                    }
-                //                  }
-            } else {
-                songRef.child("upvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
-                        // then user already upvoted this
-                        print("song was already upvoted by him, do nothing")
-                    }else{
-                        print("song was NOT already upvoted by him, upvote")
-                        songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
-                            if var post = currentData.value as? [String : Any] {
-                                // Increment the number joined by 1
-                                let upVotes = post["upVotes"] as? Int ?? 0
-                                post["upVotes"] = upVotes + 1 as AnyObject?
-                                if post["upvotedBy"] == nil {
-                                    post["upvotedBy"] = [self.SharedJukebauxModel.myUser.userID : 1]
-                                } else {
-                                    var dict = post["upvotedBy"] as! Dictionary<String,Int>
-                                    dict.updateValue(1, forKey: self.SharedJukebauxModel.myUser.userID)
-                                    post["upvotedBy"] = dict
-                                }
-                                // Set value and report transaction success
-                                currentData.value = post
-                                return TransactionResult.success(withValue: currentData)
-                            }
-                            return TransactionResult.success(withValue: currentData)
-                        }) { (error, committed, snapshot) in
-                            if let error = error {
-                                print(error.localizedDescription)
-                            }
-                        }
-                    }
-                })
-            }
-        })
-    }
-    /*****************************************************************************/
-    
-    /*****************************************************************************/
-    func moveSongFromTo(fromIndex: Int, toIndex: Int) {
-        
-        // switch songs at the indices
-        if ( fromIndex != toIndex ) {
-            self.songsTableView.beginUpdates()
-            self.songsTableView.moveSection(fromIndex, toSection: toIndex)
-            //self.songsTableView.moveRow(at: NSIndexPath(row: fromIndex, section: 0) as IndexPath, to: NSIndexPath(row: toIndex, section: 0) as IndexPath)
-            SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs.rearrange(from: fromIndex, to: toIndex)
-            self.songsTableView.endUpdates()
-            print( "Moved \(fromIndex) to \(toIndex)")
-        }
-        
-        updateSongCellIds()
     }
     /*****************************************************************************/
     
@@ -1450,177 +1214,6 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
 //        print("*******: \(MPNowPlayingInfoCenter.default().nowPlayingInfo!)")
     }
     
-    //MARK: - DZNEmptyDataSetSource
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        var text: String?
-        var font: UIFont?
-        var textColor: UIColor?
-        
-        text = "Playlist is empty!"
-        font = UIFont.init(name: "HelveticaNeue-Light", size: 22)!
-        textColor = SharedJukebauxModel.mainJukebauxColor
-        
-        let attributes = [
-            NSAttributedStringKey.font: font!,
-            NSAttributedStringKey.foregroundColor: textColor!
-            ] as! [NSAttributedStringKey : Any]
-        return NSAttributedString.init(string: text!, attributes: attributes)
-    }
-    
-    
-    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        
-        let text = "Queue up some tunes, and keep the party going!"
-        let font = UIFont.systemFont(ofSize: 13.0)
-        let textColor = UIColor.black
-        
-        let attributes = [
-            NSAttributedStringKey.font: font,
-            NSAttributedStringKey.foregroundColor: textColor
-            ]as! [NSAttributedStringKey : Any]
-        return NSAttributedString.init(string: text, attributes: attributes )
-    }
-    
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-//        return UIImage.init(named: "Jukebaux! logo clear")
-        return nil
-    }
-    
-    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
-        let animation = CABasicAnimation.init(keyPath: "transform")
-        animation.fromValue = NSValue.init(caTransform3D: CATransform3DIdentity)
-        animation.toValue = NSValue.init(caTransform3D: CATransform3DMakeRotation(.pi/2, 0.0, 0.0, 1.0))
-        animation.duration = 0.25
-        animation.isCumulative = true
-        animation.repeatCount = MAXFLOAT
-        
-        return animation;
-    }
-    
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
-        var text: String?
-        var font: UIFont?
-        var textColor: UIColor?
-        
-        text = "Add Songs";
-        font = UIFont.systemFont(ofSize: 16)
-        textColor = (state == .normal ? UIColor.black : UIColor.darkGray)
-        
-        let attributes = [
-            NSAttributedStringKey.font: font!,
-            NSAttributedStringKey.foregroundColor: textColor!
-            ] as [NSAttributedStringKey : Any]
-        return NSAttributedString.init(string: text!, attributes: attributes)
-    }
-    
-    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> UIImage? {
-        var imageName = "button_background_addSongs"
-        
-        if state == .normal {
-            imageName = imageName + "_highlight"
-        }
-        if state == .highlighted {
-            imageName = imageName + "_normal"
-        }
-        
-        var capInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        var rectInsets = UIEdgeInsets.zero
-        
-        let image = UIImage.init(named: imageName)
-        
-        return image?.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withAlignmentRectInsets(rectInsets)
-    }
-    
-    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
-        return UIColor.lightGray
-    }
-    
-    func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return 5
-    }
-    
-    //MARK: - DZNEmptyDataSetDelegate Methods
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
-    
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
-        return false
-    }
-    
-    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
-        return false
-    }
-    
-    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
-        isEmpty = true
-        self.emptyPlaylistButtonPressed()
-    }
-    
-    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
-        self.isEmpty = true
-        self.emptyPlaylistButtonPressed()
-    }
-    
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return -175
-    }
-    
-    func sendInvite() {
-        if let invite = Invites.inviteDialog() {
-            invite.setInviteDelegate(self)
-            
-            // NOTE: You must have the App Store ID set in your developer console project
-            // in order for invitations to successfully be sent.
-            
-            // A message hint for the dialog. Note this manifests differently depending on the
-            // received invitation type. For example, in an email invite this appears as the subject.
-            invite.setMessage("Hey, come join the party!\n -\(SharedJukebauxModel.myUser.username)")
-            // Title for the dialog, this is what the user sees before sending the invites.
-            invite.setTitle("Control the music with Jukebaux!")
-            //invite.setDeepLink(SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].partyID)
-            invite.setCallToActionText("Install!")
-            invite.setCustomImage("http://adammoffitt.me/images/jukebauxLogo.png")
-            invite.open()
-        }
-    }
-    func inviteFinished(withInvitations invitationIds: [String], error: Error?) {
-        if let error = error {
-            print("Failed: " + error.localizedDescription)
-        } else {
-            print("\(invitationIds.count) invites sent")
-        }
-    }
-    
-    func numberOfCells(_ liquidFloatingActionButton: LiquidFloatingActionButton) -> Int {
-        return 3
-    }
-    
-    func cellForIndex(_ index: Int) -> LiquidFloatingCell {
-        return cells[index]
-    }
-    
-    func liquidFloatingActionButton(_ liquidFloatingActionButton: LiquidFloatingActionButton, didSelectItemAtIndex index: Int) {
-        print("did Tapped! \(index)")
-        liquidFloatingActionButton.close()
-        switch index {
-        case 0:
-            sendInvite()
-        case 1:
-            let addMusicLibraryViewController = AddMusicLibraryViewController()
-            self.navigationController?.pushViewController(addMusicLibraryViewController, animated: true)
-        case 2:
-            emptyPlaylistButtonPressed()
-        default:
-            break
-        }
-        
-    }
-    
     @objc func suggestSongs() {
 //        self.showLoadingAnimation()
         self.isLoading += 1 // When isLoading == 0 then loading animation is hidden
@@ -1691,6 +1284,435 @@ class PartyViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 }
 
+//MARK: - UITableViewDataSource
+extension PartyViewController : UITableViewDataSource {
+    /*****************************************************************************/
+        func numberOfSections(in tableView: UITableView) -> Int {
+            return SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs.count
+        }
+        /*****************************************************************************/
+        // Set the spacing between sections
+        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+            return 10
+        }
+        
+        // Make the background color show through
+        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+            let headerView = UIView()
+            headerView.backgroundColor = UIColor.clear
+            return headerView
+        }
+        /*****************************************************************************/
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return 1
+        }
+        /*****************************************************************************/
+        
+        /*****************************************************************************/
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongTableViewCell
+            cell.delegate = self
+            if indexPath.section < SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs.count {
+                let song = SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].songs[indexPath.section]
+                
+                cell.upvoteButton.isEnabled = !song.upvotedBy.keys.contains(SharedJukebauxModel.myUser.userID)
+                cell.downvoteButton.isEnabled = !song.downvotedBy.keys.contains(SharedJukebauxModel.myUser.userID)
+                
+                var songImage = UIImage(named: "party")
+                if song.songImage != nil  && song.songImage != UIImage(named:"party")! {
+                    //print("NOT null song image\(song.songName)")
+                    songImage = song.songImage
+                    cell.songImage.image = songImage
+                } else if song.songImageURL != "" {
+                    let v = makeLoadingIndicatorView(tempView: cell.songImage)
+                    
+                    cell.songImage.addSubview(v)
+                    
+                    cell.addConstraint(NSLayoutConstraint(item: v, attribute: .trailing, relatedBy: .equal, toItem: cell.songImage, attribute: .trailing, multiplier: 1, constant: 0))
+                    cell.addConstraint(NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: cell.songImage, attribute: .leading, multiplier: 1, constant: 0))
+                    cell.addConstraint(NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: cell.songImage, attribute: .top, multiplier: 1, constant: 0))
+                    cell.addConstraint(NSLayoutConstraint(item: v, attribute: .bottom, relatedBy: .equal, toItem: cell.songImage, attribute: .bottom, multiplier: 1, constant: 0))
+                    cell.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .equal, toItem: cell.songImage, attribute: .height, multiplier: 1, constant: 0))
+                    cell.addConstraint(NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: cell.songImage, attribute: .width, multiplier: 1, constant: 0))
+                    v.centerXAnchor.constraint(equalTo: cell.songImage.centerXAnchor).isActive = true
+                    v.centerYAnchor.constraint(equalTo: cell.songImage.centerYAnchor).isActive = true
+                    
+                    //TODO optimize this to not be always loading song images. Dictionary of songID to songImage?
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        let url1 = URL(string: song.songImageURL)
+                        if let data = try? Data(contentsOf: url1!)  {
+                            songImage = UIImage(data: data)!
+                            DispatchQueue.main.async {
+                                cell.songImage.image = songImage
+                                cell.reloadInputViews()
+                                for view in cell.songImage.subviews {
+                                    if let indicatorView = view as? NVActivityIndicatorView { // if the view is an activity indicator view
+                                        indicatorView.stopAnimating()
+                                    }
+                                    view.removeFromSuperview()
+                                }
+                            }
+                        }
+                    }
+                }
+                cell.cellId = indexPath.section
+                // cell.partyID = self.SharedJukebauxModel.parties[self.SharedJukebauxModel.currentPartyIndex].partyID
+                cell.songID = song.songID
+                cell.songName.text = song.songName
+                print(song.songName)
+                cell.songArtist.text = song.songArtist
+                cell.upvoteCounter = song.upVotes
+                cell.upvoteCount.text = String(cell.upvoteCounter)
+                cell.layer.cornerRadius = 20
+                cell.layer.masksToBounds = true
+                cell.backgroundColor = UIColor.clear
+    //            cell.clipsToBounds = true
+            }
+            return cell
+        }
+        /*****************************************************************************/
+}
+
+//MARK: - SongTableViewCellDelegate
+extension PartyViewController : SongTableViewCellDelegate {
+    /*****************************************************************************/
+        // SongTableViewCell Delegate Function
+        func upvoteButtonPressed(cellId: Int, songID: String) {
+            let currentParty = SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex]
+            
+            // Send change to firebase, change will be handled upon receiving the data changed event from firebase
+    //        let songName = SharedJukebauxModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
+            let songName = currentParty.songs.first(where: {$0.songID == songID})?.songName
+            print("upvote pressed :: \(songName) :: \(cellId)")
+            let songRef = SharedJukebauxModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(String(songID))
+            
+            songRef.child("downvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
+                    print("song was downvoted by him, upvote")
+                    // then user already dwownvoted this, up vote it first
+                    songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
+                        if var post = currentData.value as? [String : Any] {
+                            // Increment the number joined by 1
+                            let upVotes = post["upVotes"] as? Int ?? 0
+                            post["upVotes"] = upVotes + 1 as AnyObject?
+                            post["downvotedBy"] = nil
+                            // Set value and report transaction success
+                            currentData.value = post
+                            return TransactionResult.success(withValue: currentData)
+                        }
+                        return TransactionResult.success(withValue: currentData)
+                    }) { (error, committed, snapshot) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        }
+                    }
+                    //                songRef.child("downvotedBy").child(self.SharedJukebauxModel.myUser.userID).removeValue { error in
+                    //                    if error != nil {
+                    //                        print("error \(error)")
+                    //                    }
+                    //                  }
+                } else {
+                    songRef.child("upvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
+                            // then user already upvoted this
+                            print("song was already upvoted by him, do nothing")
+                        }else{
+                            print("song was NOT already upvoted by him, upvote")
+                            songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
+                                if var post = currentData.value as? [String : Any] {
+                                    // Increment the number joined by 1
+                                    let upVotes = post["upVotes"] as? Int ?? 0
+                                    post["upVotes"] = upVotes + 1 as AnyObject?
+                                    if post["upvotedBy"] == nil {
+                                        post["upvotedBy"] = [self.SharedJukebauxModel.myUser.userID : 1]
+                                    } else {
+                                        var dict = post["upvotedBy"] as! Dictionary<String,Int>
+                                        dict.updateValue(1, forKey: self.SharedJukebauxModel.myUser.userID)
+                                        post["upvotedBy"] = dict
+                                    }
+                                    // Set value and report transaction success
+                                    currentData.value = post
+                                    return TransactionResult.success(withValue: currentData)
+                                }
+                                return TransactionResult.success(withValue: currentData)
+                            }) { (error, committed, snapshot) in
+                                if let error = error {
+                                    print(error.localizedDescription)
+                                }
+                            }
+                        }
+                    })
+                }
+            })
+        }
+        /*****************************************************************************/
+    
+    /*****************************************************************************/
+        // SongTableViewCell Delegate Function
+        // If there are less than 0 downvotes, prompt user to remove song from queue
+        func downvoteButtonPressed(cellId: Int, songID: String) {
+            let currentParty = SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex]
+            
+            // Send change to firebase, change will be handled upon receiving the data changed event from firebase
+            if( cellId < currentParty.songs.count) {
+    //            let songName = SharedJukebauxModel.encodeForFirebaseKey(string: (currentParty.songs[cellId].songName))
+                let songName = currentParty.songs.first(where: {$0.songID == songID})
+                let songRef =  SharedJukebauxModel.ref.child("parties").child(currentParty.partyID).child("playlist").child(String(songID)) // TODO: REFACTOR TO USE SONG ID, SONG NAME NOT UNIQUE
+                songRef.child("upvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
+                        // then user already upvoted this, down vote it first
+                        print("then user already upvoted this, down vote it first")
+                        songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
+                            if var post = currentData.value as? [String : Any] {
+                                // Increment the number joined by 1
+                                let upVotes = post["upVotes"] as? Int ?? 0
+                                post["upVotes"] = upVotes - 1 as AnyObject?
+                                post["upvotedBy"] = nil
+                                // Set value and report transaction success
+                                currentData.value = post
+                                return TransactionResult.success(withValue: currentData)
+                            }
+                            return TransactionResult.success(withValue: currentData)
+                        }) { (error, committed, snapshot) in
+                            if let error = error {
+                                print("error: \(error.localizedDescription)")
+                            }
+                        }
+                        //                    songRef.child("upvotedBy").child(self.SharedJukebauxModel.myUser.userID).removeValue { error in
+                        //                            if error != nil {
+                        //                                print("error \(error)")
+                        //                            }
+                        //                          }
+                    } else {
+                        songRef.child("downvotedBy").observeSingleEvent(of: .value, with: { (snapshot) in
+                            
+                            if snapshot.hasChild(self.SharedJukebauxModel.myUser.userID){
+                                // then user already upvoted this
+                                print("user has already downvoted, do nothign")
+                            }else{
+                                print("user has NOT already downvoted, downvote")
+                                songRef.runTransactionBlock({ (currentData: MutableData) -> TransactionResult in
+                                    if var post = currentData.value as? [String : Any] {
+                                        let upVotes = post["upVotes"] as? Int ?? 0
+                                        post["upVotes"] = upVotes - 1 as AnyObject?
+                                        if post["downvotedBy"] == nil {
+                                            post["downvotedBy"] = [self.SharedJukebauxModel.myUser.userID : 1]
+                                        } else {
+                                            var dict = post["downvotedBy"] as! Dictionary<String,Int>
+                                            dict.updateValue(1, forKey: self.SharedJukebauxModel.myUser.userID)
+                                            post["downvotedBy"] = dict
+                                        }
+                                        // Set value and report transaction success
+                                        currentData.value = post
+                                        return TransactionResult.success(withValue: currentData)
+                                    }
+                                    return TransactionResult.success(withValue: currentData)
+                                }) { (error, committed, snapshot) in
+                                    if let error = error {
+                                        print(error.localizedDescription)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+                
+            }
+        }
+        /*****************************************************************************/
+}
+
+
+//MARK: - InviteDelegate
+extension PartyViewController : InviteDelegate {
+    func sendInvite() {
+         if let invite = Invites.inviteDialog() {
+             invite.setInviteDelegate(self)
+             
+             // NOTE: You must have the App Store ID set in your developer console project
+             // in order for invitations to successfully be sent.
+             
+             // A message hint for the dialog. Note this manifests differently depending on the
+             // received invitation type. For example, in an email invite this appears as the subject.
+             invite.setMessage("Hey, come join the party!\n -\(SharedJukebauxModel.myUser.username)")
+             // Title for the dialog, this is what the user sees before sending the invites.
+             invite.setTitle("Control the music with Jukebaux!")
+             //invite.setDeepLink(SharedJukebauxModel.parties[SharedJukebauxModel.currentPartyIndex].partyID)
+             invite.setCallToActionText("Install!")
+             invite.setCustomImage("http://adammoffitt.me/images/jukebauxLogo.png")
+             invite.open()
+         }
+     }
+     func inviteFinished(withInvitations invitationIds: [String], error: Error?) {
+         if let error = error {
+             print("Failed: " + error.localizedDescription)
+         } else {
+             print("\(invitationIds.count) invites sent")
+         }
+     }
+}
+
+
+func numberOfCells(_ liquidFloatingActionButton: LiquidFloatingActionButton) -> Int {
+    return 3
+}
+
+func cellForIndex(_ index: Int) -> LiquidFloatingCell {
+    return cells[index]
+}
+
+func liquidFloatingActionButton(_ liquidFloatingActionButton: LiquidFloatingActionButton, didSelectItemAtIndex index: Int) {
+    print("did Tapped! \(index)")
+    liquidFloatingActionButton.close()
+    switch index {
+    case 0:
+        sendInvite()
+    case 1:
+        let addMusicLibraryViewController = AddMusicLibraryViewController()
+        self.navigationController?.pushViewController(addMusicLibraryViewController, animated: true)
+    case 2:
+        emptyPlaylistButtonPressed()
+    default:
+        break
+    }
+    
+}
+    
+//MARK: - EmptyDataSetSource
+extension PartyViewController : EmptyDataSetSource {
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+            var text: String?
+            var font: UIFont?
+            var textColor: UIColor?
+            
+            text = "Playlist is empty!"
+            font = UIFont.init(name: "HelveticaNeue-Light", size: 22)!
+            textColor = SharedJukebauxModel.mainJukebauxColor
+            
+            let attributes = [
+                NSAttributedStringKey.font: font!,
+                NSAttributedStringKey.foregroundColor: textColor!
+                ] as! [NSAttributedStringKey : Any]
+            return NSAttributedString.init(string: text!, attributes: attributes)
+        }
+        
+        
+        func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+            
+            let text = "Queue up some tunes, and keep the party going!"
+            let font = UIFont.systemFont(ofSize: 13.0)
+            let textColor = UIColor.black
+            
+            let attributes = [
+                NSAttributedStringKey.font: font,
+                NSAttributedStringKey.foregroundColor: textColor
+                ]as! [NSAttributedStringKey : Any]
+            return NSAttributedString.init(string: text, attributes: attributes )
+        }
+        
+        func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    //        return UIImage.init(named: "Jukebaux! logo clear")
+            return nil
+        }
+        
+        func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+            let animation = CABasicAnimation.init(keyPath: "transform")
+            animation.fromValue = NSValue.init(caTransform3D: CATransform3DIdentity)
+            animation.toValue = NSValue.init(caTransform3D: CATransform3DMakeRotation(.pi/2, 0.0, 0.0, 1.0))
+            animation.duration = 0.25
+            animation.isCumulative = true
+            animation.repeatCount = MAXFLOAT
+            
+            return animation;
+        }
+        
+        func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> NSAttributedString? {
+            var text: String?
+            var font: UIFont?
+            var textColor: UIColor?
+            
+            text = "Add Songs";
+            font = UIFont.systemFont(ofSize: 16)
+            textColor = (state == .normal ? UIColor.black : UIColor.darkGray)
+            
+            let attributes = [
+                NSAttributedStringKey.font: font!,
+                NSAttributedStringKey.foregroundColor: textColor!
+                ] as [NSAttributedStringKey : Any]
+            return NSAttributedString.init(string: text!, attributes: attributes)
+        }
+        
+        func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControlState) -> UIImage? {
+            var imageName = "button_background_addSongs"
+            
+            if state == .normal {
+                imageName = imageName + "_highlight"
+            }
+            if state == .highlighted {
+                imageName = imageName + "_normal"
+            }
+            
+            var capInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            var rectInsets = UIEdgeInsets.zero
+            
+            let image = UIImage.init(named: imageName)
+            
+            return image?.resizableImage(withCapInsets: capInsets, resizingMode: .stretch).withAlignmentRectInsets(rectInsets)
+        }
+        
+        func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+            return UIColor.lightGray
+        }
+        
+        func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+            return 5
+        }
+
+}
+
+//MARK: - EmptyDataSetDelegate
+extension PartyViewController : EmptyDataSetDelegate {
+    
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        return false
+    }
+    
+    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+        return false
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+        isEmpty = true
+        self.emptyPlaylistButtonPressed()
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+        self.isEmpty = true
+        self.emptyPlaylistButtonPressed()
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        return -175
+    }
+
+}
+
+//MARK: - UIScrollViewDelegate
+extension : UIScrollViewDelegate{
+    
+}
 
 extension UIButton {
     func hideAndAllowTouchesThrough() {

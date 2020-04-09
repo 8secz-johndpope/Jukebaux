@@ -12,7 +12,7 @@ import FirebaseAuth
 import FirebaseInvites
 import GoogleSignIn
 
-class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
+class LeftDrawerTableViewController: UITableViewController {
     
     let backgroundImage = UIImage(named: "purpleBackground")
     let menu = ["Parties", "Invite Friends", "Logout"]
@@ -44,7 +44,10 @@ class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
+}
+
+// MARK: - TableViewDelegate and TableViewDataSource
+extension LeftDrawerTableViewController: {
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.backgroundColor = .clear
     }
@@ -93,9 +96,11 @@ class LeftDrawerTableViewController: UITableViewController, InviteDelegate {
         }
         
         appDel.drawerController.setDrawerState(.closed, animated: true)
-        
     }
-    
+}
+
+// MARK: - InviteDelegate
+extension LeftDrawerTableViewController: InviteDelegate {
     func sendInvite() {
         if let invite = Invites.inviteDialog() {
             invite.setInviteDelegate(self)

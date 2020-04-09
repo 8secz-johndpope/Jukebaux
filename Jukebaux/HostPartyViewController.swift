@@ -10,8 +10,8 @@ import UIKit
 import SCLAlertView
 import StoreKit
 
-class HostPartyViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, SKCloudServiceSetupViewControllerDelegate {
-
+class HostPartyViewController: UIViewController {
+    
     var cloudServiceController = SKCloudServiceController()
     let imagePicker = UIImagePickerController()
     let SharedJukebauxModel = JukebauxModel.shared
@@ -27,17 +27,6 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
         imagePicker.delegate = self
         self.appleMusicCheckIfDeviceCanPlayback()
         
-    }
-    
-    func getImageFromLibrary() {
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-        present(imagePicker, animated: true, completion: nil)
-    }
-   
-    func getImageFromCamera() {
-        takePicture()
     }
     
     //https://makeapppie.com/2016/06/28/how-to-use-uiimagepickercontroller-for-a-camera-and-photo-library-in-swift-3-0/
@@ -70,114 +59,95 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
             completion: nil)
     }
     
-    //MARK: UIPICKERCONTROLLER DELEGATE METHODS
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let pickedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        partyImage = pickedImage
-        getCreateParty()
-        dismiss(animated: true, completion: nil)
-        
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
     func createAParty(name: String , partyImage: UIImage, privateParty: Bool, password: String) {
-            SharedJukebauxModel.newParty(name: name , partyImage: partyImage, privateParty: privateParty, password: password, numberJoined: 1, hostName: SharedJukebauxModel.myUser.username, hostID: SharedJukebauxModel.myUser.userID)
-            SharedJukebauxModel.userIsHosting()
+        SharedJukebauxModel.newParty(name: name , partyImage: partyImage, privateParty: privateParty, password: password, numberJoined: 1, hostName: SharedJukebauxModel.myUser.username, hostID: SharedJukebauxModel.myUser.userID)
+        SharedJukebauxModel.userIsHosting()
         self.navigationController?.popViewController(animated: true)
-        }
-
-        // Check if the device is capable of playback
-        func appleMusicCheckIfDeviceCanPlayback() {
-            cloudServiceController = SKCloudServiceController()
-            SKCloudServiceController.requestAuthorization { (status) in
-                if status != .authorized { return }
-                
-                self.cloudServiceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
-                    if capability.contains(SKCloudServiceCapability.musicCatalogPlayback) {
-                        print("The user has an Apple Music subscription and can playback music!")
-                        DispatchQueue.main.async {
-                            self.getTitle()
-                        }
-                    } else if  capability.contains(SKCloudServiceCapability.addToCloudMusicLibrary) {
-                        print("The user has an Apple Music subscription, can playback music AND can add to the Cloud Music Library")
-                        DispatchQueue.main.async {
-                            self.getTitle()
-                        }                    } else {
-                        print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one")
-                        if capability.contains(.musicCatalogSubscriptionEligible) &&
-                            !capability.contains(.musicCatalogPlayback) {
-                            print("you can use SKCloudServiceSetupViewController")
-                        }
-                        self.promptAppleMusicPurchase()
-                        // TOOO hunget got this error but he pays for apple music ...
-                    }
-                }
-            }
-        }
-        
-        func promptAppleMusicPurchase() {
-            DispatchQueue.main.async {
-                let appearance = SCLAlertView.SCLAppearance(
-                    showCloseButton: false
-                )
-                let alert = SCLAlertView(appearance: appearance)
-                alert.addButton("Start free trial!") {
-                    print("purchase apple music")
-                    let controller = SKCloudServiceSetupViewController()
-                    print(1)
-                    controller.delegate = self
-                    
-                    controller.load(options: [.action : SKCloudServiceSetupAction.subscribe],
-                                    completionHandler: { (result, error) in
-                                        print("loaded")
-                                        DispatchQueue.main.async {
-                                            print(4)
-                                            self.present(controller, animated: true, completion: {
-                                                print("presented1")
-                                            })
-                                        }
-                    })
-                    //                DispatchQueue.main.async {
-                    //                    print(2)
-                    //                    self.present(controller, animated: true, completion: {
-                    //                        print("presented2")
-                    //                    })
-                    //                }
-                    print(3)
-                }
-                alert.addButton("No thanks!") {
-                    self.navigationController?.popViewController(animated: true)
-                }
-                alert.showInfo("Uh-oh!", subTitle: "To host a party you need an Apple Music subscription. Would you like to start a 3 month free trial today?", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
-            }
-        }
-        
-        func cloudServiceSetupViewControllerDidDismiss(_ cloudServiceSetupViewController: SKCloudServiceSetupViewController) {
-            print(#function)
-        }
-        
-        func getTitle() {
-            let appearanceSettings = SCLAlertView.SCLAppearance (kCircleIconHeight: 45.0, showCloseButton: false, showCircularIcon: true)
-
-            let alert = SCLAlertView(appearance: appearanceSettings)
+    }
+    
+    // Check if the device is capable of playback
+    func appleMusicCheckIfDeviceCanPlayback() {
+        cloudServiceController = SKCloudServiceController()
+        SKCloudServiceController.requestAuthorization { (status) in
+            if status != .authorized { return }
             
-            let name = alert.addTextField("Party name")
-            alert.addButton("Next") {
-                if name.text != nil {
-                    self.partyName = name.text!
-                    self.getPublicOrPrivate()
+            self.cloudServiceController.requestCapabilities { (capability:SKCloudServiceCapability, err:Error?) in
+                if capability.contains(SKCloudServiceCapability.musicCatalogPlayback) {
+                    print("The user has an Apple Music subscription and can playback music!")
+                    DispatchQueue.main.async {
+                        self.getTitle()
+                    }
+                } else if  capability.contains(SKCloudServiceCapability.addToCloudMusicLibrary) {
+                    print("The user has an Apple Music subscription, can playback music AND can add to the Cloud Music Library")
+                    DispatchQueue.main.async {
+                        self.getTitle()
+                    }                    } else {
+                    print("The user doesn't have an Apple Music subscription available. Now would be a good time to prompt them to buy one")
+                    if capability.contains(.musicCatalogSubscriptionEligible) &&
+                        !capability.contains(.musicCatalogPlayback) {
+                        print("you can use SKCloudServiceSetupViewController")
+                    }
+                    self.promptAppleMusicPurchase()
+                    // TOOO hunget got this error but he pays for apple music ...
                 }
             }
-            alert.addButton("Cancel") {
+        }
+    }
+    
+    func promptAppleMusicPurchase() {
+        DispatchQueue.main.async {
+            let appearance = SCLAlertView.SCLAppearance(
+                showCloseButton: false
+            )
+            let alert = SCLAlertView(appearance: appearance)
+            alert.addButton("Start free trial!") {
+                print("purchase apple music")
+                let controller = SKCloudServiceSetupViewController()
+                print(1)
+                controller.delegate = self
+                
+                controller.load(options: [.action : SKCloudServiceSetupAction.subscribe],
+                                completionHandler: { (result, error) in
+                                    print("loaded")
+                                    DispatchQueue.main.async {
+                                        print(4)
+                                        self.present(controller, animated: true, completion: {
+                                            print("presented1")
+                                        })
+                                    }
+                })
+                //                DispatchQueue.main.async {
+                //                    print(2)
+                //                    self.present(controller, animated: true, completion: {
+                //                        print("presented2")
+                //                    })
+                //                }
+                print(3)
+            }
+            alert.addButton("No thanks!") {
                 self.navigationController?.popViewController(animated: true)
             }
-            alert.showInfo("Party name?", subTitle: "No pressure just make it good", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
+            alert.showInfo("Uh-oh!", subTitle: "To host a party you need an Apple Music subscription. Would you like to start a 3 month free trial today?", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
         }
+    }
+    
+    func getTitle() {
+        let appearanceSettings = SCLAlertView.SCLAppearance (kCircleIconHeight: 45.0, showCloseButton: false, showCircularIcon: true)
+        
+        let alert = SCLAlertView(appearance: appearanceSettings)
+        
+        let name = alert.addTextField("Party name")
+        alert.addButton("Next") {
+            if name.text != nil {
+                self.partyName = name.text!
+                self.getPublicOrPrivate()
+            }
+        }
+        alert.addButton("Cancel") {
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.showInfo("Party name?", subTitle: "No pressure just make it good", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
+    }
     
     func getPublicOrPrivate() {
         let alert = SCLAlertView(appearance: appearance)
@@ -205,14 +175,14 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
     
     func getImage() {
         let alert = SCLAlertView(appearance: appearance)
-            alert.addButton("Photo Library") {
-                self.getImageFromLibrary()
-            }
-            alert.addButton("Camera") {
-                self.getImageFromCamera()
-            }
-            alert.showInfo("Choose Party Image", subTitle: "", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
+        alert.addButton("Photo Library") {
+            self.getImageFromLibrary()
         }
+        alert.addButton("Camera") {
+            self.getImageFromCamera()
+        }
+        alert.showInfo("Choose Party Image", subTitle: "", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
+    }
     
     func getCreateParty() {
         let alert = SCLAlertView(appearance: appearance)
@@ -220,8 +190,52 @@ class HostPartyViewController: UIViewController, UINavigationControllerDelegate,
             self.createAParty(name: self.partyName , partyImage: self.partyImage!, privateParty: self.privateParty, password: self.partyPassword)
         }
         alert.showInfo("Ready?", subTitle: "", colorStyle: UInt(self.SharedJukebauxModel.mainJukebauxColorInt), circleIconImage: UIImage(named: "AppIcon"))
-
+        
     }
     
-
+    
 }
+
+//MARK: - UINavigationControllerDelegate
+extension HostPartyViewController : UINavigationControllerDelegate {
+    
+}
+
+//MARK: - UIImagePickerControllerDelegate
+extension HostPartyViewController : UIImagePickerControllerDelegate {
+    
+    func getImageFromLibrary() {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func getImageFromCamera() {
+        takePicture()
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let pickedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        partyImage = pickedImage
+        getCreateParty()
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+//MARK: - SKCloudServiceSetupViewControllerDelegate
+extension HostPartyViewController : SKCloudServiceSetupViewControllerDelegate {
+    
+    func cloudServiceSetupViewControllerDidDismiss(_ cloudServiceSetupViewController: SKCloudServiceSetupViewController) {
+        print(#function)
+    }
+    
+}
+
